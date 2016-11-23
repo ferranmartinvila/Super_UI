@@ -9,7 +9,7 @@ class UI_String : public UI_Element {
 public:
 
 	UI_String(const iPoint& position, char* text, uint text_size, _TTF_Font* text_font);
-	UI_String(const UI_String& copy);
+	UI_String(const UI_String* copy);
 	UI_String();
 
 	~UI_String();
@@ -22,6 +22,7 @@ public:
 
 public:
 
+	void Draw()const;
 	char* GetString()const;
 	void SetString(char* new_text);
 

@@ -4,7 +4,7 @@
 //Constructors
 UI_Interactive_Element::UI_Interactive_Element(const iPoint & position, const SDL_Rect & box) :UI_Element(position, UNDEFINED), box(box) {}
 
-UI_Interactive_Element::UI_Interactive_Element(const UI_Interactive_Element & copy) : UI_Element(copy.position, UNDEFINED), box(copy.box) {}
+UI_Interactive_Element::UI_Interactive_Element(const UI_Interactive_Element* copy) : UI_Element(copy->position, UNDEFINED), box(copy->box) {}
 
 UI_Interactive_Element::UI_Interactive_Element() : UI_Element(), box({ 0, 0, 0, 0 }) {}
 

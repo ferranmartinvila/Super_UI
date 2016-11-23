@@ -38,7 +38,9 @@ public:
 	p2List<UI_Element*> ui_elements;
 
 	UI_Element* Create_UI_Element(UI_TYPE ui_type, UI_Element* element = nullptr);
+	
 	bool Delete_UI_Element(uint index);
+	
 	bool Delete_UI_Element(UI_Element* element);
 
 	const SDL_Texture* GetAtlas() const;

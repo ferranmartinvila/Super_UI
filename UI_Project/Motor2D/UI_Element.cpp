@@ -3,7 +3,7 @@
 //Constructors
 UI_Element::UI_Element(const iPoint & position, UI_TYPE ui_type) :position(position), ui_type(ui_type) {}
 
-UI_Element::UI_Element(const UI_Element & copy) : position(copy.position), ui_type(copy.ui_type) {}
+UI_Element::UI_Element(const UI_Element* copy) : position(copy->position), ui_type(copy->ui_type) {}
 
 UI_Element::UI_Element() : position(0, 0), ui_type(UNDEFINED) {}
 
@@ -20,7 +20,7 @@ bool UI_Element::Update()
 	return true;
 }
 
-void UI_Element::Draw()
+void UI_Element::Draw()const
 {
 
 }

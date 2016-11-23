@@ -10,6 +10,11 @@
 #include "j1PathFinding.h"
 #include "j1Gui.h"
 #include "j1Scene.h"
+#include "j1Fonts.h"
+
+#include "UI_Text_Box.h"
+#include "UI_Button.h"
+
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -32,11 +37,11 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
-	if(App->map->Load("iso_walk.tmx") == true)
+	if (App->map->Load("iso_walk.tmx") == true)
 	{
 		int w, h;
 		uchar* data = NULL;
-		if(App->map->CreateWalkabilityMap(w, h, &data))
+		if (App->map->CreateWalkabilityMap(w, h, &data))
 			App->pathfinding->SetMap(w, h, data);
 
 		RELEASE_ARRAY(data);
@@ -46,6 +51,21 @@ bool j1Scene::Start()
 
 	// TODO 3: Create the image (rect {485, 829, 328, 103}) and the text "Hello World" as UI elements
 
+	//UI Image test
+	UI_IMG test_image({ 50,50 }, { 485, 829, 328, 103 });
+	UI_Element* image = App->gui->Create_UI_Element(IMG, ((UI_Element*)&test_image));
+
+	//UI Text test
+	UI_String test_text({ 50,20 }, "Hello World", 4, App->font->default);
+	UI_Element* text = App->gui->Create_UI_Element(STRING, ((UI_Element*)&test_text));
+
+	//UI Button test
+	UI_IMG tex_on({ 120,280 }, { 415,168,222,67 });
+	UI_IMG tex_off({ 120,280 }, { 647,168,221,67 });
+	UI_IMG tex_over({ 120,280 }, { 552,73,131,43 });
+
+	UI_Button button_test({ 120,280 }, { 222, 67 }, tex_on, tex_off, tex_over, test_text);
+	UI_Element* button = App->gui->Create_UI_Element(BUTTON, ((UI_Element*)&button_test));
 
 	return true;
 }

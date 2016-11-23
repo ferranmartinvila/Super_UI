@@ -18,7 +18,7 @@ class UI_Button : public UI_Interactive_Element {
 public:
 
 	UI_Button(const iPoint& position, const SDL_Rect& box, UI_IMG& tex_on, UI_IMG& tex_off, UI_IMG& tex_over, UI_String& name);
-	UI_Button(const UI_Button& copy);
+	UI_Button(const UI_Button* copy);
 	UI_Button();
 
 	~UI_Button();

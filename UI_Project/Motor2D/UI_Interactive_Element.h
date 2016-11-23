@@ -8,7 +8,7 @@ class UI_Interactive_Element : public UI_Element {
 public:
 
 	UI_Interactive_Element(const iPoint& position, const SDL_Rect& box);
-	UI_Interactive_Element(const UI_Interactive_Element& copy);
+	UI_Interactive_Element(const UI_Interactive_Element* copy);
 	UI_Interactive_Element();
 
 	~UI_Interactive_Element();

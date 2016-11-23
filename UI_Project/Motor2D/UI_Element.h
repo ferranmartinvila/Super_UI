@@ -18,7 +18,7 @@ class UI_Element {
 public:
 
 	UI_Element(const iPoint& position, UI_TYPE ui_type);
-	UI_Element(const UI_Element& copy);
+	UI_Element(const UI_Element* copy);
 	UI_Element();
 
 	~UI_Element();
@@ -31,7 +31,7 @@ public:
 public:
 
 	virtual bool Update();
-	virtual void Draw();
+	virtual void Draw()const;
 	virtual void Handle_Input();
 	void SetPosition(const iPoint& new_position);
 

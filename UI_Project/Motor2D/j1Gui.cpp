@@ -48,6 +48,13 @@ bool j1Gui::PreUpdate()
 // Called after all Updates
 bool j1Gui::PostUpdate()
 {
+	p2List_item<UI_Element*>* item = ui_elements.start;
+	while (item) {
+
+		item->data->Draw();
+		item = item->next;
+
+	}
 	return true;
 }
 
@@ -71,10 +78,10 @@ UI_Element * j1Gui::Create_UI_Element(UI_TYPE ui_type, UI_Element* element)
 	if (element != nullptr) {
 		type = element->ui_type;
 		switch (type) {
-		case UI_TYPE::IMG:			new_element = new UI_IMG(((UI_IMG&)element));				break;
-		case UI_TYPE::STRING:		new_element = new UI_String((UI_String&)element);			break;
-		case UI_TYPE::BUTTON:		new_element = new UI_Button((UI_Button&)element);			break;
-		case UI_TYPE::TEXT_BOX:		new_element = new UI_Text_Box((UI_Text_Box&)element);		break;
+		case UI_TYPE::IMG:			new_element = new UI_IMG(((UI_IMG*)element));				break;
+		case UI_TYPE::STRING:		new_element = new UI_String((UI_String*)element);			break;
+		case UI_TYPE::BUTTON:		new_element = new UI_Button((UI_Button*)element);			break;
+		case UI_TYPE::TEXT_BOX:		new_element = new UI_Text_Box((UI_Text_Box*)element);		break;
 		}
 	}
 
