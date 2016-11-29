@@ -4,8 +4,9 @@
 #include "j1Module.h"
 
 struct SDL_Texture;
-class GuiImage;
-class GuiText;
+struct UI_Button;
+struct UI_String;
+struct UI_IMG;
 
 class j1Scene : public j1Module
 {
@@ -35,9 +36,15 @@ public:
 	bool CleanUp();
 
 private:
+
 	SDL_Texture* debug_tex;
-	GuiImage* banner;
-	GuiText* text;
+
+private:
+
+	UI_Button* button;
+	UI_String* text;
+	UI_IMG* wow_image;
+	UI_IMG* blizzard_image;
 };
 
 #endif // __j1SCENE_H__

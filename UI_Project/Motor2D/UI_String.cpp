@@ -20,6 +20,11 @@ void UI_String::Draw() const
 	App->render->Blit(App->font->Print(text, { 255,255,255,255 }, text_font), position.x - App->render->camera.x, position.y - App->render->camera.y);
 }
 
+void UI_String::Draw(const iPoint & draw_pos) const
+{
+	App->render->Blit(App->font->Print(text, { 255,255,255,255 }, text_font), draw_pos.x - App->render->camera.x, draw_pos.y - App->render->camera.y);
+}
+
 char * UI_String::GetString() const
 {
 	return text;

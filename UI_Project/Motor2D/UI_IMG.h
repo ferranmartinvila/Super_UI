@@ -7,7 +7,7 @@
 class UI_IMG : public UI_Element {
 public:
 
-	UI_IMG(const iPoint& position, const SDL_Rect& texture_rect);
+	UI_IMG(const iPoint& position, const SDL_Rect& texture_rect, int texture_id = -1);
 	UI_IMG(const UI_IMG* copy);
 	UI_IMG();
 
@@ -15,7 +15,8 @@ public:
 
 public:
 
-	SDL_Rect texture_rect;
+	SDL_Rect	texture_rect;
+	int			texture_id;
 
 public:
 

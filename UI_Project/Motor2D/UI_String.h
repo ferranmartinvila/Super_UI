@@ -23,6 +23,7 @@ public:
 public:
 
 	void Draw()const;
+	void Draw(const iPoint& draw_pos)const;
 	char* GetString()const;
 	void SetString(char* new_text);
 

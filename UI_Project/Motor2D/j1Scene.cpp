@@ -49,23 +49,22 @@ bool j1Scene::Start()
 
 	debug_tex = App->tex->Load("maps/path2.png");
 
-	// TODO 3: Create the image (rect {485, 829, 328, 103}) and the text "Hello World" as UI elements
-
 	//UI Image test
-	UI_IMG test_image({ 50,50 }, { 485, 829, 328, 103 });
-	UI_Element* image = App->gui->Create_UI_Element(IMG, ((UI_Element*)&test_image));
+	UI_IMG test_image({ 50,50 }, { 0,0, 548, 903 }, 0);
+	wow_image = (UI_IMG*)App->gui->Create_UI_Element(IMG, ((UI_Element*)&test_image));
 
+	
 	//UI Text test
 	UI_String test_text({ 50,20 }, "Hello World", 4, App->font->default);
-	UI_Element* text = App->gui->Create_UI_Element(STRING, ((UI_Element*)&test_text));
+	//text = (UI_String*)App->gui->Create_UI_Element(STRING, ((UI_Element*)&test_text));
 
 	//UI Button test
-	UI_IMG tex_on({ 120,280 }, { 415,168,222,67 });
-	UI_IMG tex_off({ 120,280 }, { 647,168,221,67 });
-	UI_IMG tex_over({ 120,280 }, { 552,73,131,43 });
-
-	UI_Button button_test({ 120,280 }, { 222, 67 }, tex_on, tex_off, tex_over, test_text);
-	UI_Element* button = App->gui->Create_UI_Element(BUTTON, ((UI_Element*)&button_test));
+	UI_IMG tex_on({ 120,350 }, { 415,168,222,67 });
+	UI_IMG tex_off({ 120,350 }, { 647,168,221,67 });
+	UI_IMG tex_over({ 120,350 }, { 6,116,220,60 });
+	
+	UI_Button button_test({ 120,280 }, { 120, 350,220,60 }, tex_on, tex_off, tex_over);
+	button = (UI_Button*)App->gui->Create_UI_Element(BUTTON, ((UI_Element*)&button_test));
 
 	return true;
 }
@@ -103,9 +102,31 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	// Gui ---
+	// Mouse Position -------------------------------------
+	int x, y;
+	App->input->GetMousePosition(x, y);
+
+
+
+	// Gui Input ------------------------------------------
+	if (App->input->GetMouseButtonDown(1) == KEY_DOWN || App->input->GetMouseButtonDown(1) == KEY_REPEAT) {
+
+		if (button->MouseIsIn({ x,y }))button->Change_State(ON);
+		
+
+	}
+	else {
+
+		if (button->MouseIsIn({ x,y }))button->Change_State(OVER);
+		else button->Change_State(OFF);
+
+	}
+
 	
-	// -------
+
+
+
+	// Hardware Input -------------------------------------
 	if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		App->LoadGame("save_game.xml");
 
@@ -124,10 +145,12 @@ bool j1Scene::Update(float dt)
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x -= floor(200.0f * dt);
 
+
+	// Map Draw -------------------------------------------
 	App->map->Draw();
 
-	int x, y;
-	App->input->GetMousePosition(x, y);
+
+	// Window Pathfinding Title --------------------------
 	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
 	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d",
 					App->map->data.width, App->map->data.height,
@@ -137,8 +160,9 @@ bool j1Scene::Update(float dt)
 
 	//App->win->SetTitle(title.GetString());
 
-	// Debug pathfinding ------------------------------
-	//int x, y;
+
+
+	// Debug pathfinding ----------------------------------
 	App->input->GetMousePosition(x, y);
 	iPoint p = App->render->ScreenToWorld(x, y);
 	p = App->map->WorldToMap(p.x, p.y);

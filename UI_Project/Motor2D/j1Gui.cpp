@@ -34,8 +34,13 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 // Called before the first frame
 bool j1Gui::Start()
 {
+	//Load Atlas
 	atlas = App->tex->Load(atlas_file_name.GetString());
 
+	//Load other textures
+	ui_textures.add(App->tex->Load("gui/BlizzardLogo.png"));
+	ui_textures.add(App->tex->Load("gui/WOWLogo.png"));
+	
 	return true;
 }
 
@@ -48,13 +53,17 @@ bool j1Gui::PreUpdate()
 // Called after all Updates
 bool j1Gui::PostUpdate()
 {
+
 	p2List_item<UI_Element*>* item = ui_elements.start;
 	while (item) {
 
-		item->data->Draw();
+		if (item->data->IsActive) {
+			item->data->Update();
+			item->data->Draw();
+		}
 		item = item->next;
-
 	}
+
 	return true;
 }
 
@@ -119,5 +128,10 @@ const SDL_Texture* j1Gui::GetAtlas() const
 	return atlas;
 }
 
-// class Gui ---------------------------------------------------
+SDL_Texture * j1Gui::Get_UI_Texture(uint tex_id)
+{
+	if (tex_id > ui_textures.count() - 1)return nullptr;
+	
+	return ui_textures.At(tex_id)->data;
+}
 
