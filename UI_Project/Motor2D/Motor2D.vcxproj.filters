@@ -70,6 +70,9 @@
     <ClCompile Include="j1Gui.cpp">
       <Filter>Desenvolupament  ========\UserInterface</Filter>
     </ClCompile>
+    <ClCompile Include="UI_Interactive_String.cpp">
+      <Filter>Desenvolupament  ========\UserInterface\UI_Elements</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -158,6 +161,9 @@
     </ClInclude>
     <ClInclude Include="j1Gui.h">
       <Filter>Desenvolupament  ========\UserInterface</Filter>
+    </ClInclude>
+    <ClInclude Include="UI_Interactive_String.h">
+      <Filter>Desenvolupament  ========\UserInterface\UI_Elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -6,6 +6,7 @@
 struct SDL_Texture;
 struct UI_Button;
 struct UI_String;
+struct UI_Interactive_String;
 struct UI_IMG;
 
 class j1Scene : public j1Module
@@ -42,8 +43,7 @@ private:
 private:
 
 	UI_Button* button;
-	UI_String* text;
-	UI_IMG* wow_image;
+	UI_Interactive_String* interactive_text;
 	UI_IMG* blizzard_image;
 };
 

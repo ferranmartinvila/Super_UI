@@ -14,7 +14,7 @@
 
 #include "UI_Text_Box.h"
 #include "UI_Button.h"
-
+#include "UI_Interactive_String.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -50,13 +50,17 @@ bool j1Scene::Start()
 	debug_tex = App->tex->Load("maps/path2.png");
 
 	//UI Image test
-	UI_IMG test_image({ 50,50 }, { 0,0, 548, 903 }, 0);
-	wow_image = (UI_IMG*)App->gui->Create_UI_Element(IMG, ((UI_Element*)&test_image));
+	UI_IMG test_image({ 50,50 },0);
+	blizzard_image = (UI_IMG*)App->gui->Create_UI_Element(IMG, ((UI_Element*)&test_image));
 
-	
-	//UI Text test
-	UI_String test_text({ 50,20 }, "Hello World", 4, App->font->default);
-	//text = (UI_String*)App->gui->Create_UI_Element(STRING, ((UI_Element*)&test_text));
+
+
+	//UI Interactive Text
+	UI_String test({ 250,40 }, "Hello", App->font->default);
+
+	UI_Interactive_String test_text({ 250,40 }, { 250,40,60,15 }, &test);
+	interactive_text = (UI_Interactive_String*)App->gui->Create_UI_Element(INTERACTIVE_STRING, ((UI_Element*)&test_text));
+
 
 	//UI Button test
 	UI_IMG tex_on({ 120,350 }, { 415,168,222,67 });
@@ -111,19 +115,32 @@ bool j1Scene::Update(float dt)
 	// Gui Input ------------------------------------------
 	if (App->input->GetMouseButtonDown(1) == KEY_DOWN || App->input->GetMouseButtonDown(1) == KEY_REPEAT) {
 
+		//Button
 		if (button->MouseIsIn({ x,y }))button->Change_State(ON);
 		
+		//Interactive Text
+		if (interactive_text->MouseIsIn({ x,y }))interactive_text->SetString("Left Click");
+
+	}
+	else if (App->input->GetMouseButtonDown(3) == KEY_DOWN || App->input->GetMouseButtonDown(3) == KEY_REPEAT) {
+
+		
+		//Interactive Text
+		if (interactive_text->MouseIsIn({ x,y }))interactive_text->SetString("Right Click");
 
 	}
 	else {
 
+		//Interactive Text
+		if (interactive_text->MouseIsIn({ x,y }))interactive_text->SetString("Mouse In");
+
+		//Button
 		if (button->MouseIsIn({ x,y }))button->Change_State(OVER);
 		else button->Change_State(OFF);
 
 	}
 
 	
-
 
 
 	// Hardware Input -------------------------------------

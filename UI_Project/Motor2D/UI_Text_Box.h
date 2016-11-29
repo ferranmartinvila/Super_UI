@@ -11,6 +11,7 @@ public:
 	UI_Text_Box(const iPoint& position, const SDL_Rect& box,UI_String& name, UI_IMG& box_texture, uint box_capacity, bool IsPassword);
 	UI_Text_Box(const UI_Text_Box* copy);
 	UI_Text_Box();
+
 	~UI_Text_Box();
 
 public:

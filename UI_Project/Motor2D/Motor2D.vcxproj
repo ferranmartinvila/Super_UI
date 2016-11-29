@@ -96,6 +96,7 @@
     <ClCompile Include="UI_Element.cpp" />
     <ClCompile Include="UI_IMG.cpp" />
     <ClCompile Include="UI_Interactive_Element.cpp" />
+    <ClCompile Include="UI_Interactive_String.cpp" />
     <ClCompile Include="UI_String.cpp" />
     <ClCompile Include="UI_Text_Box.cpp" />
   </ItemGroup>
@@ -127,6 +128,7 @@
     <ClInclude Include="UI_Element.h" />
     <ClInclude Include="UI_IMG.h" />
     <ClInclude Include="UI_Interactive_Element.h" />
+    <ClInclude Include="UI_Interactive_String.h" />
     <ClInclude Include="UI_String.h" />
     <ClInclude Include="UI_Text_Box.h" />
   </ItemGroup>

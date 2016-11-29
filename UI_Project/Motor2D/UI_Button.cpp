@@ -1,13 +1,13 @@
 #include "UI_Button.h"
 
 //Constructors
-UI_Button::UI_Button(const iPoint& position, const SDL_Rect & box, const UI_IMG& tex_on, const UI_IMG& tex_off, const UI_IMG& tex_over, const UI_String& name) :UI_Interactive_Element(position, box), tex_on(tex_on), tex_off(tex_off), tex_over(tex_over), name(name), button_state(OFF) { ui_type = BUTTON; }
+UI_Button::UI_Button(const iPoint& position, const SDL_Rect & box, const UI_IMG& tex_on, const UI_IMG& tex_off, const UI_IMG& tex_over, const UI_String& name) :UI_Interactive_Element(position, box, BUTTON), tex_on(tex_on), tex_off(tex_off), tex_over(tex_over), name(name), button_state(OFF) { ui_type = BUTTON; }
 
-UI_Button::UI_Button(const iPoint & position, const SDL_Rect & box, const UI_IMG & tex_on, const UI_IMG & tex_off, const UI_IMG & tex_over) : UI_Interactive_Element(position, box), tex_on(tex_on), tex_off(tex_off), tex_over(tex_over), name(), button_state(OFF) { ui_type = BUTTON; }
+UI_Button::UI_Button(const iPoint & position, const SDL_Rect & box, const UI_IMG & tex_on, const UI_IMG & tex_off, const UI_IMG & tex_over) : UI_Interactive_Element(position, box, BUTTON), tex_on(tex_on), tex_off(tex_off), tex_over(tex_over), name(), button_state(OFF) { ui_type = BUTTON; }
 
-UI_Button::UI_Button(const UI_Button* copy):UI_Interactive_Element(copy->position,copy->box), tex_on(copy->tex_on), tex_off(copy->tex_off), tex_over(copy->tex_over), name(copy->name), button_state(OFF) { ui_type = BUTTON; }
+UI_Button::UI_Button(const UI_Button* copy):UI_Interactive_Element(copy->position,copy->box, copy->ui_type), tex_on(copy->tex_on), tex_off(copy->tex_off), tex_over(copy->tex_over), name(copy->name), button_state(OFF) { ui_type = BUTTON; }
 
-UI_Button::UI_Button() : UI_Interactive_Element(), button_state(OFF) {}
+UI_Button::UI_Button() : UI_Interactive_Element({ 0,0 }, {0,0,0,0}, BUTTON), button_state(OFF) {}
 
 //Destructor
 UI_Button::~UI_Button()
