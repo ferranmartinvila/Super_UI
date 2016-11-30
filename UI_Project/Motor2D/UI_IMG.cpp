@@ -23,16 +23,22 @@ UI_IMG::~UI_IMG()
 void UI_IMG::Draw()const
 {
 	//This Draw
+	int x = this->position.x;
+	int y = this->position.y;
+	if (parent != nullptr) {
+		x += parent->position.x;
+		y += parent->position.y;
+	}
 
 	//Draw from Atlas
-	if(texture_id == -1)App->render->Blit(((SDL_Texture*)App->gui->GetAtlas()), position.x - App->render->camera.x, position.y - App->render->camera.y, &texture_rect);
+	if(texture_id == -1)App->render->Blit(((SDL_Texture*)App->gui->GetAtlas()),x - App->render->camera.x, y - App->render->camera.y, &texture_rect);
 	
 	//Draw from other textures
 	else {
 		//Undefined draw size
-		if(texture_rect.w == 0|| texture_rect.h == 0)App->render->Blit(App->gui->Get_UI_Texture(texture_id), position.x - App->render->camera.x, position.y - App->render->camera.y);
+		if (texture_rect.w == 0 || texture_rect.h == 0)App->render->Blit(App->gui->Get_UI_Texture(texture_id), x - App->render->camera.x, y - App->render->camera.y);
 		//Defined draw size
-		else App->render->Blit(App->gui->Get_UI_Texture(texture_id), position.x - App->render->camera.x, position.y - App->render->camera.y, &texture_rect);
+		else App->render->Blit(App->gui->Get_UI_Texture(texture_id), x - App->render->camera.x, y - App->render->camera.y, &texture_rect);
 
 	}
 

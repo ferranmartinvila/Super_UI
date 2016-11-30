@@ -20,9 +20,12 @@ public:
 
 public:
 
-	void Draw()const;
-	char* GetString()const;
-	void SetString(char* new_text);
+	//App Loop
+	void		Draw()const;
+	char*		GetString()const;
+
+	//Functionality
+	void		SetString(char* new_text);
 
 };
 

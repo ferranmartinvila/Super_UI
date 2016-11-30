@@ -26,19 +26,20 @@ public:
 
 public:
 
-	UI_IMG tex_on;
-	UI_IMG tex_off;
-	UI_IMG tex_over;
-
-	UI_String name;
-
-	BUTTON_STATE button_state;
+	UI_String		name;
+	UI_IMG			tex_on;
+	UI_IMG			tex_off;
+	UI_IMG			tex_over;
+	BUTTON_STATE	button_state;
 
 public:
 
-	void Draw()const;
-	void Change_State(BUTTON_STATE new_button_state);
+	//App Loop
+	void	Draw()const;
+
+	//Functionality
+	void	Change_State(BUTTON_STATE new_button_state);
 
 };
 
-#endif
+#endif // __UI_BUTTON__

@@ -133,7 +133,7 @@ UI_Element * UI_Element::AddChild(const UI_Element* child)
 	//Set the new element parent
 	new_child->SetParent(this);
 	//Add the new element to the list of this childs
-	childs.add(new_child);
+	this->childs.add(new_child);
 
 	return new_child;
 }
@@ -148,7 +148,7 @@ bool UI_Element::Delete_Child(uint index)
 	return childs.del(childs.At(index));
 }
 
-UI_Element * UI_Element::SetParent(const UI_Element& parent)
+UI_Element * UI_Element::SetParent(const UI_Element* parent)
 {
-	return this->parent = ((UI_Element*)&parent);
+	return this->parent = ((UI_Element*)parent);
 }

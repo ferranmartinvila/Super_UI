@@ -21,7 +21,13 @@ UI_String::~UI_String()
 void UI_String::Draw() const
 {
 	//This Draw
-	App->render->Blit(App->font->Print(text, { 255,255,255,255 }, text_font), position.x - App->render->camera.x, position.y - App->render->camera.y);
+	int x = this->position.x;
+	int y = this->position.y;
+	if (parent != nullptr) {
+		x += parent->position.x;
+		y += parent->position.y;
+	}
+	App->render->Blit(App->font->Print(text, { 255,255,255,255 }, text_font), x - App->render->camera.x, y - App->render->camera.y);
 
 	//Childs Draw
 	DrawChilds();

@@ -53,7 +53,7 @@ public:
 	UI_Element*		AddChild(const UI_Element* child);
 	bool			Delete_Child(UI_Element* child);
 	bool			Delete_Child(uint index);
-	UI_Element*		SetParent(const UI_Element& parent);
+	UI_Element*		SetParent(const UI_Element* parent);
 };
 
 #endif // __UI_ELEMENT__

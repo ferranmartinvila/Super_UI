@@ -25,4 +25,4 @@ public:
 
 };
 
-#endif
+#endif // __UI_IMG__

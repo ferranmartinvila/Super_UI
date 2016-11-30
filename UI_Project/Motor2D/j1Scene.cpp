@@ -49,13 +49,23 @@ bool j1Scene::Start()
 	}
 	debug_tex = App->tex->Load("maps/path2.png");
 
+
+
 	//UI Scene build --------------------------------------
 	scene_1_screen = new UI_Element({ 0,0 }, UNDEFINED, true);
-
-	UI_IMG test_image({ 50,50 }, 0);
-	blizzard_image = (UI_IMG*)scene_1_screen->AddChild((UI_Element*)&test_image);
+		// --	
+		UI_IMG test_image({ 50,50 }, 0);
+		blizzard_image = (UI_IMG*)scene_1_screen->AddChild((UI_Element*)&test_image);
+			// --
+			UI_IMG test_image_child({ 20, 20 }, { 415,168,222,67 });
+			blizzard_image->AddChild(&test_image_child);
+				// --
+	
 
 	App->gui->PushScreen(scene_1_screen);
+
+
+
 	/*
 	App->gui->PushScreen(scene_1_screen);
 	//UI Image test
@@ -125,33 +135,47 @@ bool j1Scene::Update(float dt)
 
 
 	// Gui Input ------------------------------------------
-	/*if (App->input->GetMouseButtonDown(1) == KEY_DOWN || App->input->GetMouseButtonDown(1) == KEY_REPEAT) {
+	if (App->input->GetMouseButtonDown(1) == KEY_DOWN || App->input->GetMouseButtonDown(1) == KEY_REPEAT) {
 
-		//Button
-		if (button->MouseIsIn({ x,y }))button->Change_State(ON);
-		
-		//Interactive Text
-		if (interactive_text->MouseIsIn({ x,y }))interactive_text->SetString("Left Click");
+
+	}
+	else if (App->input->GetMouseButtonDown(2) == KEY_DOWN || App->input->GetMouseButtonDown(1) == KEY_REPEAT) {
+
+		//if(blizzard_image->
 
 	}
 	else if (App->input->GetMouseButtonDown(3) == KEY_DOWN || App->input->GetMouseButtonDown(3) == KEY_REPEAT) {
 
 		
-		//Interactive Text
-		if (interactive_text->MouseIsIn({ x,y }))interactive_text->SetString("Right Click");
 
 	}
 	else {
 
+
+
+
+	}
+
+	/* Fucking Trash
+
+
+	//Button
+	if (button->MouseIsIn({ x,y }))button->Change_State(ON);
+
+	//Interactive Text
+	if (interactive_text->MouseIsIn({ x,y }))interactive_text->SetString("Left Click");
+
+	//Interactive Text
+	if (interactive_text->MouseIsIn({ x,y }))interactive_text->SetString("Right Click");
+	
 		//Interactive Text
-		if (interactive_text->MouseIsIn({ x,y }))interactive_text->SetString("Mouse In");
+	if (interactive_text->MouseIsIn({ x,y }))interactive_text->SetString("Mouse In");
 
-		//Button
-		if (button->MouseIsIn({ x,y }))button->Change_State(OVER);
-		else button->Change_State(OFF);
-
-	}*/
-
+	//Button
+	if (button->MouseIsIn({ x,y }))button->Change_State(OVER);
+	else button->Change_State(OFF);
+	
+	*/
 	
 
 
