@@ -58,9 +58,6 @@
     <ClCompile Include="UI_String.cpp">
       <Filter>Desenvolupament  ========\UserInterface\UI_Elements</Filter>
     </ClCompile>
-    <ClCompile Include="UI_Interactive_Element.cpp">
-      <Filter>Desenvolupament  ========\UserInterface\UI_Elements</Filter>
-    </ClCompile>
     <ClCompile Include="UI_Button.cpp">
       <Filter>Desenvolupament  ========\UserInterface\UI_Elements</Filter>
     </ClCompile>
@@ -69,9 +66,6 @@
     </ClCompile>
     <ClCompile Include="j1Gui.cpp">
       <Filter>Desenvolupament  ========\UserInterface</Filter>
-    </ClCompile>
-    <ClCompile Include="UI_Interactive_String.cpp">
-      <Filter>Desenvolupament  ========\UserInterface\UI_Elements</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -150,9 +144,6 @@
     <ClInclude Include="UI_String.h">
       <Filter>Desenvolupament  ========\UserInterface\UI_Elements</Filter>
     </ClInclude>
-    <ClInclude Include="UI_Interactive_Element.h">
-      <Filter>Desenvolupament  ========\UserInterface\UI_Elements</Filter>
-    </ClInclude>
     <ClInclude Include="UI_Button.h">
       <Filter>Desenvolupament  ========\UserInterface\UI_Elements</Filter>
     </ClInclude>
@@ -161,9 +152,6 @@
     </ClInclude>
     <ClInclude Include="j1Gui.h">
       <Filter>Desenvolupament  ========\UserInterface</Filter>
-    </ClInclude>
-    <ClInclude Include="UI_Interactive_String.h">
-      <Filter>Desenvolupament  ========\UserInterface\UI_Elements</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

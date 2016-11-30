@@ -8,7 +8,7 @@ struct _TTF_Font;
 class UI_String : public UI_Element {
 public:
 
-	UI_String(const iPoint& position, char* text, _TTF_Font* text_font);
+	UI_String(const SDL_Rect& box, char* text, _TTF_Font* text_font);
 	UI_String(const UI_String* copy);
 	UI_String();
 

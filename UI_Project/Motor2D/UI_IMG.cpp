@@ -4,13 +4,13 @@
 #include "j1Gui.h"
 
 //Constructors
-UI_IMG::UI_IMG(const iPoint& position, int texture_id, const SDL_Rect& texture_rect) : UI_Element(position, IMG), texture_rect(texture_rect), texture_id(texture_id) {}
+UI_IMG::UI_IMG(const SDL_Rect& box, int texture_id, const SDL_Rect& texture_rect) : UI_Element(box, IMG), texture_rect(texture_rect), texture_id(texture_id) {}
 
-UI_IMG::UI_IMG(const iPoint & position, const SDL_Rect & texture_rect): UI_Element(position,IMG), texture_rect(texture_rect), texture_id(-1){}
+UI_IMG::UI_IMG(const SDL_Rect& box, const SDL_Rect & texture_rect): UI_Element(box,IMG), texture_rect(texture_rect), texture_id(-1){}
 
-UI_IMG::UI_IMG(const UI_IMG* copy) : UI_Element(copy->position, IMG), texture_rect(copy->texture_rect), texture_id(copy->texture_id) {}
+UI_IMG::UI_IMG(const UI_IMG* copy) : UI_Element(copy->box, IMG), texture_rect(copy->texture_rect), texture_id(copy->texture_id) {}
 
-UI_IMG::UI_IMG() : UI_Element({ 0,0 }, IMG), texture_rect({ 0,0,0,0 }) {}
+UI_IMG::UI_IMG() : UI_Element({0,0,0,0}, IMG), texture_rect({ 0,0,0,0 }) {}
 
 //Destructors
 UI_IMG::~UI_IMG()
@@ -23,11 +23,11 @@ UI_IMG::~UI_IMG()
 void UI_IMG::Draw()const
 {
 	//This Draw
-	int x = this->position.x;
-	int y = this->position.y;
+	int x = this->box.x;
+	int y = this->box.y;
 	if (parent != nullptr) {
-		x += parent->position.x;
-		y += parent->position.y;
+		x += parent->box.x;
+		y += parent->box.y;
 	}
 
 	//Draw from Atlas

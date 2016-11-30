@@ -7,10 +7,6 @@
 #include "j1Input.h"
 #include "j1Gui.h"
 
-#include "UI_Text_Box.h"
-#include "UI_Button.h"
-#include "UI_Interactive_String.h"
-
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -105,57 +101,7 @@ bool j1Gui::CleanUp()
 }
 
 
-//UI ELEMENTS FUNCTIONS ============================================
-/*
-UI_Element * j1Gui::Create_UI_Element(UI_TYPE ui_type, UI_Element* element)
-{
-	//Pointer to new
-	UI_Element* new_element = element;
 
-	//Define the UI Element type
-	UI_TYPE type;
-
-	//Copy factory
-	if (element != nullptr) {
-		type = element->ui_type;
-		switch (type) {
-		case UI_TYPE::IMG:					new_element = new UI_IMG(((UI_IMG*)element));										break;
-		case UI_TYPE::STRING:				new_element = new UI_String((UI_String*)element);									break;
-		case UI_TYPE::INTERACTIVE_STRING:	new_element = new UI_Interactive_Element((UI_Interactive_Element*)element);			break;
-		case UI_TYPE::BUTTON:				new_element = new UI_Button((UI_Button*)element);									break;
-		case UI_TYPE::TEXT_BOX:				new_element = new UI_Text_Box((UI_Text_Box*)element);								break;
-		
-		}
-	}
-
-	//Default factory
-	else {
-		type = ui_type;
-		switch (type) {
-		case UI_TYPE::IMG:					new_element = new UI_IMG();							break;
-		case UI_TYPE::STRING:				new_element = new UI_String();						break;
-		case UI_TYPE::INTERACTIVE_STRING:	new_element = new UI_Interactive_Element();			break;
-		case UI_TYPE::BUTTON:				new_element = new UI_Button();						break;
-		case UI_TYPE::TEXT_BOX:				new_element = new UI_Text_Box();					break;
-		}
-	}
-
-	//Add the new element to the ui_elements list
-	ui_elements.add(new_element);
-
-	return new_element;
-}
-
-bool j1Gui::Delete_UI_Element(uint index)
-{
-	return ui_elements.del(ui_elements.At(index));;
-}
-
-bool j1Gui::Delete_UI_Element(UI_Element* element)
-{
-	return ui_elements.del(ui_elements.At(ui_elements.find(element)));
-}
-*/
 
 // =================================================================
 const SDL_Texture* j1Gui::GetAtlas() const

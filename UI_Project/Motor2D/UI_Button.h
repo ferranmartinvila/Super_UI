@@ -1,7 +1,7 @@
 #ifndef _UI_BUTTON_
 #define _UI_BUTTON_
 
-#include "UI_Interactive_Element.h"
+#include "UI_Element.h"
 #include "UI_IMG.h"
 #include "UI_String.h"
 
@@ -14,11 +14,11 @@ enum BUTTON_STATE {
 
 };
 
-class UI_Button : public UI_Interactive_Element {
+class UI_Button : public UI_Element {
 public:
 
-	UI_Button(const iPoint& position, const SDL_Rect& box, const UI_IMG& tex_on, const UI_IMG& tex_off, const UI_IMG& tex_over, const UI_String& name);
-	UI_Button(const iPoint& position, const SDL_Rect& box, const UI_IMG& tex_on, const UI_IMG& tex_off, const UI_IMG& tex_over);
+	UI_Button(const SDL_Rect& box, const UI_IMG& tex_on, const UI_IMG& tex_off, const UI_IMG& tex_over, const UI_String& name);
+	UI_Button(const SDL_Rect& box, const UI_IMG& tex_on, const UI_IMG& tex_off, const UI_IMG& tex_over);
 	UI_Button(const UI_Button* copy);
 	UI_Button();
 

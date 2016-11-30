@@ -1,14 +1,14 @@
 #ifndef _UI_TEXT_BOX_
 #define _UI_TEXT_BOX_
 
-#include "UI_Interactive_Element.h"
+#include "UI_Element.h"
 #include "UI_IMG.h"
 #include "UI_String.h"
 
-class UI_Text_Box : public UI_Interactive_Element {
+class UI_Text_Box : public UI_Element {
 public:
 
-	UI_Text_Box(const iPoint& position, const SDL_Rect& box,UI_String& name, UI_IMG& box_texture, uint box_capacity, bool IsPassword);
+	UI_Text_Box(const SDL_Rect& box,UI_String& name, UI_IMG& box_texture, uint box_capacity, bool IsPassword);
 	UI_Text_Box(const UI_Text_Box* copy);
 	UI_Text_Box();
 

@@ -1,14 +1,16 @@
 #include "UI_Element.h"
 #include "UI_Text_Box.h"
 #include "UI_Button.h"
-#include "UI_Interactive_String.h"
+
+#include "j1App.h"
+#include "j1Input.h"
 
 //Constructors
-UI_Element::UI_Element(const iPoint & position, UI_TYPE ui_type, bool IsActive) :position(position), ui_type(ui_type), IsActive(IsActive) {}
+UI_Element::UI_Element(const SDL_Rect& box, UI_TYPE ui_type, bool IsActive) :box(box), ui_type(ui_type), IsActive(IsActive) {}
 
-UI_Element::UI_Element(const UI_Element* copy) : position(copy->position), ui_type(copy->ui_type), IsActive(copy->IsActive) {}
+UI_Element::UI_Element(const UI_Element* copy) : box(copy->box), ui_type(copy->ui_type), IsActive(copy->IsActive) {}
 
-UI_Element::UI_Element() : position(0, 0), ui_type(UNDEFINED), IsActive(false) {}
+UI_Element::UI_Element() : box({0,0,0,0}), ui_type(UNDEFINED), IsActive(false) {}
 
 //Destructor
 UI_Element::~UI_Element()
@@ -98,9 +100,33 @@ void UI_Element::DrawChilds() const
 }
 
 // ==========================
-void UI_Element::SetPosition(const iPoint & new_position)
+void UI_Element::SetPosition(const iPoint & new_pos)
 {
-	position = new_position;
+	box.w += new_pos.x - box.x;
+	box.h += new_pos.y - box.y;
+	box.x = new_pos.x;
+	box.y = new_pos.y;
+}
+
+void UI_Element::MoveBox(int x_vel, int y_vel)
+{
+	box.w += x_vel;
+	box.h += y_vel;
+	box.x += x_vel;
+	box.y += y_vel;
+}
+
+bool UI_Element::MouseIsIn() const
+{
+	int x_pos,ypos;
+	App->input->GetMousePosition(x_pos, ypos);
+	return ((box.x < x_pos && (box.x + box.w) > x_pos) && (box.y < ypos && (box.y + box.h) > ypos));
+}
+
+void UI_Element::ResizeBox(const iPoint & new_size)
+{
+	box.w = new_size.x;
+	box.h = new_size.y;
 }
 
 void UI_Element::Activate()

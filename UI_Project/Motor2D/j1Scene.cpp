@@ -12,9 +12,12 @@
 #include "j1Scene.h"
 #include "j1Fonts.h"
 
+
+//UI Elements
 #include "UI_Text_Box.h"
 #include "UI_Button.h"
-#include "UI_Interactive_String.h"
+#include "UI_String.h"
+
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -52,12 +55,12 @@ bool j1Scene::Start()
 
 
 	//UI Scene build --------------------------------------
-	scene_1_screen = new UI_Element({ 0,0 }, UNDEFINED, true);
+	scene_1_screen = new UI_Element({ 0,0,App->win->screen_surface->w, App->win->screen_surface->h }, UNDEFINED, true);
 		// --	
-		UI_IMG test_image({ 50,50 }, 0);
+		UI_IMG test_image({ 50,50,100,100 }, 0);
 		blizzard_image = (UI_IMG*)scene_1_screen->AddChild((UI_Element*)&test_image);
 			// --
-			UI_IMG test_image_child({ 20, 20 }, { 415,168,222,67 });
+			UI_IMG test_image_child({ 20, 20, 30,30 }, { 415,168,222,67 });
 			blizzard_image->AddChild(&test_image_child);
 				// --
 	
@@ -129,14 +132,20 @@ bool j1Scene::PreUpdate()
 bool j1Scene::Update(float dt)
 {
 	// Mouse Position -------------------------------------
-	int x, y;
+	int x, y, x_motion, y_motion;
 	App->input->GetMousePosition(x, y);
-
+	App->input->GetMouseMotion(x_motion, y_motion);
+	LOG("X MOT: %i Y MOT: %i", x_motion, y_motion);
 
 
 	// Gui Input ------------------------------------------
 	if (App->input->GetMouseButtonDown(1) == KEY_DOWN || App->input->GetMouseButtonDown(1) == KEY_REPEAT) {
 
+		if (blizzard_image->MouseIsIn()) {
+	
+			blizzard_image->MoveBox(x_motion,y_motion);
+			
+		}
 
 	}
 	else if (App->input->GetMouseButtonDown(2) == KEY_DOWN || App->input->GetMouseButtonDown(1) == KEY_REPEAT) {

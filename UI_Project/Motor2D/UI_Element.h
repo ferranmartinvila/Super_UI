@@ -4,6 +4,7 @@
 #include "p2Point.h"
 #include "p2Defs.h"
 #include "p2List.h"
+#include "SDL\include\SDL_rect.h"
 
 enum UI_TYPE {
 
@@ -11,7 +12,6 @@ enum UI_TYPE {
 	BUTTON,
 	TEXT_BOX,
 	STRING,
-	INTERACTIVE_STRING,
 	IMG
 
 };
@@ -19,7 +19,7 @@ enum UI_TYPE {
 class UI_Element {
 public:
 
-	UI_Element(const iPoint& position, UI_TYPE ui_type, bool IsActive = true);
+	UI_Element(const SDL_Rect& box = {0,0,0,0}, UI_TYPE ui_type = UNDEFINED, bool IsActive = true);
 	UI_Element(const UI_Element* copy);
 	UI_Element();
 
@@ -27,10 +27,9 @@ public:
 
 public:
 
+	SDL_Rect		box;
 	bool			IsActive;
-	iPoint			position;
 	enum UI_TYPE	ui_type;
-
 
 	UI_Element*				parent;
 	p2List<UI_Element*>		childs;
@@ -46,7 +45,10 @@ public:
 	void			DrawChilds()const;
 
 	//Functionality
-	void			SetPosition(const iPoint& new_position);
+	bool			MouseIsIn()const;
+	void			SetPosition(const iPoint& new_pos);
+	void			MoveBox(int x_vel, int y_vel);
+	void			ResizeBox(const iPoint& new_size);
 	void			Activate();
 	void			Desactivate();
 	

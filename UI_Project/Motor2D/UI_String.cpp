@@ -4,9 +4,9 @@
 #include "j1Render.h"
 
 //Contructors
-UI_String::UI_String(const iPoint & position, char * text, _TTF_Font * text_font) : UI_Element(position, STRING), text(text), text_font(text_font) {}
+UI_String::UI_String(const SDL_Rect& box, char * text, _TTF_Font * text_font) : UI_Element(box, STRING), text(text), text_font(text_font) {}
 
-UI_String::UI_String(const UI_String* copy) : UI_Element(copy->position, STRING), text(copy->text), text_font(copy->text_font) {}
+UI_String::UI_String(const UI_String* copy) : UI_Element(copy->box, STRING), text(copy->text), text_font(copy->text_font) {}
 
 UI_String::UI_String() : UI_Element({0,0}, STRING), text(nullptr), text_font(nullptr) {}
 
@@ -21,11 +21,11 @@ UI_String::~UI_String()
 void UI_String::Draw() const
 {
 	//This Draw
-	int x = this->position.x;
-	int y = this->position.y;
+	int x = this->box.x;
+	int y = this->box.y;
 	if (parent != nullptr) {
-		x += parent->position.x;
-		y += parent->position.y;
+		x += parent->box.x;
+		y += parent->box.y;
 	}
 	App->render->Blit(App->font->Print(text, { 255,255,255,255 }, text_font), x - App->render->camera.x, y - App->render->camera.y);
 
