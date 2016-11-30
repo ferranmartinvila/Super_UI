@@ -8,6 +8,7 @@ struct UI_Button;
 struct UI_String;
 struct UI_Interactive_String;
 struct UI_IMG;
+struct UI_Element;
 
 class j1Scene : public j1Module
 {
@@ -42,9 +43,15 @@ private:
 
 private:
 
+	//Scene
+	UI_Element* scene_1_screen;
+
+	//Scene Items
 	UI_Button* button;
-	UI_Interactive_String* interactive_text;
+	//UI_Interactive_String* interactive_text;
 	UI_IMG* blizzard_image;
+
+	
 };
 
 #endif // __j1SCENE_H__

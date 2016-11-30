@@ -49,15 +49,33 @@ bool j1Gui::Start()
 // Update all guis
 bool j1Gui::PreUpdate()
 {
-	return true;
+	bool ret = true;
+
+	p2List_item<UI_Element*>* item = screen.start;
+	while (item) {
+
+		if (item->data->IsActive)
+			ret = item->data->Update();
+
+		item = item->next;
+	}
+	
+	return ret;
 }
 
 // Called after all Updates
 bool j1Gui::PostUpdate()
 {
 
-	screen->Update();
-	screen->Draw();
+	// Update & draw the UI screens
+	p2List_item<UI_Element*>* item = screen.start;
+	while (item) {
+
+		if (item->data->IsActive)
+			item->data->Draw();
+
+		item = item->next;
+	}
 
 	return true;
 }
@@ -66,6 +84,22 @@ bool j1Gui::PostUpdate()
 bool j1Gui::CleanUp()
 {
 	LOG("Freeing GUI");
+	bool ret = true;
+	p2List_item<UI_Element*>* item = screen.end;
+	p2List_item<UI_Element*>* item_prev = nullptr;
+
+	if (item != nullptr)item_prev = item->prev;
+	while (item) {
+
+		//CleanUp the item childs
+		ret = item->data->CleanUp();
+		//Delete all item data
+		screen.del(item);
+
+		item = item_prev;
+		if(item_prev != nullptr)item_prev = item_prev->prev;
+
+	}
 
 	return true;
 }
@@ -136,9 +170,9 @@ SDL_Texture * j1Gui::Get_UI_Texture(uint tex_id)
 	return ui_textures.At(tex_id)->data;
 }
 
-uint j1Gui::PushScreen(const UI_Element & new_screen)
+uint j1Gui::PushScreen(const UI_Element* new_screen)
 {
-	screen = new UI_Element(new_screen);
-	return 0;
+	screen.add((UI_Element*)new_screen);
+	return screen.count();
 }
 

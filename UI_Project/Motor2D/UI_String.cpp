@@ -20,9 +20,15 @@ UI_String::~UI_String()
 // ==========================
 void UI_String::Draw() const
 {
+	//This Draw
 	App->render->Blit(App->font->Print(text, { 255,255,255,255 }, text_font), position.x - App->render->camera.x, position.y - App->render->camera.y);
+
+	//Childs Draw
+	DrawChilds();
 }
 
+
+// ==========================
 char * UI_String::GetString() const
 {
 	return text;

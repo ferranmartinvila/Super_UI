@@ -36,7 +36,6 @@ public:
 
 public:
 
-	bool Update();
 	void Draw()const;
 	void Change_State(BUTTON_STATE new_button_state);
 

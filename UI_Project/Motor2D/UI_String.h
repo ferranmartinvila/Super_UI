@@ -16,14 +16,17 @@ public:
 
 public:
 	
-	char* text;
-	_TTF_Font* text_font;
+	char*		text;
+	_TTF_Font*	text_font;
 
 public:
 
-	void Draw()const;
-	char* GetString()const;
-	void SetString(char* new_text);
+	//App loop
+	void	Draw()const;
+	
+	//Functionality
+	char*	GetString()const;
+	void	SetString(char* new_text);
 
 };
 

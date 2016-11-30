@@ -35,22 +35,22 @@ public:
 private:
 
 	//UI elements
-	UI_Element* screen;
+	p2List<UI_Element*>		screen;
 
 	//UI Textures
-	SDL_Texture* atlas;
-	p2List<SDL_Texture*> ui_textures;
-	p2SString atlas_file_name;
+	SDL_Texture*			atlas;
+	p2List<SDL_Texture*>	ui_textures;
+	p2SString				atlas_file_name;
 
 public:
 
 	//UI textures functions
-	const SDL_Texture* GetAtlas() const;
-	SDL_Texture* Get_UI_Texture(uint tex_id);
+	const SDL_Texture*	GetAtlas() const;
+	SDL_Texture*		Get_UI_Texture(uint tex_id);
 
 	//UI elements functions
-	uint PushScreen(const UI_Element& new_screen);
+	uint				PushScreen(const UI_Element* new_screen);
 
 };
 
-#endif // __j1GUI_H__
+#endif // __GUI_H__

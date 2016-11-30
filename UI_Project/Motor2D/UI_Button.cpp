@@ -17,23 +17,20 @@ UI_Button::~UI_Button()
 
 
 // ==========================
-bool UI_Button::Update()
-{
-	return true;
-}
-
 void UI_Button::Draw()const
 {
+	//This Draw
 	switch (button_state) {
 
-	case BUTTON_STATE::ON: tex_on.Draw(); break;
-	case BUTTON_STATE::OFF: tex_off.Draw(); break;
-	case BUTTON_STATE::OVER: tex_over.Draw(); break;
+		case BUTTON_STATE::ON:		tex_on.Draw();		break;
+		case BUTTON_STATE::OFF:		tex_off.Draw();		break;
+		case BUTTON_STATE::OVER:	tex_over.Draw();	break;
 
 	}
-
 	if (name.GetString() != NULL)name.Draw();
 
+	//Childs Draw
+	DrawChilds();
 }
 
 void UI_Button::Change_State(BUTTON_STATE new_button_state)

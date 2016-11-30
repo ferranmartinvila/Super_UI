@@ -37,6 +37,7 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
+	//Map Load --------------------------------------------
 	if (App->map->Load("iso_walk.tmx") == true)
 	{
 		int w, h;
@@ -46,11 +47,21 @@ bool j1Scene::Start()
 
 		RELEASE_ARRAY(data);
 	}
-
 	debug_tex = App->tex->Load("maps/path2.png");
 
+	//UI Scene build --------------------------------------
+	scene_1_screen = new UI_Element({ 0,0 }, UNDEFINED, true);
+
+	UI_IMG test_image({ 50,50 }, 0);
+	blizzard_image = (UI_IMG*)scene_1_screen->AddChild((UI_Element*)&test_image);
+
+	App->gui->PushScreen(scene_1_screen);
+	/*
+	App->gui->PushScreen(scene_1_screen);
 	//UI Image test
 	UI_IMG test_image({ 50,50 },0);
+
+	
 	blizzard_image = (UI_IMG*)App->gui->Create_UI_Element(IMG, ((UI_Element*)&test_image));
 
 
@@ -69,6 +80,7 @@ bool j1Scene::Start()
 	
 	UI_Button button_test({ 120,280 }, { 120, 350,220,60 }, tex_on, tex_off, tex_over);
 	button = (UI_Button*)App->gui->Create_UI_Element(BUTTON, ((UI_Element*)&button_test));
+	*/
 
 	return true;
 }
@@ -113,7 +125,7 @@ bool j1Scene::Update(float dt)
 
 
 	// Gui Input ------------------------------------------
-	if (App->input->GetMouseButtonDown(1) == KEY_DOWN || App->input->GetMouseButtonDown(1) == KEY_REPEAT) {
+	/*if (App->input->GetMouseButtonDown(1) == KEY_DOWN || App->input->GetMouseButtonDown(1) == KEY_REPEAT) {
 
 		//Button
 		if (button->MouseIsIn({ x,y }))button->Change_State(ON);
@@ -138,7 +150,7 @@ bool j1Scene::Update(float dt)
 		if (button->MouseIsIn({ x,y }))button->Change_State(OVER);
 		else button->Change_State(OFF);
 
-	}
+	}*/
 
 	
 

@@ -4,6 +4,7 @@
 #include "p2Point.h"
 #include "p2Defs.h"
 #include "p2List.h"
+
 enum UI_TYPE {
 
 	UNDEFINED,
@@ -36,19 +37,23 @@ public:
 
 public:
 
-	virtual bool Update();
-	virtual void Draw()const;
-	virtual void Handle_Input();
+	//App Loop
+	virtual bool	Update();
+	bool			UpdateChilds();
+	virtual bool	CleanUp();
+	bool			CleanUpChilds();
+	virtual void	Draw()const;
+	void			DrawChilds()const;
 
-	void SetPosition(const iPoint& new_position);
+	//Functionality
+	void			SetPosition(const iPoint& new_position);
+	void			Activate();
+	void			Desactivate();
 	
-	void Activate();
-	void Desactivate();
-	
-	UI_Element* AddChild(const UI_Element* child);
-	bool		Delete_Child(UI_Element* child);
-	bool		Delete_Child(uint index);
-	UI_Element* SetParent(const UI_Element& parent);
+	UI_Element*		AddChild(const UI_Element* child);
+	bool			Delete_Child(UI_Element* child);
+	bool			Delete_Child(uint index);
+	UI_Element*		SetParent(const UI_Element& parent);
 };
 
-#endif
+#endif // __UI_ELEMENT__
