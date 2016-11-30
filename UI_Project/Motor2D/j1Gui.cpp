@@ -42,6 +42,7 @@ bool j1Gui::Start()
 	ui_textures.add(App->tex->Load("gui/BlizzardLogo.png"));
 	ui_textures.add(App->tex->Load("gui/WOWLogo.png"));
 	
+
 	return true;
 }
 
@@ -55,15 +56,8 @@ bool j1Gui::PreUpdate()
 bool j1Gui::PostUpdate()
 {
 
-	p2List_item<UI_Element*>* item = ui_elements.start;
-	while (item) {
-
-		if (item->data->IsActive) {
-			item->data->Update();
-			item->data->Draw();
-		}
-		item = item->next;
-	}
+	screen->Update();
+	screen->Draw();
 
 	return true;
 }
@@ -78,6 +72,7 @@ bool j1Gui::CleanUp()
 
 
 //UI ELEMENTS FUNCTIONS ============================================
+/*
 UI_Element * j1Gui::Create_UI_Element(UI_TYPE ui_type, UI_Element* element)
 {
 	//Pointer to new
@@ -126,6 +121,7 @@ bool j1Gui::Delete_UI_Element(UI_Element* element)
 {
 	return ui_elements.del(ui_elements.At(ui_elements.find(element)));
 }
+*/
 
 // =================================================================
 const SDL_Texture* j1Gui::GetAtlas() const
@@ -138,5 +134,11 @@ SDL_Texture * j1Gui::Get_UI_Texture(uint tex_id)
 	if (tex_id > ui_textures.count() - 1)return nullptr;
 	
 	return ui_textures.At(tex_id)->data;
+}
+
+uint j1Gui::PushScreen(const UI_Element & new_screen)
+{
+	screen = new UI_Element(new_screen);
+	return 0;
 }
 

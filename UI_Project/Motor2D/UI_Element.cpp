@@ -1,5 +1,9 @@
 #include "UI_Element.h"
 
+#include "UI_Text_Box.h"
+#include "UI_Button.h"
+#include "UI_Interactive_String.h"
+
 //Constructors
 UI_Element::UI_Element(const iPoint & position, UI_TYPE ui_type, bool IsActive) :position(position), ui_type(ui_type), IsActive(IsActive) {}
 
@@ -17,6 +21,12 @@ UI_Element::~UI_Element()
 // ==========================
 bool UI_Element::Update()
 {
+	uint k = childs.count();
+	for (uint m = 0; m < k; m++) {
+
+
+
+	}
 	return true;
 }
 
@@ -30,11 +40,14 @@ void UI_Element::Handle_Input()
 
 }
 
+// ==========================
 void UI_Element::SetPosition(const iPoint & new_position)
 {
 	position = new_position;
 }
 
+
+// ==========================
 void UI_Element::Activate()
 {
 	IsActive = true;
@@ -43,4 +56,45 @@ void UI_Element::Activate()
 void UI_Element::Desactivate()
 {
 	IsActive = false;
+}
+
+
+
+// ==========================
+UI_Element * UI_Element::AddChild(const UI_Element* child)
+{
+	//Pointer to new
+	UI_Element* new_child = nullptr;
+
+	//Create the new element
+	switch (child->ui_type) {
+		case UI_TYPE::IMG:					new_child = new UI_IMG(((UI_IMG*)child));										break;
+		case UI_TYPE::STRING:				new_child = new UI_String((UI_String*)child);									break;
+		case UI_TYPE::INTERACTIVE_STRING:	new_child = new UI_Interactive_String((UI_Interactive_String*)child);			break;
+		case UI_TYPE::BUTTON:				new_child = new UI_Button((UI_Button*)child);									break;
+		case UI_TYPE::TEXT_BOX:				new_child = new UI_Text_Box((UI_Text_Box*)child);								break;
+
+	}
+
+	//Set the new element parent
+	new_child->SetParent(this);
+	//Add the new element to the list of this childs
+	childs.add(new_child);
+
+	return new_child;
+}
+
+bool UI_Element::Delete_Child(UI_Element* child)
+{
+	return childs.del(childs.At(childs.find(child)));
+}
+
+bool UI_Element::Delete_Child(uint index)
+{
+	return childs.del(childs.At);
+}
+
+UI_Element * UI_Element::SetParent(const UI_Element& parent)
+{
+	return this->parent = ((UI_Element*)&parent);
 }

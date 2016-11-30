@@ -3,7 +3,7 @@
 
 #include "p2Point.h"
 #include "p2Defs.h"
-
+#include "p2List.h"
 enum UI_TYPE {
 
 	UNDEFINED,
@@ -26,9 +26,13 @@ public:
 
 public:
 
-	iPoint position;
-	enum UI_TYPE ui_type;
-	bool IsActive;
+	bool			IsActive;
+	iPoint			position;
+	enum UI_TYPE	ui_type;
+
+
+	UI_Element*				parent;
+	p2List<UI_Element*>		childs;
 
 public:
 
@@ -37,9 +41,14 @@ public:
 	virtual void Handle_Input();
 
 	void SetPosition(const iPoint& new_position);
+	
 	void Activate();
 	void Desactivate();
 	
+	UI_Element* AddChild(const UI_Element* child);
+	bool		Delete_Child(UI_Element* child);
+	bool		Delete_Child(uint index);
+	UI_Element* SetParent(const UI_Element& parent);
 };
 
 #endif
