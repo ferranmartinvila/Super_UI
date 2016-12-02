@@ -29,6 +29,7 @@ public:
 
 	SDL_Rect		box;
 	bool			IsActive;
+	bool			IsSelected;
 	enum UI_TYPE	ui_type;
 
 	UI_Element*				parent;

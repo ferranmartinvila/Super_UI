@@ -48,6 +48,9 @@ bool j1Input::Start()
 // Called each loop iteration
 bool j1Input::PreUpdate()
 {
+	//Reset mouse motion
+	mouse_motion_x = mouse_motion_y = 0;
+
 	static SDL_Event event;
 	
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
@@ -153,8 +156,6 @@ void j1Input::GetMousePosition(int& x, int& y)
 
 void j1Input::GetMouseMotion(int& x, int& y)
 {
-	if (mouse_motion_x < -1 || mouse_motion_x > 1)x = mouse_motion_x;
-	else x = 0;
-	if (mouse_motion_y < -1 || mouse_motion_y > 1)y = mouse_motion_y;
-	else y = 0;
+	x = mouse_motion_x;
+	y = mouse_motion_y;
 }

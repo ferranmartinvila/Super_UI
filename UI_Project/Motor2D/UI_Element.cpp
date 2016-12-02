@@ -102,24 +102,30 @@ void UI_Element::DrawChilds() const
 // ==========================
 void UI_Element::SetPosition(const iPoint & new_pos)
 {
-	box.w += new_pos.x - box.x;
-	box.h += new_pos.y - box.y;
 	box.x = new_pos.x;
 	box.y = new_pos.y;
 }
 
 void UI_Element::MoveBox(int x_vel, int y_vel)
 {
-	box.w += x_vel;
-	box.h += y_vel;
 	box.x += x_vel;
 	box.y += y_vel;
+
+	p2List_item<UI_Element*>* item = childs.start;
+	while (item) {
+
+		item->data->MoveBox(x_vel, y_vel);
+		item = item->next;
+
+	}
 }
 
 bool UI_Element::MouseIsIn() const
-{
+{	
 	int x_pos,ypos;
+
 	App->input->GetMousePosition(x_pos, ypos);
+
 	return ((box.x < x_pos && (box.x + box.w) > x_pos) && (box.y < ypos && (box.y + box.h) > ypos));
 }
 
@@ -176,5 +182,7 @@ bool UI_Element::Delete_Child(uint index)
 
 UI_Element * UI_Element::SetParent(const UI_Element* parent)
 {
+	this->box.x += parent->box.x;
+	this->box.y += parent->box.y;
 	return this->parent = ((UI_Element*)parent);
 }

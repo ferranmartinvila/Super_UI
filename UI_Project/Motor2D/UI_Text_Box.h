@@ -35,6 +35,11 @@ public:
 	void Handle_Input();
 	char* GetText()const;
 	
+	/*
+	supr/backspace
+	home/end
+	cursor movement
+	*/
 };
 
 #endif

@@ -60,10 +60,11 @@ bool j1Scene::Start()
 		UI_IMG test_image({ 50,50,100,100 }, 0);
 		blizzard_image = (UI_IMG*)scene_1_screen->AddChild((UI_Element*)&test_image);
 			// --
-			UI_IMG test_image_child({ 20, 20, 30,30 }, { 415,168,222,67 });
-			blizzard_image->AddChild(&test_image_child);
+			UI_IMG test_image_child({ 180, 180, 100,100 }, { 415,168,222,67 });
+			blizzard_child = (UI_IMG*)blizzard_image->AddChild((UI_Element*)&test_image_child);
 				// --
-	
+				UI_IMG tild({ 180, 180, 100,100 }, { 415,168,222,67 });
+				blizzard_child_child = (UI_IMG*)blizzard_child->AddChild((UI_Element*)&tild);
 
 	App->gui->PushScreen(scene_1_screen);
 
@@ -141,11 +142,9 @@ bool j1Scene::Update(float dt)
 	// Gui Input ------------------------------------------
 	if (App->input->GetMouseButtonDown(1) == KEY_DOWN || App->input->GetMouseButtonDown(1) == KEY_REPEAT) {
 
-		if (blizzard_image->MouseIsIn()) {
-	
-			blizzard_image->MoveBox(x_motion,y_motion);
-			
-		}
+		if (blizzard_image->MouseIsIn())blizzard_image->MoveBox(x_motion,y_motion);
+		if (blizzard_child->MouseIsIn())blizzard_child->MoveBox(x_motion, y_motion);
+		if (blizzard_child_child->MouseIsIn())blizzard_child_child->MoveBox(x_motion, y_motion);
 
 	}
 	else if (App->input->GetMouseButtonDown(2) == KEY_DOWN || App->input->GetMouseButtonDown(1) == KEY_REPEAT) {

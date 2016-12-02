@@ -50,8 +50,9 @@ private:
 	UI_Button* button;
 	//UI_Interactive_String* interactive_text;
 	UI_IMG* blizzard_image;
+	UI_IMG* blizzard_child;
+	UI_IMG* blizzard_child_child;
 
-	
 };
 
 #endif // __j1SCENE_H__
