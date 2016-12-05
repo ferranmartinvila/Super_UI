@@ -135,14 +135,13 @@ void UI_Element::ResizeBox(const iPoint & new_size)
 	box.h = new_size.y;
 }
 
-bool UI_Element::Drag()
+bool UI_Element::Drag(uint upper_element, bool ItemSelected)
 {
-	bool sel = App->input->GetMouseButtonDown(1) == KEY_REPEAT;
-	
-	IsSelected = (MouseIsIn() && sel || sel && IsSelected);
-
+	bool rep = App->input->GetMouseButtonDown(1) == KEY_REPEAT;
+	bool pre_check = IsSelected;
+	IsSelected = (MouseIsIn() && this->layer == upper_element && ItemSelected == false && rep) || (IsSelected && rep);
+	if (pre_check && IsSelected == false)ItemSelected = false;
 	return IsSelected;
-	
 }
 
 void UI_Element::Activate()
@@ -174,6 +173,8 @@ UI_Element * UI_Element::AddChild(const UI_Element* child)
 
 	//Set the new element parent
 	new_child->SetParent(this);
+	//Set child layer
+	new_child->layer = this->layer + 1;
 	//Add the new element to the list of this childs
 	this->childs.add(new_child);
 

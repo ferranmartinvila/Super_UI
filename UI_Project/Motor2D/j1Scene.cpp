@@ -149,21 +149,22 @@ bool j1Scene::Update(float dt)
 	int x, y, x_motion, y_motion;
 	App->input->GetMousePosition(x, y);
 	App->input->GetMouseMotion(x_motion, y_motion);
-	LOG("X MOT: %i Y MOT: %i", x_motion, y_motion);
 
 
 	// Gui Input ------------------------------------------
+	uint upper_element = App->gui->GetUpperElement(scene_1_screen,0);
+	LOG("upper: %i", upper_element);
+	
+	if (blizzard_child_child->Drag(upper_element, App->gui->ItemSelected))blizzard_child_child->MoveBox(x_motion, y_motion);
 
-	if (blizzard_child_child->Drag())blizzard_child_child->MoveBox(x_motion, y_motion);
-	
-	if (blizzard_image->Drag())blizzard_image->MoveBox(x_motion, y_motion);
-	
-	if (blizzard_child->Drag())blizzard_child->MoveBox(x_motion, y_motion);
+	if (blizzard_image->Drag(upper_element, App->gui->ItemSelected))blizzard_image->MoveBox(x_motion, y_motion);
+
+	if (blizzard_child->Drag(upper_element, App->gui->ItemSelected))blizzard_child->MoveBox(x_motion, y_motion);
+
 
 	if (App->input->GetMouseButtonDown(1) == KEY_DOWN || App->input->GetMouseButtonDown(1) == KEY_REPEAT) {
 
 
-		
 
 	}
 	else if (App->input->GetMouseButtonDown(2) == KEY_DOWN || App->input->GetMouseButtonDown(1) == KEY_REPEAT) {

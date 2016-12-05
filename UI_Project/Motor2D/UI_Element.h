@@ -28,6 +28,7 @@ public:
 public:
 
 	SDL_Rect				box;
+	uint					layer = 0;
 	mutable bool			IsActive;
 	mutable bool			IsSelected;
 	enum UI_TYPE			ui_type;
@@ -50,7 +51,7 @@ public:
 	void			SetPosition(const iPoint& new_pos);
 	void			MoveBox(int x_vel, int y_vel);
 	void			ResizeBox(const iPoint& new_size);
-	bool			Drag();
+	bool			Drag(uint upper_element, bool ItemSelected);
 	void			Activate();
 	void			Desactivate();
 	

@@ -42,7 +42,11 @@ private:
 	p2List<SDL_Texture*>	ui_textures;
 	p2SString				atlas_file_name;
 
+
+
 public:
+
+	mutable bool					ItemSelected = false;
 
 	//UI textures functions
 	const SDL_Texture*	GetAtlas() const;
@@ -50,6 +54,7 @@ public:
 
 	//UI elements functions
 	uint				PushScreen(const UI_Element* new_screen);
+	uint				GetUpperElement(const UI_Element* parent,uint layer)const;
 
 };
 
