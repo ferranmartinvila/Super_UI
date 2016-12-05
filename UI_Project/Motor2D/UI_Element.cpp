@@ -135,6 +135,16 @@ void UI_Element::ResizeBox(const iPoint & new_size)
 	box.h = new_size.y;
 }
 
+bool UI_Element::Drag()
+{
+	bool sel = App->input->GetMouseButtonDown(1) == KEY_REPEAT;
+	
+	IsSelected = (MouseIsIn() && sel || sel && IsSelected);
+
+	return IsSelected;
+	
+}
+
 void UI_Element::Activate()
 {
 	IsActive = true;

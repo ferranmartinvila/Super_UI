@@ -58,17 +58,30 @@ bool j1Scene::Start()
 	scene_1_screen = new UI_Element({ 0,0,App->win->screen_surface->w, App->win->screen_surface->h }, UNDEFINED, true);
 		// --	
 		UI_IMG test_image({ 50,50,100,100 }, 0);
+		test_image.AdjustBox();
 		blizzard_image = (UI_IMG*)scene_1_screen->AddChild((UI_Element*)&test_image);
 			// --
 			UI_IMG test_image_child({ 180, 180, 100,100 }, { 415,168,222,67 });
+			test_image_child.AdjustBox();
 			blizzard_child = (UI_IMG*)blizzard_image->AddChild((UI_Element*)&test_image_child);
 				// --
 				UI_IMG tild({ 180, 180, 100,100 }, { 415,168,222,67 });
+				tild.AdjustBox();
 				blizzard_child_child = (UI_IMG*)blizzard_child->AddChild((UI_Element*)&tild);
 
+
+
+	UI_IMG tex_on({ 120,350 }, { 415,168,222,67 });
+	tex_on.AdjustBox();
+	UI_IMG tex_off({ 120,350 }, { 647,168,221,67 });
+	tex_off.AdjustBox();
+	UI_IMG tex_over({ 120,350 }, { 6,116,220,60 });
+	tex_over.AdjustBox();
+
+	UI_Button button_test({ 120, 350,220,60 }, tex_on, tex_off, tex_over);
+	button = (UI_Button*)scene_1_screen->AddChild((UI_Element*)&button_test);
+
 	App->gui->PushScreen(scene_1_screen);
-
-
 
 	/*
 	App->gui->PushScreen(scene_1_screen);
@@ -140,11 +153,17 @@ bool j1Scene::Update(float dt)
 
 
 	// Gui Input ------------------------------------------
+
+	if (blizzard_child_child->Drag())blizzard_child_child->MoveBox(x_motion, y_motion);
+	
+	if (blizzard_image->Drag())blizzard_image->MoveBox(x_motion, y_motion);
+	
+	if (blizzard_child->Drag())blizzard_child->MoveBox(x_motion, y_motion);
+
 	if (App->input->GetMouseButtonDown(1) == KEY_DOWN || App->input->GetMouseButtonDown(1) == KEY_REPEAT) {
 
-		if (blizzard_image->MouseIsIn())blizzard_image->MoveBox(x_motion,y_motion);
-		if (blizzard_child->MouseIsIn())blizzard_child->MoveBox(x_motion, y_motion);
-		if (blizzard_child_child->MouseIsIn())blizzard_child_child->MoveBox(x_motion, y_motion);
+
+		
 
 	}
 	else if (App->input->GetMouseButtonDown(2) == KEY_DOWN || App->input->GetMouseButtonDown(1) == KEY_REPEAT) {
@@ -163,27 +182,6 @@ bool j1Scene::Update(float dt)
 
 
 	}
-
-	/* Fucking Trash
-
-
-	//Button
-	if (button->MouseIsIn({ x,y }))button->Change_State(ON);
-
-	//Interactive Text
-	if (interactive_text->MouseIsIn({ x,y }))interactive_text->SetString("Left Click");
-
-	//Interactive Text
-	if (interactive_text->MouseIsIn({ x,y }))interactive_text->SetString("Right Click");
-	
-		//Interactive Text
-	if (interactive_text->MouseIsIn({ x,y }))interactive_text->SetString("Mouse In");
-
-	//Button
-	if (button->MouseIsIn({ x,y }))button->Change_State(OVER);
-	else button->Change_State(OFF);
-	
-	*/
 	
 
 

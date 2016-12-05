@@ -44,3 +44,21 @@ void UI_IMG::Draw()const
 	//Childs Draw
 	DrawChilds();
 }
+
+void UI_IMG::AdjustBox()
+{
+	
+	box.w = texture_rect.w;
+	box.h = texture_rect.h;
+
+	if (box.w == 0 || box.h == 0) {
+	
+		int w, h;
+		SDL_QueryTexture(App->gui->Get_UI_Texture(this->texture_id), NULL, NULL, &w, &h);
+
+		box.w = w;
+		box.h = h;
+	}
+
+
+}

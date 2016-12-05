@@ -21,7 +21,7 @@ public:
 public:
 
 	void Draw()const;
-
+	void AdjustBox();
 };
 
 #endif // __UI_IMG__

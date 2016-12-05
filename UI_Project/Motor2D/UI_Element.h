@@ -27,10 +27,10 @@ public:
 
 public:
 
-	SDL_Rect		box;
-	bool			IsActive;
-	bool			IsSelected;
-	enum UI_TYPE	ui_type;
+	SDL_Rect				box;
+	mutable bool			IsActive;
+	mutable bool			IsSelected;
+	enum UI_TYPE			ui_type;
 
 	UI_Element*				parent;
 	p2List<UI_Element*>		childs;
@@ -50,6 +50,7 @@ public:
 	void			SetPosition(const iPoint& new_pos);
 	void			MoveBox(int x_vel, int y_vel);
 	void			ResizeBox(const iPoint& new_size);
+	bool			Drag();
 	void			Activate();
 	void			Desactivate();
 	
