@@ -4,6 +4,8 @@
 
 #include "j1App.h"
 #include "j1Input.h"
+#include "j1Gui.h"
+
 //Constructors
 UI_Element::UI_Element(const SDL_Rect& box, UI_TYPE ui_type, bool IsActive) :box(box), ui_type(ui_type), IsActive(IsActive) {}
 
@@ -134,16 +136,19 @@ void UI_Element::ResizeBox(const iPoint & new_size)
 	box.h = new_size.y;
 }
 
-bool UI_Element::Drag(uint upper_element, UI_Element* ItemSelected)
+void UI_Element::Drag(uint upper_element)
 {
+	UI_Element* temp = App->gui->ItemSelected;
+	j1KeyState mouse_button_1 = App->input->GetMouseButtonDown(1);
+	if (mouse_button_1 == KEY_IDLE)return;
+	int x_motion, y_motion;
+	App->input->GetMouseMotion(x_motion, y_motion);
 
-	bool rep = App->input->GetMouseButtonDown(1) == KEY_REPEAT;
-	bool pre_check = IsSelected;
-	IsSelected = (MouseIsIn() && this->layer == upper_element && ItemSelected == nullptr && rep) || (IsSelected && rep);
-	if (pre_check && IsSelected == false)ItemSelected = nullptr;
-	else if (IsSelected)ItemSelected = this;
-	return IsSelected;
+	if (App->gui->ItemSelected == this && mouse_button_1 == KEY_UP)App->gui->ItemSelected = nullptr;
 
+	else if (App->gui->ItemSelected == this && mouse_button_1 == KEY_REPEAT)this->MoveBox(x_motion, y_motion);
+
+	else if (MouseIsIn() && App->gui->ItemSelected == NULL && mouse_button_1 == KEY_REPEAT && upper_element == this->layer)App->gui->ItemSelected = this;
 }
 
 void UI_Element::Activate()

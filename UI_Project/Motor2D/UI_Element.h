@@ -51,7 +51,7 @@ public:
 	void			SetPosition(const iPoint& new_pos);
 	void			MoveBox(int x_vel, int y_vel);
 	void			ResizeBox(const iPoint& new_size);
-	bool			Drag(uint upper_element, UI_Element* ItemSelected);
+	void			Drag(uint upper_element);
 	void			Activate();
 	void			Desactivate();
 	

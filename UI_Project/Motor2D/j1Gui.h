@@ -2,8 +2,9 @@
 #define __j1GUI_H__
 
 #include "j1Module.h"
-#include "UI_Element.h"
 
+struct UI_Element;
+struct SDL_Texture;
 #define CURSOR_WIDTH 2
 
 
@@ -49,7 +50,7 @@ private:
 
 public:
 
-	UI_Element*			ItemSelected = nullptr;
+	mutable UI_Element*			ItemSelected = nullptr;
 
 	//UI textures functions
 	const SDL_Texture*	GetAtlas() const;
