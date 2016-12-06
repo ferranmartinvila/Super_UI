@@ -31,7 +31,7 @@ public:
 public:
 
 	bool Update();
-	void Draw()const;
+	void Draw(bool debug)const;
 	void Handle_Input();
 	char* GetText()const;
 	

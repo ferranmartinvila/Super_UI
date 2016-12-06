@@ -47,7 +47,9 @@ private:
 	UI_Element* scene_1_screen;
 
 	//Scene Items
-	UI_Button* button;
+	UI_IMG*		window_img;
+	UI_Button*	button;
+
 	//UI_Interactive_String* interactive_text;
 	UI_IMG* blizzard_image;
 	UI_IMG* blizzard_child;

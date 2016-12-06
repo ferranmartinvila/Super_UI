@@ -20,9 +20,9 @@ bool UI_Text_Box::Update()
 	return true;
 }
 
-void UI_Text_Box::Draw() const
+void UI_Text_Box::Draw(bool debug) const
 {
-	box_texture.Draw();
+	box_texture.Draw(debug);
 }
 
 void UI_Text_Box::Handle_Input()

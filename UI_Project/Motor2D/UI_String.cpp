@@ -18,7 +18,7 @@ UI_String::~UI_String()
 
 
 // ==========================
-void UI_String::Draw() const
+void UI_String::Draw(bool debug) const
 {
 	//This Draw
 	int x = this->box.x;
@@ -30,7 +30,7 @@ void UI_String::Draw() const
 	App->render->Blit(App->font->Print(text, { 255,255,255,255 }, text_font), x - App->render->camera.x, y - App->render->camera.y);
 
 	//Childs Draw
-	DrawChilds();
+	DrawChilds(debug);
 }
 
 

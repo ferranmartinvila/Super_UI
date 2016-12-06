@@ -20,8 +20,9 @@ public:
 
 public:
 
-	void Draw()const;
-	void AdjustBox();
+	void			Draw(bool debug)const;
+	void			AdjustBox();
+	void			DrawAt(int x, int y)const;
 };
 
 #endif // __UI_IMG__

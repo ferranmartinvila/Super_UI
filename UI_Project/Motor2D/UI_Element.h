@@ -43,15 +43,15 @@ public:
 	bool			UpdateChilds();
 	virtual bool	CleanUp();
 	bool			CleanUpChilds();
-	virtual void	Draw()const;
-	void			DrawChilds()const;
+	virtual void	Draw(bool debug)const;
+	void			DrawChilds(bool debug)const;
 
 	//Functionality
 	bool			MouseIsIn()const;
 	void			SetPosition(const iPoint& new_pos);
 	void			MoveBox(int x_vel, int y_vel);
 	void			ResizeBox(const iPoint& new_size);
-	bool			Drag(uint upper_element, bool ItemSelected);
+	bool			Drag(uint upper_element, UI_Element* ItemSelected);
 	void			Activate();
 	void			Desactivate();
 	

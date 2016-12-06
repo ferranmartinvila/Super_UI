@@ -35,11 +35,11 @@ public:
 public:
 
 	//App Loop
-	void	Draw()const;
+	void	Draw(bool debug)const;
 
 	//Functionality
-	void	Change_State(BUTTON_STATE new_button_state);
-
+	void			Change_State(BUTTON_STATE new_button_state);
+	void			CheckState();
 };
 
 #endif // __UI_BUTTON__

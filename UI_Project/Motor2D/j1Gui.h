@@ -34,6 +34,9 @@ public:
 
 private:
 
+	bool debug = false;
+
+
 	//UI elements
 	p2List<UI_Element*>		screen;
 
@@ -46,7 +49,7 @@ private:
 
 public:
 
-	mutable bool					ItemSelected = false;
+	UI_Element*			ItemSelected = nullptr;
 
 	//UI textures functions
 	const SDL_Texture*	GetAtlas() const;

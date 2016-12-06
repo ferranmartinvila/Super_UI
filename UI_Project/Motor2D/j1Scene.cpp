@@ -71,15 +71,16 @@ bool j1Scene::Start()
 
 
 
-	UI_IMG tex_on({ 120,350 }, { 415,168,222,67 });
-	tex_on.AdjustBox();
-	UI_IMG tex_off({ 120,350 }, { 647,168,221,67 });
-	tex_off.AdjustBox();
-	UI_IMG tex_over({ 120,350 }, { 6,116,220,60 });
-	tex_over.AdjustBox();
+	UI_IMG win_img({ 250,150 }, { 21,530,446,470 });
+	win_img.AdjustBox();
+	window_img = (UI_IMG*)scene_1_screen->AddChild((UI_Element*)&win_img);
 
-	UI_Button button_test({ 120, 350,220,60 }, tex_on, tex_off, tex_over);
-	button = (UI_Button*)scene_1_screen->AddChild((UI_Element*)&button_test);
+	UI_IMG tex_on({ 0,0 }, { 415,168,222,67 });
+	UI_IMG tex_off({ 0,0 }, { 647,168,221,67 });
+	UI_IMG tex_over({ 0,0 }, { 6,116,220,60 });
+
+	UI_Button button_test({ 120, 50,220,60 }, tex_on, tex_off, tex_over);
+	button = (UI_Button*)window_img->AddChild((UI_Element*)&button_test);
 
 	App->gui->PushScreen(scene_1_screen);
 
@@ -145,6 +146,7 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
+
 	// Mouse Position -------------------------------------
 	int x, y, x_motion, y_motion;
 	App->input->GetMousePosition(x, y);
@@ -153,7 +155,6 @@ bool j1Scene::Update(float dt)
 
 	// Gui Input ------------------------------------------
 	uint upper_element = App->gui->GetUpperElement(scene_1_screen,0);
-	LOG("upper: %i", upper_element);
 	
 	if (blizzard_child_child->Drag(upper_element, App->gui->ItemSelected))blizzard_child_child->MoveBox(x_motion, y_motion);
 
@@ -161,29 +162,10 @@ bool j1Scene::Update(float dt)
 
 	if (blizzard_child->Drag(upper_element, App->gui->ItemSelected))blizzard_child->MoveBox(x_motion, y_motion);
 
-
-	if (App->input->GetMouseButtonDown(1) == KEY_DOWN || App->input->GetMouseButtonDown(1) == KEY_REPEAT) {
-
+	if (window_img->Drag(upper_element, App->gui->ItemSelected))window_img->MoveBox(x_motion, y_motion);
 
 
-	}
-	else if (App->input->GetMouseButtonDown(2) == KEY_DOWN || App->input->GetMouseButtonDown(1) == KEY_REPEAT) {
-
-		//if(blizzard_image->
-
-	}
-	else if (App->input->GetMouseButtonDown(3) == KEY_DOWN || App->input->GetMouseButtonDown(3) == KEY_REPEAT) {
-
-		
-
-	}
-	else {
-
-
-
-
-	}
-	
+	button->CheckState();
 
 
 	// Hardware Input -------------------------------------

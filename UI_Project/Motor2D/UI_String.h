@@ -22,7 +22,7 @@ public:
 public:
 
 	//App loop
-	void	Draw()const;
+	void	Draw(bool debug)const;
 	
 	//Functionality
 	char*	GetString()const;

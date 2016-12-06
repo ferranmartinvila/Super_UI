@@ -20,13 +20,13 @@ UI_IMG::~UI_IMG()
 
 
 // ==========================
-void UI_IMG::Draw()const
+void UI_IMG::Draw(bool debug)const
 {
 	//This Draw
 	int x = this->box.x;
 	int y = this->box.y;
 
-	App->render->DrawQuad({ x, y, box.w, box.h }, 50, 0, 0);
+	if(debug)App->render->DrawQuad({ x, y, box.w, box.h }, 150, 50, 0);
 
 	//Draw from Atlas
 	if (texture_id == -1)App->render->Blit(((SDL_Texture*)App->gui->GetAtlas()), x - App->render->camera.x, y - App->render->camera.y, &texture_rect);
@@ -42,7 +42,7 @@ void UI_IMG::Draw()const
 	}
 
 	//Childs Draw
-	DrawChilds();
+	DrawChilds(debug);
 }
 
 void UI_IMG::AdjustBox()
@@ -61,4 +61,20 @@ void UI_IMG::AdjustBox()
 	}
 
 
+}
+
+void UI_IMG::DrawAt(int x, int y) const
+{
+		//Draw from Atlas
+		if (texture_id == -1)App->render->Blit(((SDL_Texture*)App->gui->GetAtlas()), x - App->render->camera.x, y - App->render->camera.y, &texture_rect);
+
+		//Draw from other textures
+		else {
+
+			//Undefined draw size
+			if (texture_rect.w == 0 || texture_rect.h == 0)App->render->Blit(App->gui->Get_UI_Texture(texture_id), x - App->render->camera.x, y - App->render->camera.y);
+			//Defined draw size
+			else App->render->Blit(App->gui->Get_UI_Texture(texture_id), x - App->render->camera.x, y - App->render->camera.y, &texture_rect);
+
+		}
 }

@@ -4,7 +4,6 @@
 
 #include "j1App.h"
 #include "j1Input.h"
-
 //Constructors
 UI_Element::UI_Element(const SDL_Rect& box, UI_TYPE ui_type, bool IsActive) :box(box), ui_type(ui_type), IsActive(IsActive) {}
 
@@ -77,23 +76,23 @@ bool UI_Element::CleanUpChilds()
 	return ret;
 }
 
-void UI_Element::Draw()const
+void UI_Element::Draw(bool debug)const
 {
 	/*
 			This Draw
 	*/
 
 	//Childs Draw
-	DrawChilds();
+	DrawChilds(debug);
 }
 
-void UI_Element::DrawChilds() const
+void UI_Element::DrawChilds(bool debug) const
 {
 	p2List_item<UI_Element*>* item = childs.start;
 	while (item) {
 
 		if (item->data->IsActive)
-			item->data->Draw();
+			item->data->Draw(debug);
 
 		item = item->next;
 	}
@@ -135,13 +134,16 @@ void UI_Element::ResizeBox(const iPoint & new_size)
 	box.h = new_size.y;
 }
 
-bool UI_Element::Drag(uint upper_element, bool ItemSelected)
+bool UI_Element::Drag(uint upper_element, UI_Element* ItemSelected)
 {
+
 	bool rep = App->input->GetMouseButtonDown(1) == KEY_REPEAT;
 	bool pre_check = IsSelected;
-	IsSelected = (MouseIsIn() && this->layer == upper_element && ItemSelected == false && rep) || (IsSelected && rep);
-	if (pre_check && IsSelected == false)ItemSelected = false;
+	IsSelected = (MouseIsIn() && this->layer == upper_element && ItemSelected == nullptr && rep) || (IsSelected && rep);
+	if (pre_check && IsSelected == false)ItemSelected = nullptr;
+	else if (IsSelected)ItemSelected = this;
 	return IsSelected;
+
 }
 
 void UI_Element::Activate()

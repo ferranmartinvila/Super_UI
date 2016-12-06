@@ -62,13 +62,16 @@ bool j1Gui::PreUpdate()
 // Called after all Updates
 bool j1Gui::PostUpdate()
 {
+	//Debug Mode ------------------------------------------
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN)debug = !debug;
+
 
 	// Update & draw the UI screens
 	p2List_item<UI_Element*>* item = screen.start;
 	while (item) {
 
 		if (item->data->IsActive)
-			item->data->Draw();
+			item->data->Draw(debug);
 
 		item = item->next;
 	}
