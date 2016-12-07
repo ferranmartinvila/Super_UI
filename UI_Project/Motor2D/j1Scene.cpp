@@ -82,6 +82,14 @@ bool j1Scene::Start()
 	UI_Button button_test({ 120, 50,220,60 }, tex_on, tex_off, tex_over);
 	button = (UI_Button*)window_img->AddChild((UI_Element*)&button_test);
 
+
+
+
+
+
+
+
+
 	App->gui->PushScreen(scene_1_screen);
 
 	/*
@@ -156,6 +164,8 @@ bool j1Scene::Update(float dt)
 	// Gui Input ------------------------------------------
 	uint upper_element = App->gui->GetUpperElement(scene_1_screen,0);
 
+
+	//Elements Drag
 	blizzard_child_child->Drag(upper_element);
 
 	blizzard_image->Drag(upper_element);

@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1Render.h"
 #include "j1Input.h"
+#include "j1Gui.h"
 
 //Constructors
 UI_Button::UI_Button(const SDL_Rect & box, const UI_IMG& tex_on, const UI_IMG& tex_off, const UI_IMG& tex_over, const UI_String& name) :UI_Element(box, BUTTON), tex_on(tex_on), tex_off(tex_off), tex_over(tex_over), name(name), button_state(OFF) {}
@@ -51,6 +52,8 @@ void UI_Button::Change_State(BUTTON_STATE new_button_state)
 
 void UI_Button::CheckState()
 {
+	if (App->gui->ItemSelected != this && App->gui->ItemSelected != nullptr)return;
+
 	j1KeyState mouse_key_1 = App->input->GetMouseButtonDown(1);
 
 	if ((mouse_key_1 == KEY_DOWN || mouse_key_1 == KEY_REPEAT) && MouseIsIn())this->button_state = ON;

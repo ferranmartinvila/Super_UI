@@ -8,7 +8,7 @@
 class UI_Text_Box : public UI_Element {
 public:
 
-	UI_Text_Box(const SDL_Rect& box,UI_String& name, UI_IMG& box_texture, uint box_capacity, bool IsPassword);
+	UI_Text_Box(const SDL_Rect& box,UI_IMG& Box_texture, bool IsPassword);
 	UI_Text_Box(const UI_Text_Box* copy);
 	UI_Text_Box();
 
@@ -16,17 +16,11 @@ public:
 
 public:
 	
-	UI_String name;
-	UI_IMG box_texture;
-	uint box_capacity;
-	bool IsPassword;
+	UI_IMG		Box_texture;
+	bool		IsPassword;
 	
-	UI_String text_entered;
-	uint cursor_pos;
-	uint cursor_rate;
-	uint text_selected;
-	
-	bool IsActive;
+	UI_String	Text_entered;
+	uint		Cursor_pos;
 	
 public:
 
