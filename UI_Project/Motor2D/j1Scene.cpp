@@ -57,7 +57,7 @@ bool j1Scene::Start()
 	//UI Scene build --------------------------------------
 	scene_1_screen = new UI_Element({ 0,0,App->win->screen_surface->w, App->win->screen_surface->h }, UNDEFINED, true);
 	// --	
-	/*UI_IMG test_image({ 50,50,100,100 }, 0);
+	UI_IMG test_image({ 50,50,100,100 }, 0);
 	test_image.AdjustBox();
 	blizzard_image = (UI_IMG*)scene_1_screen->AddChild((UI_Element*)&test_image);
 	// --
@@ -81,12 +81,9 @@ bool j1Scene::Start()
 
 	UI_Button button_test({ 120, 50,220,60 }, tex_on, tex_off, tex_over);
 	button = (UI_Button*)window_img->AddChild((UI_Element*)&button_test);
-	*/
+	
 
-	UI_IMG tex_on({ 0,0 }, { 415,168,222,67 });
-
-	UI_Text_Box Test({ 500, 50, 150, 50 }, tex_on, "Your Name");
-	Test.AdjustBox();
+	UI_Text_Box Test({ 500, 50, 150, 50 }, "Your Name");
 	text_box = (UI_Text_Box*)scene_1_screen->AddChild((UI_Element*)&Test,20);
 
 

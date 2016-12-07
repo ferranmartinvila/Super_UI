@@ -5,6 +5,7 @@
 #include "j1App.h"
 #include "j1Fonts.h"
 
+struct p2SString;
 struct _TTF_Font;
 
 class UI_String : public UI_Element {
@@ -18,7 +19,7 @@ public:
 
 public:
 	
-	char*		text;
+	p2SString		text;
 	_TTF_Font*	text_font;
 
 public:

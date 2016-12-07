@@ -128,7 +128,6 @@ uint j1Gui::PushScreen(const UI_Element* new_screen)
 
 uint j1Gui::GetUpperElement(const UI_Element* parent, uint layer) const
 {
-	if (ItemSelected != nullptr)return 0;
 
 	p2List_item<UI_Element*>* item = parent->childs.start;
 

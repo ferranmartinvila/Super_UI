@@ -85,8 +85,11 @@ bool j1Input::PreUpdate()
 			mouse_buttons[i] = KEY_IDLE;
 	}
 
-	SDL_StartTextInput();
 
+
+
+	// SDL Events ----------------------------------------------
+	SDL_StartTextInput();
 	while(SDL_PollEvent(&event) != 0)
 	{
 		
@@ -127,25 +130,25 @@ bool j1Input::PreUpdate()
 			break;
 
 			case SDL_MOUSEMOTION:
+			{
 				int scale = App->win->GetScale();
 				mouse_motion_x = event.motion.xrel / scale;
 				mouse_motion_y = event.motion.yrel / scale;
 				mouse_x = event.motion.x / scale;
 				mouse_y = event.motion.y / scale;
-			break;
-			
-			case SDL_TEXTINPUT:
-				if (App->gui->ItemSelected->ui_type == UI_TYPE::TEXT_BOX) {
+				break;
+			}
+			case SDL_EventType::SDL_TEXTINPUT:
+			{
+				if (App->gui->ItemSelected != nullptr && App->gui->ItemSelected->ui_type == UI_TYPE::TEXT_BOX) {
 
-					char* temp_text = ((UI_Text_Box*)App->gui->ItemSelected)->Text_entered.GetString();
+					((UI_Text_Box*)App->gui->ItemSelected)->Text_entered.SetString(strcat(((UI_Text_Box*)App->gui->ItemSelected)->Text_entered.GetString(), event.text.text));
 
-					strcat(temp_text, event.text.text);
-
-					((UI_Text_Box*)App->gui->ItemSelected)->Text_entered.SetString(temp_text);
 				}
+			}
 			break;
 
-			case SDL_TEXTEDITING:
+			case SDL_EventType::SDL_TEXTEDITING:
 				/*
 				Update the composition text.
 				Update the cursor position.

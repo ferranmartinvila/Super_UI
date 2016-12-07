@@ -2,6 +2,7 @@
 #include "j1App.h"
 #include "j1Fonts.h"
 #include "j1Render.h"
+#include "p2SString.h"
 
 //Contructors
 UI_String::UI_String(const SDL_Rect& box, char * text, _TTF_Font * text_font) : UI_Element(box, STRING), text(text), text_font(text_font) {}
@@ -27,7 +28,7 @@ void UI_String::Draw(bool debug) const
 		x += parent->box.x;
 		y += parent->box.y;
 	}
-	App->render->Blit(App->font->Print(text, { 255,255,255,255 }, text_font), x - App->render->camera.x, y - App->render->camera.y);
+	App->render->Blit(App->font->Print(text.GetString(), { 255,255,255,255 }, text_font), x - App->render->camera.x, y - App->render->camera.y);
 
 	//Childs Draw
 	DrawChilds(debug);
@@ -37,7 +38,7 @@ void UI_String::Draw(bool debug) const
 // ==========================
 char * UI_String::GetString() const
 {
-	return text;
+	return (char*)text.GetString();
 }
 
 void UI_String::SetString(char * new_text)

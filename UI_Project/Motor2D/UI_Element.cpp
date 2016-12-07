@@ -112,6 +112,14 @@ void UI_Element::MoveBox(int x_vel, int y_vel)
 	box.x += x_vel;
 	box.y += y_vel;
 
+	switch (ui_type) {
+
+	case UI_TYPE::TEXT_BOX:
+		((UI_Text_Box*)this)->Text_entered.MoveBox(x_vel, y_vel);
+		break;
+	}
+
+
 	p2List_item<UI_Element*>* item = childs.start;
 	while (item) {
 
@@ -138,17 +146,23 @@ void UI_Element::ResizeBox(const iPoint & new_size)
 
 void UI_Element::Drag(uint upper_element)
 {
+	//Get the current selected item
 	UI_Element* temp = App->gui->ItemSelected;
+	//Get mouse left button state
 	j1KeyState mouse_button_1 = App->input->GetMouseButtonDown(1);
+	//Return if theres no input
 	if (mouse_button_1 == KEY_IDLE)return;
+	//Get Mouse Motion
 	int x_motion, y_motion;
 	App->input->GetMouseMotion(x_motion, y_motion);
 
-	if (App->gui->ItemSelected == this && mouse_button_1 == KEY_UP)App->gui->ItemSelected = nullptr;
+	if (upper_element == 0 && (mouse_button_1 == KEY_DOWN))App->gui->ItemSelected = nullptr;
 
-	else if (App->gui->ItemSelected == this && mouse_button_1 == KEY_REPEAT)this->MoveBox(x_motion, y_motion);
+	else if (App->gui->ItemSelected == this && mouse_button_1 == KEY_REPEAT) {
+		this->MoveBox(x_motion, y_motion);
+	}
 
-	else if (MouseIsIn() && App->gui->ItemSelected == NULL && mouse_button_1 == KEY_REPEAT && upper_element == this->layer)App->gui->ItemSelected = this;
+	else if (MouseIsIn() && App->gui->ItemSelected != this && mouse_button_1 == KEY_DOWN && upper_element == this->layer)App->gui->ItemSelected = this;
 }
 
 void UI_Element::Activate()
