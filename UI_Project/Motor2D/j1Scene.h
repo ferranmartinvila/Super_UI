@@ -9,6 +9,7 @@ struct UI_String;
 struct UI_Interactive_String;
 struct UI_IMG;
 struct UI_Element;
+struct UI_Text_Box;
 
 class j1Scene : public j1Module
 {
@@ -54,6 +55,10 @@ private:
 	UI_IMG* blizzard_image;
 	UI_IMG* blizzard_child;
 	UI_IMG* blizzard_child_child;
+
+
+	//New Data
+	UI_Text_Box* text_box;
 
 };
 

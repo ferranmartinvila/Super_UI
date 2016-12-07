@@ -30,7 +30,6 @@ public:
 	SDL_Rect				box;
 	uint					layer = 0;
 	mutable bool			IsActive;
-	mutable bool			IsSelected;
 	enum UI_TYPE			ui_type;
 
 	UI_Element*				parent;
@@ -55,7 +54,7 @@ public:
 	void			Activate();
 	void			Desactivate();
 	
-	UI_Element*		AddChild(const UI_Element* child);
+	UI_Element*		AddChild(const UI_Element* child, uint start_layer = 0);
 	bool			Delete_Child(UI_Element* child);
 	bool			Delete_Child(uint index);
 	UI_Element*		SetParent(const UI_Element* parent);

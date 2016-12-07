@@ -45,7 +45,7 @@ void UI_IMG::Draw(bool debug)const
 	DrawChilds(debug);
 }
 
-void UI_IMG::AdjustBox()
+SDL_Rect UI_IMG::AdjustBox()
 {
 	
 	box.w = texture_rect.w;
@@ -60,7 +60,7 @@ void UI_IMG::AdjustBox()
 		box.h = h;
 	}
 
-
+	return box;
 }
 
 void UI_IMG::DrawAt(int x, int y) const

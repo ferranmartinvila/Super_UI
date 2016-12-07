@@ -164,7 +164,7 @@ void UI_Element::Desactivate()
 
 
 // ==========================
-UI_Element * UI_Element::AddChild(const UI_Element* child)
+UI_Element * UI_Element::AddChild(const UI_Element* child, uint start_layer)
 {
 	//Pointer to new
 	UI_Element* new_child = nullptr;
@@ -181,7 +181,7 @@ UI_Element * UI_Element::AddChild(const UI_Element* child)
 	//Set the new element parent
 	new_child->SetParent(this);
 	//Set child layer
-	new_child->layer = this->layer + 1;
+	new_child->layer = this->layer + 1 + start_layer;
 	//Add the new element to the list of this childs
 	this->childs.add(new_child);
 

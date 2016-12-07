@@ -20,9 +20,9 @@ public:
 
 public:
 
-	void			Draw(bool debug)const;
-	void			AdjustBox();
-	void			DrawAt(int x, int y)const;
+	void				Draw(bool debug)const;
+	SDL_Rect			AdjustBox();
+	void				DrawAt(int x, int y)const;
 };
 
 #endif // __UI_IMG__
