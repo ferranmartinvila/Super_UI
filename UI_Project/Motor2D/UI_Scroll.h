@@ -6,15 +6,16 @@ struct UI_String;
 #include "UI_IMG.h"
 
 class UI_Scroll : public UI_Element {
+public:
 
-	UI_Scroll(const SDL_Rect& box, const SDL_Rect& Scroll, const SDL_Rect& ContentWindow, const UI_IMG& ScrollItem, const UI_IMG& ScrollBack, const UI_Element* Content);
-
+	UI_Scroll(const SDL_Rect& box, const SDL_Rect& ContentWindow, const UI_IMG& ScrollItem, const UI_IMG& ScrollBack,const UI_Element& Content);
+	UI_Scroll(const UI_Scroll* copy);
+	~UI_Scroll();
 
 public:
 
 	SDL_Rect	ContentWindow;
-	SDL_Rect	ScrollArea;
-	UI_Element* Content;
+	UI_Element	Content;
 	UI_IMG		ScrollItem;
 	UI_IMG		ScrollBack;
 

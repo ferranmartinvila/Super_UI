@@ -1,10 +1,12 @@
 #include "UI_Element.h"
-#include "UI_Text_Box.h"
-#include "UI_Button.h"
 
 #include "j1App.h"
 #include "j1Input.h"
 #include "j1Gui.h"
+
+#include "UI_Text_Box.h"
+#include "UI_Button.h"
+#include "UI_Scroll.h"
 
 //Constructors
 UI_Element::UI_Element(const SDL_Rect& box, UI_TYPE ui_type, bool IsActive) :box(box), ui_type(ui_type), IsActive(IsActive) {}
@@ -193,7 +195,7 @@ UI_Element * UI_Element::AddChild(const UI_Element* child, uint start_layer)
 		case UI_TYPE::STRING:				new_child = new UI_String((UI_String*)child);									break;
 		case UI_TYPE::BUTTON:				new_child = new UI_Button((UI_Button*)child);									break;
 		case UI_TYPE::TEXT_BOX:				new_child = new UI_Text_Box((UI_Text_Box*)child);								break;
-
+		case UI_TYPE::SCROLL:				new_child = new UI_Scroll((UI_Scroll*)child);									break;
 	}
 
 	//Set the new element parent

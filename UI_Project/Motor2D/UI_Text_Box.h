@@ -36,9 +36,7 @@ public:
 	uint	GetCursorPos()const;
 
 	/*
-	supr/backspace
 	home/end
-	cursor movement
 	*/
 };
 

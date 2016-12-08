@@ -12,7 +12,8 @@ enum UI_TYPE {
 	BUTTON,
 	TEXT_BOX,
 	STRING,
-	IMG
+	IMG,
+	SCROLL
 
 };
 

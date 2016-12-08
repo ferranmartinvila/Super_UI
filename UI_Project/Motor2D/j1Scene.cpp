@@ -17,6 +17,7 @@
 #include "UI_Text_Box.h"
 #include "UI_Button.h"
 #include "UI_String.h"
+#include "UI_Scroll.h"
 
 
 j1Scene::j1Scene() : j1Module()
@@ -81,15 +82,17 @@ bool j1Scene::Start()
 
 	UI_Button button_test({ 120, 50,220,60 }, tex_on, tex_off, tex_over);
 	button = (UI_Button*)window_img->AddChild((UI_Element*)&button_test);
-	
+
 
 	UI_Text_Box Test({ 500, 50, 150, 50 }, "Your Name");
-	text_box = (UI_Text_Box*)scene_1_screen->AddChild((UI_Element*)&Test,20);
+	text_box = (UI_Text_Box*)scene_1_screen->AddChild((UI_Element*)&Test, 20);
 
+	UI_IMG scroll_item({ 190,20 }, { 1000,880,19,20 });
+	UI_IMG scroll_back({ 200,20 }, { 985,874,13,149 });
 
+	UI_Scroll Scroll({ 500, 350, 250, 250 }, { 20,20,200,200 }, scroll_item, scroll_back, blizzard_image);
 
-
-
+	scroll = (UI_Scroll*)scene_1_screen->AddChild((UI_Element*)&Scroll, 30);
 
 	App->gui->PushScreen(scene_1_screen);
 
@@ -176,6 +179,8 @@ bool j1Scene::Update(float dt)
 	window_img->Drag();
 	
 	text_box->Drag();
+
+	scroll->Drag();
 
 	// Hardware Input -------------------------------------
 	/*if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)

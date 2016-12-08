@@ -25,10 +25,10 @@ UI_Text_Box::~UI_Text_Box()
 void UI_Text_Box::Draw(bool debug) const
 {
 	//Draw the debug Quad
-	if (debug)App->render->DrawQuad({ box.x, box.y, box.w, box.h }, 150, 50, 0);
+	if (debug)App->render->DrawQuad({ box.x, box.y, box.w, box.h }, 25, 25, 25);
 	
 	//Draw the cursor
-	App->render->DrawQuad({ box.x + (int)Cursor_screen_pos, box.y + 0,3,15 }, 120, 50, 200);
+	if(App->gui->ItemSelected == this)App->render->DrawQuad({ box.x + (int)Cursor_screen_pos, box.y + 0,3,15 }, 120, 50, 200);
 
 	//Draw the Text
 	if(Text_entered.GetLenght())Text_entered.Draw(false);

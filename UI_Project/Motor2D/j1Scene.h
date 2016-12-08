@@ -10,6 +10,7 @@ struct UI_Interactive_String;
 struct UI_IMG;
 struct UI_Element;
 struct UI_Text_Box;
+struct UI_Scroll;
 
 class j1Scene : public j1Module
 {
@@ -58,8 +59,8 @@ private:
 
 
 	//New Data
-	UI_Text_Box* text_box;
-
+	UI_Text_Box*	text_box;
+	UI_Scroll*		scroll;
 };
 
 #endif // __j1SCENE_H__
