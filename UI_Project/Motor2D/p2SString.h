@@ -253,13 +253,13 @@ public:
 
 		if (index >= size)return false;
 
-		for (uint k = index - 1; k < size; k++) {
+		for (uint k = index; k < size; k++) {
 
 			str[k] = str[k + 1];
 
 		}
 		size--;
-
+		index--;
 		return true;
 	}
 
@@ -371,20 +371,20 @@ public:
 	}
 
 	//Get a stringSegment
-	char* StringSegment(uint start, uint end) {
+	char* StringSegment(uint start, uint end)const {
 
 		char* segment = new char[end - start + 1];
 		
 		end = MIN(end, size);
 		start = MIN(start, size);
 
-		int k = end - start + 1;
+		int k = end - start;
 		for (uint l = 0; l < k; l++) {
 
 			segment[l] = str[start + l];
 
 		}
-
+		segment[k] = '\0';
 		return segment;
 	}
 

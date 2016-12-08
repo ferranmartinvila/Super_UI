@@ -33,6 +33,7 @@ public:
 	void	SetString(char* new_text);
 	void	PushString(char* new_text,uint position);
 	void	BackSpace(uint position);
+	uint	GetPixelLenght(uint end)const;
 
 };
 

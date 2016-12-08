@@ -64,3 +64,11 @@ void UI_String::BackSpace(uint position)
 	text.DeleteChar(position);
 }
 
+uint UI_String::GetPixelLenght(uint end) const
+{
+	char* segment = text.StringSegment(0, end);
+	int x, y;
+	App->font->CalcSize(segment, x, y, text_font);
+	return x;
+}
+

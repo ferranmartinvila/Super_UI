@@ -18,8 +18,9 @@ public:
 	
 	bool		IsPassword;
 	UI_String	Text_entered;
-	uint		Cursor_pos;
-	
+	uint		Cursor_pos = 0;
+	uint		Cursor_screen_pos = 0;
+
 public:
 
 	//App Loop

@@ -4,6 +4,7 @@
 #include "j1Gui.h"
 #include "j1Input.h"
 #include "j1Fonts.h"
+#include "p2Log.h"
 
 //Constructors
 UI_Text_Box::UI_Text_Box(const SDL_Rect& box, char* Text_entered, bool IsPassword) :UI_Element(box, TEXT_BOX), Text_entered(box,Text_entered), IsPassword(IsPassword) {}
@@ -23,9 +24,13 @@ UI_Text_Box::~UI_Text_Box()
 
 void UI_Text_Box::Draw(bool debug) const
 {
+	//Draw the debug Quad
 	if (debug)App->render->DrawQuad({ box.x, box.y, box.w, box.h }, 150, 50, 0);
-	App->render->DrawQuad({ box.x + (int)Cursor_pos, box.y + 0,5,15 }, 50, 50, 50);
+	
+	//Draw the cursor
+	App->render->DrawQuad({ box.x + (int)Cursor_screen_pos, box.y + 0,3,15 }, 120, 50, 200);
 
+	//Draw the Text
 	if(Text_entered.GetLenght())Text_entered.Draw(false);
 
 	DrawChilds(debug);
@@ -44,14 +49,35 @@ void UI_Text_Box::HandleInput()
 {
 	if (App->gui->ItemSelected != this)return;
 
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN && Cursor_pos > 0)Cursor_pos--;
-
-	else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN && Cursor_pos < Text_entered.GetLenght())Cursor_pos++;
-
-	else if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN && Cursor_pos > 0) {
-		Text_entered.BackSpace(Cursor_pos);
+	//Move Cursor to the Left =============================
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN && Cursor_pos > 0)
+	{
 		Cursor_pos--;
 	}
+
+	//Move Cursor to the Right ============================
+	else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN && Cursor_pos < Text_entered.GetLenght())
+	{
+		Cursor_pos++;
+	}
+
+	//Backspace ===========================================
+	else if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN && Cursor_pos > 0)
+	{
+		Text_entered.BackSpace(Cursor_pos - 1);
+		Cursor_pos--;
+		
+	}
+
+	//Supr ===============================================
+	else if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN && Cursor_pos < Text_entered.GetLenght())
+	{
+		Text_entered.BackSpace(Cursor_pos);
+	}
+
+
+	//Update the position of the cursor on the screen
+	Cursor_screen_pos = Text_entered.GetPixelLenght(Cursor_pos);
 }
 
 char * UI_Text_Box::GetText() const
@@ -72,6 +98,7 @@ void UI_Text_Box::SetText(char * new_text)
 void UI_Text_Box::SetCursorPos(uint position)
 {
 	Cursor_pos = position;
+	LOG("Cursor_pos %i", Cursor_pos);
 }
 
 uint UI_Text_Box::GetCursorPos() const
