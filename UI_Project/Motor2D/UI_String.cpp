@@ -28,8 +28,10 @@ void UI_String::Draw(bool debug) const
 		x += parent->box.x;
 		y += parent->box.y;
 	}
-	App->render->Blit(App->font->Print(text.GetString(), { 255,255,255,255 }, text_font), x - App->render->camera.x, y - App->render->camera.y);
-
+	bool ret = App->render->Blit(App->font->Print(text.GetString(), { 255,255,255,255 }, text_font), x - App->render->camera.x, y - App->render->camera.y);
+	if (!ret) {
+		x += 70;
+	}
 	//Childs Draw
 	DrawChilds(debug);
 }
@@ -43,6 +45,14 @@ char * UI_String::GetString() const
 
 void UI_String::SetString(char * new_text)
 {
-	text = new_text;
+	/*if (strlen(new_text) > text.Length()) {
+		text.
+	}
+	text = new_text;*/
+}
+
+void UI_String::PushString(char * new_text)
+{
+	text += new_text;
 }
 

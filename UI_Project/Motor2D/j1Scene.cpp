@@ -174,7 +174,7 @@ bool j1Scene::Update(float dt)
 	blizzard_child->Drag(upper_element);
 
 	window_img->Drag(upper_element);
-
+	
 	text_box->Drag(upper_element);
 
 	//Button Functionality

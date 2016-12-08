@@ -30,7 +30,8 @@ public:
 	//Functionality
 	char*	GetString()const;
 	void	SetString(char* new_text);
-
+	void	PushString(char* new_text);
+	void	PopString(char* new_text);
 };
 
 #endif
