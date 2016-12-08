@@ -355,6 +355,56 @@ public:
 			return 0;
 	}
 
+	//Get a stringSegment
+	char* StringSegment(uint start, uint end) {
+
+		char* segment = new char[end - start + 1];
+		
+		end = MIN(end, size);
+		start = MIN(start, size);
+
+		int k = end - start + 1;
+		for (uint l = 0; l < k; l++) {
+
+			segment[l] = str[start + l];
+
+		}
+
+		return segment;
+	}
+
+	//Push a stringSegment
+	char* InsertString(char* string_seg, uint location) {
+
+		uint s_size = strlen(string_seg);
+		char* segment = new char[size + strlen(string_seg)];
+
+		location = MIN(location, size);
+
+		uint l = 0;
+		for (l; l < location; l++) {
+
+			segment[l] = str[l];
+
+		}
+		for (uint k = 0; k < s_size; k++) {
+
+			
+			segment[l] = string_seg[k];
+			l++;
+		}
+		for (uint k = location; k < size; k++) {
+			
+			segment[l] = str[k];
+			l++;
+
+		}
+
+		str = segment;
+
+		return segment;
+	}
+
 private:
 
 	void Alloc(unsigned int requiered_memory)

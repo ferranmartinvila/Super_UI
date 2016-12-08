@@ -144,7 +144,7 @@ void UI_Element::ResizeBox(const iPoint & new_size)
 	box.h = new_size.y;
 }
 
-void UI_Element::Drag(uint upper_element)
+void UI_Element::Drag()
 {
 	//Get the current selected item
 	UI_Element* temp = App->gui->ItemSelected;
@@ -156,13 +156,17 @@ void UI_Element::Drag(uint upper_element)
 	int x_motion, y_motion;
 	App->input->GetMouseMotion(x_motion, y_motion);
 
-	if (upper_element == 0 && (mouse_button_1 == KEY_DOWN))App->gui->ItemSelected = nullptr;
+	if (App->gui->upper_element == 0 && (mouse_button_1 == KEY_DOWN))App->gui->ItemSelected = nullptr;
 
 	else if (App->gui->ItemSelected == this && mouse_button_1 == KEY_REPEAT) {
 		this->MoveBox(x_motion, y_motion);
 	}
 
-	else if (MouseIsIn() && App->gui->ItemSelected != this && mouse_button_1 == KEY_DOWN && upper_element == this->layer)App->gui->ItemSelected = this;
+	else if (MouseIsIn() && App->gui->ItemSelected != this && mouse_button_1 == KEY_DOWN && App->gui->upper_element == this->layer)App->gui->ItemSelected = this;
+}
+
+void UI_Element::HandleInput()
+{
 }
 
 void UI_Element::Activate()

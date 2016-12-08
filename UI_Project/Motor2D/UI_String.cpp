@@ -43,6 +43,11 @@ char * UI_String::GetString() const
 	return (char*)text.GetString();
 }
 
+uint UI_String::GetLenght() const
+{
+	return uint(text.Length());
+}
+
 void UI_String::SetString(char * new_text)
 {
 	/*if (strlen(new_text) > text.Length()) {
@@ -51,8 +56,9 @@ void UI_String::SetString(char * new_text)
 	text = new_text;*/
 }
 
-void UI_String::PushString(char * new_text)
+void UI_String::PushString(char * new_text, uint position)
 {
-	text += new_text;
+	char* test = text.InsertString(new_text, position);
+	text.create(test);
 }
 

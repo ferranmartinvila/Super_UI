@@ -163,25 +163,22 @@ bool j1Scene::Update(float dt)
 
 
 	// Gui Input ------------------------------------------
-	uint upper_element = App->gui->GetUpperElement(scene_1_screen,0);
+	App->gui->CalculateUpperElement(scene_1_screen,0);
 
 
 	//Elements Drag
-	blizzard_child_child->Drag(upper_element);
+	blizzard_child_child->Drag();
 
-	blizzard_image->Drag(upper_element);
+	blizzard_image->Drag();
 
-	blizzard_child->Drag(upper_element);
+	blizzard_child->Drag();
 
-	window_img->Drag(upper_element);
+	window_img->Drag();
 	
-	text_box->Drag(upper_element);
-
-	//Button Functionality
-	button->CheckState();
+	text_box->Drag();
 
 	// Hardware Input -------------------------------------
-	if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	/*if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		App->LoadGame("save_game.xml");
 
 	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
@@ -230,7 +227,7 @@ bool j1Scene::Update(float dt)
 	{
 		iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
 		App->render->Blit(debug_tex, pos.x, pos.y);
-	}
+	}*/
 
 	return true;
 }

@@ -51,6 +51,7 @@ private:
 public:
 
 	mutable UI_Element*			ItemSelected = nullptr;
+	mutable uint				upper_element = 0;
 
 	//UI textures functions
 	const SDL_Texture*	GetAtlas() const;
@@ -58,7 +59,7 @@ public:
 
 	//UI elements functions
 	uint				PushScreen(const UI_Element* new_screen);
-	uint				GetUpperElement(const UI_Element* parent,uint layer)const;
+	uint				CalculateUpperElement(const UI_Element* parent,uint layer)const;
 
 };
 

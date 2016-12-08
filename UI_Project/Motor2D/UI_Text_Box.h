@@ -22,9 +22,17 @@ public:
 	
 public:
 
+	//App Loop
 	void	Draw(bool debug)const;
+	bool	Update();
+	void	HandleInput();
+
+	//Functionality
 	char*	GetText()const;
+	uint	GetTextLength()const;
 	void	SetText(char* new_text);
+	void	SetCursorPos(uint position);
+	uint	GetCursorPos()const;
 
 	/*
 	supr/backspace

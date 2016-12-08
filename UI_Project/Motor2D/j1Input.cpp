@@ -142,8 +142,8 @@ bool j1Input::PreUpdate()
 			{
 				if (App->gui->ItemSelected != nullptr && App->gui->ItemSelected->ui_type == UI_TYPE::TEXT_BOX) {
 
-					((UI_Text_Box*)App->gui->ItemSelected)->Text_entered.PushString(event.text.text);
-
+					((UI_Text_Box*)App->gui->ItemSelected)->Text_entered.PushString(event.text.text, ((UI_Text_Box*)App->gui->ItemSelected)->Cursor_pos);
+					((UI_Text_Box*)App->gui->ItemSelected)->SetCursorPos(((UI_Text_Box*)App->gui->ItemSelected)->GetCursorPos() + 1);
 				}
 			}
 			break;

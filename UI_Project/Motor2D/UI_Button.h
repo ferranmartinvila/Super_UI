@@ -34,10 +34,11 @@ public:
 
 	//App Loop
 	void	Draw(bool debug)const;
+	bool	Update();
 
 	//Functionality
 	void			Change_State(BUTTON_STATE new_button_state);
-	void			CheckState();
+	void			HandleInput();
 };
 
 #endif // __UI_BUTTON__

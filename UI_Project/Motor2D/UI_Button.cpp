@@ -42,19 +42,38 @@ void UI_Button::Draw(bool debug)const
 	DrawChilds(debug);
 }
 
+bool UI_Button::Update()
+{
+	HandleInput();
+
+
+	UpdateChilds();
+	return true;
+}
+
 void UI_Button::Change_State(BUTTON_STATE new_button_state)
 {
 	button_state = new_button_state;
 }
 
-void UI_Button::CheckState()
+void UI_Button::HandleInput()
 {
-	if (App->gui->ItemSelected != this && App->gui->ItemSelected != nullptr)return;
 
 	j1KeyState mouse_key_1 = App->input->GetMouseButtonDown(1);
 
-	if ((mouse_key_1 == KEY_DOWN || mouse_key_1 == KEY_REPEAT) && MouseIsIn())this->button_state = ON;
-	else if (MouseIsIn())this->button_state = OVER;
+	//Pass Case
+	if (mouse_key_1 == KEY_IDLE && MouseIsIn() && App->gui->upper_element == this->layer) {
+		button_state = OVER;
+	}
+	//Push Case
+	else if (mouse_key_1 == KEY_DOWN && App->gui->upper_element == this->layer && MouseIsIn()) {
+		this->button_state = ON;
+		App->gui->ItemSelected = this;
+	}
+	else if (App->gui->ItemSelected == this && mouse_key_1 == KEY_REPEAT  && MouseIsIn()) {
+		button_state = ON;
+	}
+	//Idle Case
 	else button_state = OFF;
 
 }

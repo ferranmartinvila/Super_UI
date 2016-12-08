@@ -17,7 +17,7 @@ public:
 
 	~UI_String();
 
-public:
+private:
 	
 	p2SString		text;
 	_TTF_Font*	text_font;
@@ -29,9 +29,11 @@ public:
 	
 	//Functionality
 	char*	GetString()const;
+	uint	GetLenght()const;
 	void	SetString(char* new_text);
-	void	PushString(char* new_text);
-	void	PopString(char* new_text);
+	void	PushString(char* new_text,uint position);
+
+
 };
 
 #endif
