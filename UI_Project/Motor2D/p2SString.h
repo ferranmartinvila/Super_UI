@@ -248,6 +248,21 @@ public:
 		return true;
 	}
 
+	//Delete the character located in the index
+	bool DeleteChar(uint index) {
+
+		if (index >= size)return false;
+
+		for (uint k = index - 1; k < size; k++) {
+
+			str[k] = str[k + 1];
+
+		}
+		size--;
+
+		return true;
+	}
+
 	void Trim()
 	{
 		// cut right --

@@ -149,6 +149,7 @@ bool j1Input::PreUpdate()
 			break;
 
 			case SDL_EventType::SDL_TEXTEDITING:
+				
 				/*
 				Update the composition text.
 				Update the cursor position.
@@ -157,6 +158,7 @@ bool j1Input::PreUpdate()
 				//composition = event.edit.text;
 				//cursor = event.edit.start;
 				//selection_len = event.edit.length;
+
 				break;
 		}
 	}

@@ -50,15 +50,17 @@ uint UI_String::GetLenght() const
 
 void UI_String::SetString(char * new_text)
 {
-	/*if (strlen(new_text) > text.Length()) {
-		text.
-	}
-	text = new_text;*/
+	text.create(new_text);
 }
 
 void UI_String::PushString(char * new_text, uint position)
 {
 	char* test = text.InsertString(new_text, position);
 	text.create(test);
+}
+
+void UI_String::BackSpace(uint position)
+{
+	text.DeleteChar(position);
 }
 

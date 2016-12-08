@@ -26,7 +26,7 @@ void UI_Text_Box::Draw(bool debug) const
 	if (debug)App->render->DrawQuad({ box.x, box.y, box.w, box.h }, 150, 50, 0);
 	App->render->DrawQuad({ box.x + (int)Cursor_pos, box.y + 0,5,15 }, 50, 50, 50);
 
-	Text_entered.Draw(false);
+	if(Text_entered.GetLenght())Text_entered.Draw(false);
 
 	DrawChilds(debug);
 }
@@ -48,6 +48,10 @@ void UI_Text_Box::HandleInput()
 
 	else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN && Cursor_pos < Text_entered.GetLenght())Cursor_pos++;
 
+	else if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN && Cursor_pos > 0) {
+		Text_entered.BackSpace(Cursor_pos);
+		Cursor_pos--;
+	}
 }
 
 char * UI_Text_Box::GetText() const
