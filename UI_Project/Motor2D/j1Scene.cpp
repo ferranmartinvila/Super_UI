@@ -10,7 +10,6 @@
 #include "j1PathFinding.h"
 #include "j1Gui.h"
 #include "j1Scene.h"
-#include "j1Fonts.h"
 
 
 //UI Elements
@@ -58,19 +57,11 @@ bool j1Scene::Start()
 	//UI Scene build --------------------------------------
 	scene_1_screen = new UI_Element({ 0,0,App->win->screen_surface->w, App->win->screen_surface->h }, UNDEFINED, true);
 	// --	
-	UI_IMG test_image({ 25,50,100,100 }, 0);
+	/*UI_IMG test_image({ 25,50,100,100 }, 0);
 	test_image.AdjustBox();
-	blizzard_image = (UI_IMG*)scene_1_screen->AddChild((UI_Element*)&test_image);
-	/*// --
-	UI_IMG test_image_child({ 180, 180, 100,100 }, { 415,168,222,67 });
-	test_image_child.AdjustBox();
-	blizzard_child = (UI_IMG*)blizzard_image->AddChild((UI_Element*)&test_image_child);
-	// --
-	UI_IMG tild({ 180, 180, 100,100 }, { 415,168,222,67 });
-	tild.AdjustBox();
-	blizzard_child_child = (UI_IMG*)blizzard_child->AddChild((UI_Element*)&tild);
-	*/
+	blizzard_image = (UI_IMG*)scene_1_screen->AddChild((UI_Element*)&test_image);*/
 
+	//{ 415,168,222,67 }
 
 	UI_Text_Box Test({ 500, 50, 150, 50 }, "Your Name");
 	text_box = (UI_Text_Box*)scene_1_screen->AddChild((UI_Element*)&Test, 20);
@@ -84,17 +75,17 @@ bool j1Scene::Start()
 	scroll = (UI_Scroll*)scene_1_screen->AddChild((UI_Element*)&Scroll, 30);
 
 
-	UI_IMG win_img({ -45,0 }, { 21,530,446,470 });
+	/*UI_IMG win_img({ -45,0 }, { 21,530,446,470 });
 	win_img.AdjustBox();
-	window_img = (UI_IMG*)scroll->AddChild((UI_Element*)&win_img, 10);
+	window_img = (UI_IMG*)scroll->AddChild((UI_Element*)&win_img, 10);*/
 
 
-	UI_IMG tex_on({ 0,0 }, { 415,168,222,67 });
+	/*UI_IMG tex_on({ 0,0 }, { 415,168,222,67 });
 	UI_IMG tex_off({ 0,0 }, { 647,168,221,67 });
 	UI_IMG tex_over({ 0,0 }, { 6,116,220,60 });
 
 	UI_Button button_test({ 120, 50,220,60 }, tex_on, tex_off, tex_over);
-	button = (UI_Button*)window_img->AddChild((UI_Element*)&button_test);
+	button = (UI_Button*)window_img->AddChild((UI_Element*)&button_test);*/
 
 
 	App->gui->PushScreen(scene_1_screen);
@@ -153,13 +144,13 @@ bool j1Scene::Update(float dt)
 
 	//blizzard_child->Drag();
 
-	window_img->Drag();
+	//window_img->Drag();
 	
 	text_box->Drag();
 
-	if (scroll->MoveScroll(x_motion, y_motion) == false)
+	if (scroll->MoveScroll(x_motion, y_motion) == false) {
 		scroll->Drag();
-
+	}
 
 	// Hardware Input -------------------------------------
 	/*if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)

@@ -34,6 +34,7 @@ public:
 	void	SetText(char* new_text);
 	void	SetCursorPos(uint position);
 	uint	GetCursorPos()const;
+	void	MoveBox(int x_vel, int y_vel);
 
 	/*
 	home/end

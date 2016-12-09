@@ -103,3 +103,19 @@ uint UI_Text_Box::GetCursorPos() const
 {
 	return Cursor_pos;
 }
+
+void UI_Text_Box::MoveBox(int x_vel, int y_vel)
+{
+	box.x += x_vel;
+	box.y += y_vel;
+
+	Text_entered.MoveBox(x_vel, y_vel);
+
+	p2List_item<UI_Element*>* item = childs.start;
+	while (item) {
+
+		item->data->MoveBox(x_vel, y_vel);
+		item = item->next;
+
+	}
+}

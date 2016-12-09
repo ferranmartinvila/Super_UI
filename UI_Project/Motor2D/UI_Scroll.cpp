@@ -12,7 +12,10 @@ UI_Scroll::UI_Scroll(const SDL_Rect& box, const SDL_Rect& ContentWindow, const U
 	this->ScrollBack.SetParent(this);
 }
 
-UI_Scroll::UI_Scroll(const UI_Scroll* copy) : UI_Element(copy->box, SCROLL), ContentWindow(copy->ContentWindow), ScrollItem(copy->ScrollItem), ScrollBack(copy->ScrollBack) {}
+UI_Scroll::UI_Scroll(const UI_Scroll* copy) : UI_Element(copy->box, SCROLL), ContentWindow(copy->ContentWindow), ScrollItem(copy->ScrollItem), ScrollBack(copy->ScrollBack)
+{
+
+}
 
 
 //Destructors =============================================
@@ -42,6 +45,7 @@ bool UI_Scroll::MoveScroll(int mouse_x_motion, int mouse_y_motion)
 	j1KeyState mouse_button_1 = App->input->GetMouseButtonDown(1);
 
 	if (ScrollItem.MouseIsIn() && mouse_button_1 == KEY_DOWN)ScrollSelected = true;
+	
 	else if (ScrollSelected && mouse_button_1 == KEY_UP)ScrollSelected = false;
 	
 	if (ScrollSelected && ScrollItem.RectIsIn(&ScrollBack.box, false, mouse_x_motion, mouse_y_motion))
@@ -50,4 +54,21 @@ bool UI_Scroll::MoveScroll(int mouse_x_motion, int mouse_y_motion)
 	}
 
 	return ScrollSelected;
+}
+
+void UI_Scroll::MoveBox(int x_vel, int y_vel)
+{
+	box.x += x_vel;
+	box.y += y_vel;
+
+	this->ScrollItem.MoveBox(x_vel, y_vel);
+	this->ScrollBack.MoveBox(x_vel, y_vel);
+
+	p2List_item<UI_Element*>* item = childs.start;
+	while (item) {
+
+		item->data->MoveBox(x_vel, y_vel);
+		item = item->next;
+
+	}
 }

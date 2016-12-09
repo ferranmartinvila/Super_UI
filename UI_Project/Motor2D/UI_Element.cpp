@@ -114,19 +114,6 @@ void UI_Element::MoveBox(int x_vel, int y_vel)
 	box.x += x_vel;
 	box.y += y_vel;
 
-	switch (ui_type) {
-
-	case UI_TYPE::SCROLL:
-		((UI_Scroll*)this)->MoveBox(x_vel, y_vel);
-		break;
-
-	case UI_TYPE::TEXT_BOX:
-
-		((UI_Text_Box*)this)->Text_entered.MoveBox(x_vel, y_vel);
-		break;
-	}
-
-
 	p2List_item<UI_Element*>* item = childs.start;
 	while (item) {
 
@@ -171,7 +158,7 @@ bool UI_Element::Drag()
 	int x_motion, y_motion;
 	App->input->GetMouseMotion(x_motion, y_motion);
 
-	if (App->gui->upper_element == 0 && (mouse_button_1 == KEY_DOWN))
+	if (MouseIsIn() == false && App->gui->ItemSelected == this && (mouse_button_1 == KEY_DOWN))
 	{
 		App->gui->ItemSelected = nullptr;
 		return false;

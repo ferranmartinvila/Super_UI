@@ -23,6 +23,7 @@ public:
 
 	void	Draw(bool debug)const;
 	bool	MoveScroll(int mouse_y_motion, int mouse_x_motion);
+	void	MoveBox(int x_vel, int y_vel);
 
 };
 #endif
