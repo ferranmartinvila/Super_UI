@@ -6,14 +6,13 @@
 #include "j1Input.h"
 
 //Constructors ============================================
-UI_Scroll::UI_Scroll(const SDL_Rect& box, const SDL_Rect& ContentWindow, const UI_IMG& ScrollItem, const UI_IMG& ScrollBack, UI_Element* Content) :UI_Element(box, SCROLL), ContentWindow(ContentWindow), ScrollItem(ScrollItem), ScrollBack(ScrollBack), Content(Content)
+UI_Scroll::UI_Scroll(const SDL_Rect& box, const SDL_Rect& ContentWindow, const UI_IMG& ScrollItem, const UI_IMG& ScrollBack) :UI_Element(box, SCROLL), ContentWindow(ContentWindow), ScrollItem(ScrollItem), ScrollBack(ScrollBack)
 {
 	this->ScrollItem.SetParent(this);
 	this->ScrollBack.SetParent(this);
-	this->Content->SetParent(this);
 }
 
-UI_Scroll::UI_Scroll(const UI_Scroll* copy) : UI_Element(copy->box, SCROLL), ContentWindow(copy->ContentWindow), ScrollItem(copy->ScrollItem), ScrollBack(copy->ScrollBack), Content(copy->Content) {}
+UI_Scroll::UI_Scroll(const UI_Scroll* copy) : UI_Element(copy->box, SCROLL), ContentWindow(copy->ContentWindow), ScrollItem(copy->ScrollItem), ScrollBack(copy->ScrollBack) {}
 
 
 //Destructors =============================================
@@ -27,14 +26,6 @@ UI_Scroll::~UI_Scroll()
 void UI_Scroll::Draw(bool debug) const
 {
 	if (debug)App->render->DrawQuad({ box.x, box.y, box.w, box.h }, 150, 150, 0);
-
-	//Draw the element check the type
-	switch (Content->ui_type) {
-		
-	case UI_TYPE::IMG:		((UI_IMG*)Content)->Draw(false);		break;
-	case UI_TYPE::STRING:	((UI_String*)Content)->Draw(false);		break;
-		
-	}
 
 	//Draw the scroll img
 	ScrollBack.Draw(false);
@@ -50,22 +41,13 @@ bool UI_Scroll::MoveScroll(int mouse_x_motion, int mouse_y_motion)
 	//Get mouse left button state
 	j1KeyState mouse_button_1 = App->input->GetMouseButtonDown(1);
 
-	if (ScrollItem.MouseIsIn() && mouse_button_1 == KEY_REPEAT)
+	if (ScrollItem.MouseIsIn() && mouse_button_1 == KEY_DOWN)ScrollSelected = true;
+	else if (ScrollSelected && mouse_button_1 == KEY_UP)ScrollSelected = false;
+	
+	if (ScrollSelected && ScrollItem.RectIsIn(&ScrollBack.box, false, mouse_x_motion, mouse_y_motion))
 	{
-		Content->MoveBox(mouse_x_motion, mouse_y_motion);
-		ScrollItem.MoveBox(mouse_x_motion, mouse_y_motion);
-		ScrollBack.
-		return true;
+		ScrollItem.MoveBox(0, mouse_y_motion);
 	}
 
-	return false;
-}
-
-void UI_Scroll::MoveBox(int x_vel, int y_vel)
-{
-	box.x += x_vel;
-	box.y += y_vel;
-	ScrollItem.MoveBox(x_vel, y_vel);
-	ScrollBack.MoveBox(x_vel, y_vel);
-	Content->MoveBox(x_vel, y_vel);
+	return ScrollSelected;
 }

@@ -72,9 +72,22 @@ bool j1Scene::Start()
 	*/
 
 
-	UI_IMG win_img({ 250,150 }, { 21,530,446,470 });
+	UI_Text_Box Test({ 500, 50, 150, 50 }, "Your Name");
+	text_box = (UI_Text_Box*)scene_1_screen->AddChild((UI_Element*)&Test, 20);
+
+	UI_IMG scroll_item({ 197,20 }, { 1000,880,19,20 });
+	scroll_item.AdjustBox();
+	UI_IMG scroll_back({ 200,20 }, { 985,874,13,149 });
+	scroll_back.AdjustBox();
+	
+	UI_Scroll Scroll({ 500, 350, 250, 250 }, { 20,20,200,200 }, scroll_item, scroll_back);
+	scroll = (UI_Scroll*)scene_1_screen->AddChild((UI_Element*)&Scroll, 30);
+
+
+	UI_IMG win_img({ -45,0 }, { 21,530,446,470 });
 	win_img.AdjustBox();
-	window_img = (UI_IMG*)scene_1_screen->AddChild((UI_Element*)&win_img, 10);
+	window_img = (UI_IMG*)scroll->AddChild((UI_Element*)&win_img, 10);
+
 
 	UI_IMG tex_on({ 0,0 }, { 415,168,222,67 });
 	UI_IMG tex_off({ 0,0 }, { 647,168,221,67 });
@@ -83,17 +96,6 @@ bool j1Scene::Start()
 	UI_Button button_test({ 120, 50,220,60 }, tex_on, tex_off, tex_over);
 	button = (UI_Button*)window_img->AddChild((UI_Element*)&button_test);
 
-
-	UI_Text_Box Test({ 500, 50, 150, 50 }, "Your Name");
-	text_box = (UI_Text_Box*)scene_1_screen->AddChild((UI_Element*)&Test, 20);
-
-	UI_IMG scroll_item({ 197,20 }, { 1000,880,19,20 });
-	scroll_item.AdjustBox();
-	UI_IMG scroll_back({ 200,20 }, { 985,874,13,149 });
-	scroll_back.AdjustBox();
-	UI_Scroll Scroll({ 500, 350, 250, 250 }, { 20,20,200,200 }, scroll_item, scroll_back, blizzard_image);
-
-	scroll = (UI_Scroll*)scene_1_screen->AddChild((UI_Element*)&Scroll, 30);
 
 	App->gui->PushScreen(scene_1_screen);
 

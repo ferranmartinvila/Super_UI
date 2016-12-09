@@ -51,7 +51,7 @@ public:
 	void			SetPosition(const iPoint& new_pos);
 	virtual void	MoveBox(int x_vel, int y_vel);
 	void			ResizeBox(const iPoint& new_size);
-	bool			RectIsIn(const SDL_Rect* target, bool x_axis)const;
+	bool			RectIsIn(const SDL_Rect* target, bool x_axis, int x_vel = 0, int y_vel = 0)const;
 	bool			Drag();
 	void			HandleInput();
 	void			Activate();

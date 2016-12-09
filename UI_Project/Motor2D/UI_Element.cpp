@@ -22,7 +22,7 @@ UI_Element::~UI_Element()
 }
 
 
-// ==========================
+// Game Loop ==============================================
 bool UI_Element::Update()
 {
 	/*
@@ -102,7 +102,7 @@ void UI_Element::DrawChilds(bool debug) const
 	}
 }
 
-// ==========================
+// Functionality ==========================================
 void UI_Element::SetPosition(const iPoint & new_pos)
 {
 	box.x = new_pos.x;
@@ -116,7 +116,12 @@ void UI_Element::MoveBox(int x_vel, int y_vel)
 
 	switch (ui_type) {
 
+	case UI_TYPE::SCROLL:
+		((UI_Scroll*)this)->MoveBox(x_vel, y_vel);
+		break;
+
 	case UI_TYPE::TEXT_BOX:
+
 		((UI_Text_Box*)this)->Text_entered.MoveBox(x_vel, y_vel);
 		break;
 	}
@@ -144,6 +149,16 @@ void UI_Element::ResizeBox(const iPoint & new_size)
 {
 	box.w = new_size.x;
 	box.h = new_size.y;
+}
+
+bool UI_Element::RectIsIn(const SDL_Rect * target, bool x_axis, int x_vel, int y_vel) const
+{
+	if (x_axis == false)
+	{
+		return bool((target->y <= box.y + y_vel && (target->y + target->h) >= (box.y + box.h + y_vel)));
+
+	}
+	else return false;
 }
 
 bool UI_Element::Drag()

@@ -20,8 +20,7 @@ UI_Text_Box::~UI_Text_Box()
 }
 
 
-// ==========================
-
+// Game Loop ==========================
 void UI_Text_Box::Draw(bool debug) const
 {
 	//Draw the debug Quad
@@ -98,7 +97,6 @@ void UI_Text_Box::SetText(char * new_text)
 void UI_Text_Box::SetCursorPos(uint position)
 {
 	Cursor_pos = position;
-	LOG("Cursor_pos %i", Cursor_pos);
 }
 
 uint UI_Text_Box::GetCursorPos() const
