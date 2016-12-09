@@ -65,6 +65,9 @@ SDL_Rect UI_IMG::AdjustBox()
 
 void UI_IMG::DrawAt(int x, int y) const
 {
+	x += this->box.x;
+	y += this->box.y;
+
 		//Draw from Atlas
 		if (texture_id == -1)App->render->Blit(((SDL_Texture*)App->gui->GetAtlas()), x - App->render->camera.x, y - App->render->camera.y, &texture_rect);
 

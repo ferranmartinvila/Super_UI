@@ -58,10 +58,10 @@ bool j1Scene::Start()
 	//UI Scene build --------------------------------------
 	scene_1_screen = new UI_Element({ 0,0,App->win->screen_surface->w, App->win->screen_surface->h }, UNDEFINED, true);
 	// --	
-	UI_IMG test_image({ 50,50,100,100 }, 0);
+	UI_IMG test_image({ 25,50,100,100 }, 0);
 	test_image.AdjustBox();
 	blizzard_image = (UI_IMG*)scene_1_screen->AddChild((UI_Element*)&test_image);
-	// --
+	/*// --
 	UI_IMG test_image_child({ 180, 180, 100,100 }, { 415,168,222,67 });
 	test_image_child.AdjustBox();
 	blizzard_child = (UI_IMG*)blizzard_image->AddChild((UI_Element*)&test_image_child);
@@ -69,7 +69,7 @@ bool j1Scene::Start()
 	UI_IMG tild({ 180, 180, 100,100 }, { 415,168,222,67 });
 	tild.AdjustBox();
 	blizzard_child_child = (UI_IMG*)blizzard_child->AddChild((UI_Element*)&tild);
-
+	*/
 
 
 	UI_IMG win_img({ 250,150 }, { 21,530,446,470 });
@@ -87,40 +87,15 @@ bool j1Scene::Start()
 	UI_Text_Box Test({ 500, 50, 150, 50 }, "Your Name");
 	text_box = (UI_Text_Box*)scene_1_screen->AddChild((UI_Element*)&Test, 20);
 
-	UI_IMG scroll_item({ 190,20 }, { 1000,880,19,20 });
+	UI_IMG scroll_item({ 197,20 }, { 1000,880,19,20 });
+	scroll_item.AdjustBox();
 	UI_IMG scroll_back({ 200,20 }, { 985,874,13,149 });
-
+	scroll_back.AdjustBox();
 	UI_Scroll Scroll({ 500, 350, 250, 250 }, { 20,20,200,200 }, scroll_item, scroll_back, blizzard_image);
 
 	scroll = (UI_Scroll*)scene_1_screen->AddChild((UI_Element*)&Scroll, 30);
 
 	App->gui->PushScreen(scene_1_screen);
-
-	/*
-	App->gui->PushScreen(scene_1_screen);
-	//UI Image test
-	UI_IMG test_image({ 50,50 },0);
-
-	
-	blizzard_image = (UI_IMG*)App->gui->Create_UI_Element(IMG, ((UI_Element*)&test_image));
-
-
-
-	//UI Interactive Text
-	UI_String test({ 250,40 }, "Hello", App->font->default);
-
-	UI_Interactive_String test_text({ 250,40 }, { 250,40,60,15 }, &test);
-	interactive_text = (UI_Interactive_String*)App->gui->Create_UI_Element(INTERACTIVE_STRING, ((UI_Element*)&test_text));
-
-
-	//UI Button test
-	UI_IMG tex_on({ 120,350 }, { 415,168,222,67 });
-	UI_IMG tex_off({ 120,350 }, { 647,168,221,67 });
-	UI_IMG tex_over({ 120,350 }, { 6,116,220,60 });
-	
-	UI_Button button_test({ 120,280 }, { 120, 350,220,60 }, tex_on, tex_off, tex_over);
-	button = (UI_Button*)App->gui->Create_UI_Element(BUTTON, ((UI_Element*)&button_test));
-	*/
 
 	return true;
 }
@@ -170,17 +145,19 @@ bool j1Scene::Update(float dt)
 
 
 	//Elements Drag
-	blizzard_child_child->Drag();
+	//blizzard_child_child->Drag();
 
-	blizzard_image->Drag();
+	//blizzard_image->Drag();
 
-	blizzard_child->Drag();
+	//blizzard_child->Drag();
 
 	window_img->Drag();
 	
 	text_box->Drag();
 
-	scroll->Drag();
+	if (scroll->MoveScroll(x_motion, y_motion) == false)
+		scroll->Drag();
+
 
 	// Hardware Input -------------------------------------
 	/*if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
@@ -252,7 +229,6 @@ bool j1Scene::PostUpdate()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
-	blizzard_child->Desactivate();
 
 	return true;
 }

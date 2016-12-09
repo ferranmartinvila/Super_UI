@@ -49,9 +49,10 @@ public:
 	//Functionality
 	bool			MouseIsIn()const;
 	void			SetPosition(const iPoint& new_pos);
-	void			MoveBox(int x_vel, int y_vel);
+	virtual void	MoveBox(int x_vel, int y_vel);
 	void			ResizeBox(const iPoint& new_size);
-	void			Drag();
+	bool			RectIsIn(const SDL_Rect* target, bool x_axis)const;
+	bool			Drag();
 	void			HandleInput();
 	void			Activate();
 	void			Desactivate();
