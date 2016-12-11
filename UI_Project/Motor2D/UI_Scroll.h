@@ -2,28 +2,50 @@
 #define _UI_SCROLL_
 
 #include "UI_Element.h"
-struct UI_String;
 #include "UI_IMG.h"
+
+enum SCROLL_TYPE {
+
+	VERTICAL,
+	LATERAL,
+	VERTICAL_INV,
+	LATERAL_INV
+
+};
 
 class UI_Scroll : public UI_Element {
 public:
 
-	UI_Scroll(const SDL_Rect& box, const SDL_Rect& ContentWindow, const UI_IMG& ScrollItem, const UI_IMG& ScrollBack);
+	UI_Scroll(const SDL_Rect& box, const SDL_Rect& ContentWindow, const UI_IMG& ScrollItem, const UI_IMG& ScrollBack, SCROLL_TYPE Scroll_Type = VERTICAL);
 	UI_Scroll(const UI_Scroll* copy);
 	~UI_Scroll();
 
 public:
 
-	SDL_Rect	ContentWindow;
-	UI_IMG		ScrollItem;
-	UI_IMG		ScrollBack;
-	bool		ScrollSelected;
+	SDL_Rect				ContentWindow;
+	SCROLL_TYPE				Scroll_Type;
+	uint					ContentLenght = 0;
+	
+	int						ScrollLastLocation = 0;
+	int						ScrollLocation = 0;
+
+	p2List<UI_Element*>		Items;
+	
+	UI_IMG					ScrollItem;
+	UI_IMG					ScrollBack;
+	bool					ScrollSelected;
 
 public:
 
+	//Game Loop
 	void	Draw(bool debug)const;
-	bool	MoveScroll(int mouse_y_motion, int mouse_x_motion);
-	void	MoveBox(int x_vel, int y_vel);
+	bool	Update();
+	void	HandleInput();
+
+
+	//Functionality
+	bool			MoveScroll(int mouse_y_motion, int mouse_x_motion);
+	UI_Element*		AddScrollItem(const UI_Element* new_item);
 
 };
 #endif

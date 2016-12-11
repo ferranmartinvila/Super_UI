@@ -8,7 +8,7 @@
 class UI_Text_Box : public UI_Element {
 public:
 
-	UI_Text_Box(const SDL_Rect& box, char* Text_entered = nullptr, bool IsPassword = false);
+	UI_Text_Box(const SDL_Rect& box,const UI_String& Text_entered, bool IsPassword = false);
 	UI_Text_Box(const UI_Text_Box* copy);
 	UI_Text_Box();
 
@@ -25,7 +25,6 @@ public:
 
 	//App Loop
 	void	Draw(bool debug)const;
-	bool	Update();
 	void	HandleInput();
 
 	//Functionality
@@ -34,7 +33,6 @@ public:
 	void	SetText(char* new_text);
 	void	SetCursorPos(uint position);
 	uint	GetCursorPos()const;
-	void	MoveBox(int x_vel, int y_vel);
 
 	/*
 	home/end

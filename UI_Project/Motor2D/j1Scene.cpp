@@ -56,25 +56,34 @@ bool j1Scene::Start()
 
 	//UI Scene build --------------------------------------
 	scene_1_screen = new UI_Element({ 0,0,App->win->screen_surface->w, App->win->screen_surface->h }, UNDEFINED, true);
-	// --	
-	/*UI_IMG test_image({ 25,50,100,100 }, 0);
-	test_image.AdjustBox();
-	blizzard_image = (UI_IMG*)scene_1_screen->AddChild((UI_Element*)&test_image);*/
 
-	//{ 415,168,222,67 }
 
-	UI_Text_Box Test({ 500, 50, 150, 50 }, "Your Name");
+
+	UI_String Text({ 0,0,0,0 }, "Your Name");
+	UI_Text_Box Test({ 500, 50, 150, 50 }, Text);
 	text_box = (UI_Text_Box*)scene_1_screen->AddChild((UI_Element*)&Test, 20);
 
-	UI_IMG scroll_item({ 197,20 }, { 1000,880,19,20 });
+	UI_IMG scroll_item({ 517,20 }, { 1000,880,19,20 });
 	scroll_item.AdjustBox();
-	UI_IMG scroll_back({ 200,20 }, { 985,874,13,149 });
+	UI_IMG scroll_back({ 520,20 }, { 985,874,13,149 });
 	scroll_back.AdjustBox();
 	
-	UI_Scroll Scroll({ 500, 350, 250, 250 }, { 20,20,200,200 }, scroll_item, scroll_back);
+	UI_Scroll Scroll({ 500, 350, 250, 250 }, { 10,20,200,220 }, scroll_item, scroll_back,VERTICAL);
 	scroll = (UI_Scroll*)scene_1_screen->AddChild((UI_Element*)&Scroll, 30);
 
+	UI_IMG scroll_element({ 0,220 }, { 415,168,222,67 });
+	scroll_element.AdjustBox();
 
+	scroll->AddScrollItem(&scroll_element);
+	
+
+	UI_Scroll Scroll_L({ 100, 350, 550, 250 }, { 10,20,300,200 }, scroll_item, scroll_back, VERTICAL);
+	scroll_lateral = (UI_Scroll*)scene_1_screen->AddChild((UI_Element*)&Scroll_L, 40);
+
+	UI_IMG scroll_element_2({ 20,240 }, { 415,168,222,67 });
+	scroll_element_2.AdjustBox();
+
+	scroll_lateral->AddScrollItem(&scroll_element_2);
 	/*UI_IMG win_img({ -45,0 }, { 21,530,446,470 });
 	win_img.AdjustBox();
 	window_img = (UI_IMG*)scroll->AddChild((UI_Element*)&win_img, 10);*/
@@ -150,6 +159,10 @@ bool j1Scene::Update(float dt)
 
 	if (scroll->MoveScroll(x_motion, y_motion) == false) {
 		scroll->Drag();
+	}
+
+	if (scroll_lateral->MoveScroll(x_motion, y_motion) == false) {
+		scroll_lateral->Drag();
 	}
 
 	// Hardware Input -------------------------------------

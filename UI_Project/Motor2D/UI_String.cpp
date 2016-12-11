@@ -22,16 +22,8 @@ UI_String::~UI_String()
 void UI_String::Draw(bool debug) const
 {
 	//This Draw
-	int x = this->box.x;
-	int y = this->box.y;
-	if (parent != nullptr) {
-		x += parent->box.x;
-		y += parent->box.y;
-	}
-	bool ret = App->render->Blit(App->font->Print(text.GetString(), { 255,255,255,255 }, text_font), x - App->render->camera.x, y - App->render->camera.y);
-	if (!ret) {
-		x += 70;
-	}
+	App->render->Blit(App->font->Print(text.GetString(), { 255,255,255,255 }, text_font), box.x - App->render->camera.x, box.y - App->render->camera.y);
+
 	//Childs Draw
 	DrawChilds(debug);
 }
@@ -70,5 +62,12 @@ uint UI_String::GetPixelLenght(uint end) const
 	int x, y;
 	App->font->CalcSize(segment, x, y, text_font);
 	return x;
+}
+
+void UI_String::DrawAt(int x, int y) const
+{
+	//This Draw
+	App->render->Blit(App->font->Print(text.GetString(), { 255,255,255,255 }, text_font), box.x + x - App->render->camera.x, box.y + y - App->render->camera.y);
+
 }
 

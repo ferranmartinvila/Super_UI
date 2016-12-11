@@ -1,26 +1,26 @@
-#include "UI_Text_Box.h"
 #include "j1App.h"
 #include "j1Render.h"
 #include "j1Gui.h"
 #include "j1Input.h"
-#include "j1Fonts.h"
-#include "p2Log.h"
 
-//Constructors
-UI_Text_Box::UI_Text_Box(const SDL_Rect& box, char* Text_entered, bool IsPassword) :UI_Element(box, TEXT_BOX), Text_entered(box,Text_entered), IsPassword(IsPassword) {}
+#include "UI_Text_Box.h"
 
-UI_Text_Box::UI_Text_Box(const UI_Text_Box* copy) : UI_Element(copy->box, copy->ui_type), Text_entered(copy->box,copy->Text_entered.GetString()) , IsPassword(copy->IsPassword) {}
+//Constructors ============================================
+UI_Text_Box::UI_Text_Box(const SDL_Rect& box, const UI_String& Text_entered, bool IsPassword) :UI_Element(box, TEXT_BOX), Text_entered(Text_entered), IsPassword(IsPassword) {}
+
+UI_Text_Box::UI_Text_Box(const UI_Text_Box* copy) : UI_Element(copy->box, copy->ui_type), Text_entered(copy->Text_entered) , IsPassword(copy->IsPassword) {}
 
 UI_Text_Box::UI_Text_Box() : UI_Element({0,0,0,0}, TEXT_BOX), IsPassword(false) {}
 
-//Destructor
+
+//Destructor ==============================================
 UI_Text_Box::~UI_Text_Box()
 {
 
 }
 
 
-// Game Loop ==========================
+// Game Loop ==============================================
 void UI_Text_Box::Draw(bool debug) const
 {
 	//Draw the debug Quad
@@ -30,18 +30,9 @@ void UI_Text_Box::Draw(bool debug) const
 	if(App->gui->ItemSelected == this)App->render->DrawQuad({ box.x + (int)Cursor_screen_pos, box.y + 0,3,15 }, 120, 50, 200);
 
 	//Draw the Text
-	if(Text_entered.GetLenght())Text_entered.Draw(false);
+	if (Text_entered.GetLenght())Text_entered.DrawAt(box.x, box.y);
 
 	DrawChilds(debug);
-}
-
-bool UI_Text_Box::Update()
-{
-	HandleInput();
-
-	bool ret = UpdateChilds();
-
-	return ret;
 }
 
 void UI_Text_Box::HandleInput()
@@ -79,6 +70,8 @@ void UI_Text_Box::HandleInput()
 	Cursor_screen_pos = Text_entered.GetPixelLenght(Cursor_pos);
 }
 
+
+// Functionality ==========================================
 char * UI_Text_Box::GetText() const
 {
 	return Text_entered.GetString();
@@ -102,20 +95,4 @@ void UI_Text_Box::SetCursorPos(uint position)
 uint UI_Text_Box::GetCursorPos() const
 {
 	return Cursor_pos;
-}
-
-void UI_Text_Box::MoveBox(int x_vel, int y_vel)
-{
-	box.x += x_vel;
-	box.y += y_vel;
-
-	Text_entered.MoveBox(x_vel, y_vel);
-
-	p2List_item<UI_Element*>* item = childs.start;
-	while (item) {
-
-		item->data->MoveBox(x_vel, y_vel);
-		item = item->next;
-
-	}
 }

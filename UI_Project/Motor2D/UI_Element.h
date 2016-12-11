@@ -44,16 +44,20 @@ public:
 	virtual bool	CleanUp();
 	bool			CleanUpChilds();
 	virtual void	Draw(bool debug)const;
+	virtual void	DrawAt(int x, int y)const;
 	void			DrawChilds(bool debug)const;
 
 	//Functionality
 	bool			MouseIsIn()const;
-	void			SetPosition(const iPoint& new_pos);
+	bool			MouseIsIn(int x, int y)const;
+	
+	void			SetBoxPosition(int new_pos_x, int new_pos_y);
 	virtual void	MoveBox(int x_vel, int y_vel);
 	void			ResizeBox(const iPoint& new_size);
-	bool			RectIsIn(const SDL_Rect* target, bool x_axis, int x_vel = 0, int y_vel = 0)const;
+	
+	bool			RectIsIn(const SDL_Rect* target, int x_vel, int y_vel, bool x_axis = false)const;
 	bool			Drag();
-	void			HandleInput();
+	virtual void	HandleInput();
 	void			Activate();
 	void			Desactivate();
 	

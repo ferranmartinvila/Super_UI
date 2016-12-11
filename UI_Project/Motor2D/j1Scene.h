@@ -61,6 +61,8 @@ private:
 	//New Data
 	UI_Text_Box*	text_box;
 	UI_Scroll*		scroll;
+	UI_Scroll*		scroll_lateral;
+	
 };
 
 #endif // __j1SCENE_H__

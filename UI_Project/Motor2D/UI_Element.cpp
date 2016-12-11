@@ -25,6 +25,8 @@ UI_Element::~UI_Element()
 // Game Loop ==============================================
 bool UI_Element::Update()
 {
+	HandleInput();
+
 	/*
 			This Update
 	*/
@@ -90,6 +92,13 @@ void UI_Element::Draw(bool debug)const
 	DrawChilds(debug);
 }
 
+void UI_Element::DrawAt(int x, int y) const
+{
+	/*
+			This Draw
+	*/
+}
+
 void UI_Element::DrawChilds(bool debug) const
 {
 	p2List_item<UI_Element*>* item = childs.start;
@@ -103,10 +112,18 @@ void UI_Element::DrawChilds(bool debug) const
 }
 
 // Functionality ==========================================
-void UI_Element::SetPosition(const iPoint & new_pos)
+void UI_Element::SetBoxPosition(int new_pos_x, int new_pos_y)
 {
-	box.x = new_pos.x;
-	box.y = new_pos.y;
+	box.x = new_pos_x;
+	box.y = new_pos_y;
+
+	p2List_item<UI_Element*>* item = childs.start;
+	while (item) {
+
+		item->data->SetBoxPosition(box.x + item->data->box.x, box.y + item->data->box.y);
+		item = item->next;
+
+	}
 }
 
 void UI_Element::MoveBox(int x_vel, int y_vel)
@@ -132,20 +149,43 @@ bool UI_Element::MouseIsIn() const
 	return ((box.x < x_pos && (box.x + box.w) > x_pos) && (box.y < ypos && (box.y + box.h) > ypos));
 }
 
+bool UI_Element::MouseIsIn(int x, int y) const
+{
+	int x_pos, ypos;
+
+	App->input->GetMousePosition(x_pos, ypos);
+
+	return ((box.x + x < x_pos && (box.x + x + box.w) > x_pos) && (box.y + y < ypos && (box.y + y + box.h) > ypos));
+}
+
 void UI_Element::ResizeBox(const iPoint & new_size)
 {
 	box.w = new_size.x;
 	box.h = new_size.y;
 }
 
-bool UI_Element::RectIsIn(const SDL_Rect * target, bool x_axis, int x_vel, int y_vel) const
+bool UI_Element::RectIsIn(const SDL_Rect* target, int x_vel, int y_vel, bool x_axis )const
 {
+	bool ret = false;
+	
+	
 	if (x_axis == false)
 	{
-		return bool((target->y <= box.y + y_vel && (target->y + target->h) >= (box.y + box.h + y_vel)));
+
+		ret = (target->y <= box.y + y_vel && (target->y + target->h) >= (box.y + box.h + y_vel));
+		
+		//Update Rect for Scroll Velecities v
+		
+		//Lateral Scroll Implementation
+		//Swap Selection
+		//Button Super Update!
+		//Init End Text
+		//Text Selection
+		
+		
 
 	}
-	else return false;
+	return ret;
 }
 
 bool UI_Element::Drag()
