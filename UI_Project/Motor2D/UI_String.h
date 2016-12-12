@@ -7,6 +7,7 @@
 
 struct p2SString;
 struct _TTF_Font;
+struct SDL_Texture;
 
 class UI_String : public UI_Element {
 public:
@@ -19,8 +20,9 @@ public:
 
 private:
 	
-	p2SString		text;
-	_TTF_Font*	text_font;
+	p2SString			text;
+	_TTF_Font*			text_font;
+	SDL_Texture*		text_texture;
 
 public:
 
