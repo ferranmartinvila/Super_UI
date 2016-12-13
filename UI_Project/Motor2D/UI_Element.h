@@ -57,6 +57,7 @@ public:
 	
 	bool			RectIsIn(const SDL_Rect* target, int x_vel, int y_vel, bool x_axis = false)const;
 	bool			Drag();
+	bool			Select();
 	virtual void	HandleInput();
 	void			Activate();
 	void			Desactivate();

@@ -217,6 +217,26 @@ bool UI_Element::Drag()
 	}
 }
 
+bool UI_Element::Select()
+{
+	//Get mouse left button state
+	j1KeyState mouse_button_1 = App->input->GetMouseButtonDown(1);
+	//Return if theres no input
+	if (mouse_button_1 == KEY_IDLE)return false;
+
+	if (MouseIsIn() == false && App->gui->ItemSelected == this && (mouse_button_1 == KEY_DOWN))
+	{
+		App->gui->ItemSelected = nullptr;
+		return false;
+	}
+	else if (MouseIsIn() && App->gui->ItemSelected != this && mouse_button_1 == KEY_DOWN && App->gui->upper_element == this->layer)
+	{
+		App->gui->ItemSelected = this;
+		return true;
+	}
+	return false;
+}
+
 void UI_Element::HandleInput()
 {
 }
