@@ -80,7 +80,7 @@ bool j1Scene::Start()
 	scroll->AddScrollItem(&scroll_element);*/
 	
 
-	UI_Scroll Scroll_L({ 100, 350, 550, 250 }, { 10,20,300,200 }, scroll_item, scroll_back, VERTICAL);
+	UI_Scroll Scroll_L({ 100, 350, 550, 250 }, { 10,20,300,200 }, scroll_item, scroll_back, VERTICAL, 1200);
 	scroll_lateral = (UI_Scroll*)scene_1_screen->AddChild((UI_Element*)&Scroll_L, 40);
 
 	UI_IMG scroll_element_2({ 20,240 }, { 415,168,222,67 });

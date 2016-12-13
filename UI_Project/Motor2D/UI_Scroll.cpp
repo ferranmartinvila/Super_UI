@@ -2,7 +2,7 @@
 #include "j1Render.h"
 #include "j1Input.h"
 #include "j1Gui.h"
-
+#include "p2Log.h"
 #include "UI_Scroll.h"
 #include "UI_IMG.h"
 #include "UI_String.h"
@@ -10,9 +10,9 @@
 #include "UI_Text_Box.h"
 
 //Constructors ============================================
-UI_Scroll::UI_Scroll(const SDL_Rect& box, const SDL_Rect& ContentWindow, const UI_IMG& ScrollItem, const UI_IMG& ScrollBack, SCROLL_TYPE Scroll_Type) :UI_Element(box, SCROLL), ContentWindow(ContentWindow), ScrollItem(ScrollItem), ScrollBack(ScrollBack),Scroll_Type(Scroll_Type) {}
+UI_Scroll::UI_Scroll(const SDL_Rect& box, const SDL_Rect& ContentWindow, const UI_IMG& ScrollItem, const UI_IMG& ScrollBack, SCROLL_TYPE Scroll_Type, uint MaxValue) :UI_Element(box, SCROLL), ContentWindow(ContentWindow), ScrollItem(ScrollItem), ScrollBack(ScrollBack), Scroll_Type(Scroll_Type), MaxValue(MaxValue) {}
 
-UI_Scroll::UI_Scroll(const UI_Scroll* copy) : UI_Element(copy->box, SCROLL), ContentWindow(copy->ContentWindow), ScrollItem(copy->ScrollItem), ScrollBack(copy->ScrollBack), Scroll_Type(copy->Scroll_Type) {}
+UI_Scroll::UI_Scroll(const UI_Scroll* copy) : UI_Element(copy->box, SCROLL), ContentWindow(copy->ContentWindow), ScrollItem(copy->ScrollItem), ScrollBack(copy->ScrollBack), Scroll_Type(copy->Scroll_Type), MaxValue(copy->MaxValue) {}
 
 
 //Destructors =============================================
@@ -31,7 +31,7 @@ void UI_Scroll::Draw(bool debug) const
 		App->render->DrawQuad({ box.x, box.y, box.w, box.h }, 150, 150, 0);
 		App->render->DrawQuad({ ContentWindow.x + box.x,ContentWindow.y + box.y,ContentWindow.w,ContentWindow.h }, 0, 50, 0);
 		App->render->DrawQuad({ box.x + ScrollBack.box.x,box.y + ScrollBack.box.y,ScrollBack.box.w, ScrollBack.box.h }, 90, 20, 0);
-		App->render->DrawQuad({ box.x + ScrollItem.box.x,box.y + ScrollItem.box.y,ScrollItem.box.w, ScrollItem.box.h }, 90, 20, 0);
+		App->render->DrawQuad({ box.x + ScrollItem.box.x,box.y + ScrollItem.box.y,ScrollItem.box.w, ScrollItem.box.h }, 90, 80, 110);
 	}
 
 	//Draw the scroll img ------------------
@@ -133,6 +133,8 @@ bool UI_Scroll::MoveScroll(int mouse_x_motion, int mouse_y_motion)
 		}
 		ScrollItem.MoveBox(0, mouse_y_motion);
 		ScrollLocation += mouse_y_motion;
+		Value += (((float)mouse_y_motion / (float)ContentLenght)* (float)MaxValue);
+		//LOG("%f", Value);
 	}
 
 	return ScrollSelected;
