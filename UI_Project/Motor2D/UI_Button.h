@@ -33,12 +33,15 @@ public:
 public:
 
 	//App Loop
-	void	Draw(bool debug)const;
-	bool	Update();
+	void			Draw(bool debug)const;
+	bool			Update();
+	void			HandleInput();
+
 
 	//Functionality
-	void			Change_State(BUTTON_STATE new_button_state);
-	void			HandleInput();
+	BUTTON_STATE	Change_State(BUTTON_STATE new_button_state);
+	BUTTON_STATE	Get_State()const;
+
 };
 
 #endif // __UI_BUTTON__

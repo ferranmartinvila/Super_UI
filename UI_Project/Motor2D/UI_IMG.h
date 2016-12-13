@@ -6,8 +6,8 @@
 class UI_IMG : public UI_Element {
 public:
 
-	UI_IMG(const SDL_Rect& box, int texture_id = -1, const SDL_Rect& texture_rect = {0,0,0,0});
-	UI_IMG(const SDL_Rect& box , const SDL_Rect& texture_rect = { 0,0,0,0 });
+	UI_IMG(const SDL_Rect& box, int texture_id = -1, const SDL_Rect& texture_rect = {0,0,0,0}, int x_img = 0, int y_img = 0);
+	UI_IMG(const SDL_Rect& box , const SDL_Rect& texture_rect = { 0,0,0,0 }, int x_img = 0, int y_img = 0);
 	UI_IMG(const UI_IMG* copy);
 	UI_IMG();
 
@@ -17,6 +17,7 @@ public:
 
 	SDL_Rect	texture_rect;
 	int			texture_id;
+	int			x_img, y_img;
 
 public:
 

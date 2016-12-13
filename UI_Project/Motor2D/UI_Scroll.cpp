@@ -30,7 +30,8 @@ void UI_Scroll::Draw(bool debug) const
 	{
 		App->render->DrawQuad({ box.x, box.y, box.w, box.h }, 150, 150, 0);
 		App->render->DrawQuad({ ContentWindow.x + box.x,ContentWindow.y + box.y,ContentWindow.w,ContentWindow.h }, 0, 50, 0);
-		
+		App->render->DrawQuad({ box.x + ScrollBack.box.x,box.y + ScrollBack.box.y,ScrollBack.box.w, ScrollBack.box.h }, 90, 20, 0);
+		App->render->DrawQuad({ box.x + ScrollItem.box.x,box.y + ScrollItem.box.y,ScrollItem.box.w, ScrollItem.box.h }, 90, 20, 0);
 	}
 
 	//Draw the scroll img ------------------

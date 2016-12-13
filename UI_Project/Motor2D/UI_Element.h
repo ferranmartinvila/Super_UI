@@ -46,6 +46,7 @@ public:
 	virtual void	Draw(bool debug)const;
 	virtual void	DrawAt(int x, int y)const;
 	void			DrawChilds(bool debug)const;
+	virtual void	HandleInput();
 
 	//Functionality
 	bool			MouseIsIn()const;
@@ -56,9 +57,11 @@ public:
 	void			ResizeBox(const iPoint& new_size);
 	
 	bool			RectIsIn(const SDL_Rect* target, int x_vel, int y_vel, bool x_axis = false)const;
+	
 	bool			Drag();
 	bool			Select();
-	virtual void	HandleInput();
+
+
 	void			Activate();
 	void			Desactivate();
 	

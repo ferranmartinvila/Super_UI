@@ -51,9 +51,16 @@ bool UI_Button::Update()
 	return true;
 }
 
-void UI_Button::Change_State(BUTTON_STATE new_button_state)
+BUTTON_STATE UI_Button::Change_State(BUTTON_STATE new_button_state)
 {
+	BUTTON_STATE last = button_state;
 	button_state = new_button_state;
+	return last;
+}
+
+BUTTON_STATE UI_Button::Get_State() const
+{
+	return button_state;
 }
 
 void UI_Button::HandleInput()

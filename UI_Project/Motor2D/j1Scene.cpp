@@ -59,22 +59,25 @@ bool j1Scene::Start()
 
 
 
-	UI_String Text({ 0,0,0,0 }, "Your Name");
+/*	UI_String Text({ 0,0,0,0 }, "Simple String");
+
+	scene_1_screen->AddChild((UI_Element*)&Text);
+
 	UI_Text_Box Test({ 500, 50, 150, 50 }, Text);
 	text_box = (UI_Text_Box*)scene_1_screen->AddChild((UI_Element*)&Test, 20);
-
+	*/
 	UI_IMG scroll_item({ 517,20 }, { 1000,880,19,20 });
 	scroll_item.AdjustBox();
 	UI_IMG scroll_back({ 520,20 }, { 985,874,13,149 });
 	scroll_back.AdjustBox();
 	
-	UI_Scroll Scroll({ 500, 350, 250, 250 }, { 10,20,200,220 }, scroll_item, scroll_back,VERTICAL);
+	/*UI_Scroll Scroll({ 500, 350, 250, 250 }, { 10,20,200,220 }, scroll_item, scroll_back,VERTICAL);
 	scroll = (UI_Scroll*)scene_1_screen->AddChild((UI_Element*)&Scroll, 30);
 
 	UI_IMG scroll_element({ 0,220 }, { 415,168,222,67 });
 	scroll_element.AdjustBox();
 
-	scroll->AddScrollItem(&scroll_element);
+	scroll->AddScrollItem(&scroll_element);*/
 	
 
 	UI_Scroll Scroll_L({ 100, 350, 550, 250 }, { 10,20,300,200 }, scroll_item, scroll_back, VERTICAL);
@@ -84,6 +87,7 @@ bool j1Scene::Start()
 	scroll_element_2.AdjustBox();
 
 	scroll_lateral->AddScrollItem(&scroll_element_2);
+
 	/*UI_IMG win_img({ -45,0 }, { 21,530,446,470 });
 	win_img.AdjustBox();
 	window_img = (UI_IMG*)scroll->AddChild((UI_Element*)&win_img, 10);*/
@@ -144,22 +148,12 @@ bool j1Scene::Update(float dt)
 
 	// Gui Input ------------------------------------------
 	App->gui->CalculateUpperElement(scene_1_screen,0);
-
-
-	//Elements Drag
-	//blizzard_child_child->Drag();
-
-	//blizzard_image->Drag();
-
-	//blizzard_child->Drag();
-
-	//window_img->Drag();
 	
-	text_box->Drag();
+	/*text_box->Select();
 
 	if (scroll->MoveScroll(x_motion, y_motion) == false) {
 		scroll->Drag();
-	}
+	}*/
 
 	if (scroll_lateral->MoveScroll(x_motion, y_motion) == false) {
 		scroll_lateral->Drag();

@@ -25,7 +25,8 @@ public:
 	SDL_Rect				ContentWindow;
 	SCROLL_TYPE				Scroll_Type;
 	uint					ContentLenght = 0;
-	
+	uint					Value = 0;
+
 	int						ScrollLastLocation = 0;
 	int						ScrollLocation = 0;
 
