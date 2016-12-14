@@ -53,7 +53,7 @@ void UI_String::PushString(char * new_text, uint position)
 	text_texture = App->font->Print(text.GetString(), { 255,255,255,255 }, text_font);
 }
 
-void UI_String::BackSpace(uint position)
+void UI_String::DeleteChar(uint position)
 {
 	text.DeleteChar(position);
 	text_texture = App->font->Print(text.GetString(), { 255,255,255,255 }, text_font);

@@ -46,18 +46,10 @@ private:
 
 	//Exam
 	UI_IMG* background;
-	UI_IMG* player1_avatar;
-	UI_IMG* player2_avatar;
 
 	UI_IMG* player1_item;
-	uint	p1_avatar_id = 0;
-	UI_IMG* player2_item;
-	uint	p2_avatar_id = 5;
-	uint*	current_id = 0;
 
-public:
-
-	void ChangeAvatar(UI_IMG* target);
+	UI_Text_Box* text_box;
 
 };
 

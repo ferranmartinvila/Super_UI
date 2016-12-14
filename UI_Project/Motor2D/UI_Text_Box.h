@@ -14,7 +14,7 @@ public:
 
 	~UI_Text_Box();
 
-public:
+private:
 	
 	bool		IsPassword;
 	UI_String	Text_entered;
@@ -31,9 +31,11 @@ public:
 	char*	GetText()const;
 	uint	GetTextLength()const;
 	void	SetText(char* new_text);
+	void	PushTextSegment(char* textsegment, uint position);
+	void	DeleteTextChar(uint position);
 	void	SetCursorPos(uint position);
 	uint	GetCursorPos()const;
-
+	
 	/*
 	home/end
 	*/

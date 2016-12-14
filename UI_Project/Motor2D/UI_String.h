@@ -34,7 +34,7 @@ public:
 	uint		GetLenght()const;
 	void		SetString(char* new_text);
 	void		PushString(char* new_text,uint position);
-	void		BackSpace(uint position);
+	void		DeleteChar(uint position);
 	uint		GetPixelLenght(uint end)const;
 	void		DrawAt(int x, int y)const;
 	bool		TokenizeString();

@@ -54,7 +54,7 @@ void UI_Text_Box::HandleInput()
 	//Backspace ===========================================
 	else if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN && Cursor_pos > 0)
 	{
-		Text_entered.BackSpace(Cursor_pos - 1);
+		Text_entered.DeleteChar(Cursor_pos - 1);
 		Cursor_pos--;
 		
 	}
@@ -62,7 +62,7 @@ void UI_Text_Box::HandleInput()
 	//Supr ===============================================
 	else if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN && Cursor_pos < Text_entered.GetLenght())
 	{
-		Text_entered.BackSpace(Cursor_pos);
+		Text_entered.DeleteChar(Cursor_pos);
 	}
 
 
@@ -85,6 +85,16 @@ uint UI_Text_Box::GetTextLength() const
 void UI_Text_Box::SetText(char * new_text)
 {
 	Text_entered.SetString(new_text);
+}
+
+void UI_Text_Box::PushTextSegment(char * textsegment, uint position)
+{
+	Text_entered.PushString(textsegment, position);
+}
+
+void UI_Text_Box::DeleteTextChar(uint position)
+{
+	Text_entered.DeleteChar(position);
 }
 
 void UI_Text_Box::SetCursorPos(uint position)

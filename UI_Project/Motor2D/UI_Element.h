@@ -20,7 +20,7 @@ enum UI_TYPE {
 class UI_Element {
 public:
 
-	UI_Element(const SDL_Rect& box = {0,0,0,0}, UI_TYPE ui_type = UNDEFINED, bool IsActive = true);
+	UI_Element(const SDL_Rect& box = {0,0,0,0}, UI_TYPE ui_type = UNDEFINED, bool IsActive = true, uint tab_num = 0);
 	UI_Element(const UI_Element* copy);
 	UI_Element();
 
@@ -30,6 +30,7 @@ public:
 
 	SDL_Rect				box;
 	uint					layer = 0;
+	uint					tab_num = 0;
 	mutable bool			IsActive;
 	enum UI_TYPE			ui_type;
 
@@ -65,7 +66,7 @@ public:
 	void			Activate();
 	void			Desactivate();
 	
-	UI_Element*		AddChild(const UI_Element* child, uint start_layer = 0);
+	void			AddChild(UI_Element* child, uint start_layer = 0);
 	bool			Delete_Child(UI_Element* child);
 	bool			Delete_Child(uint index);
 	UI_Element*		SetParent(const UI_Element* parent);

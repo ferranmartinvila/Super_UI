@@ -9,9 +9,9 @@
 #include "UI_Scroll.h"
 
 //Constructors
-UI_Element::UI_Element(const SDL_Rect& box, UI_TYPE ui_type, bool IsActive) :box(box), ui_type(ui_type), IsActive(IsActive) {}
+UI_Element::UI_Element(const SDL_Rect& box, UI_TYPE ui_type, bool IsActive, uint tab_num) :box(box), ui_type(ui_type), IsActive(IsActive), tab_num(tab_num) {}
 
-UI_Element::UI_Element(const UI_Element* copy) : box(copy->box), ui_type(copy->ui_type), IsActive(copy->IsActive) {}
+UI_Element::UI_Element(const UI_Element* copy) : box(copy->box), ui_type(copy->ui_type), IsActive(copy->IsActive), tab_num(copy->tab_num) {}
 
 UI_Element::UI_Element() : box({0,0,0,0}), ui_type(UNDEFINED), IsActive(false) {}
 
@@ -254,28 +254,14 @@ void UI_Element::Desactivate()
 
 
 // ==========================
-UI_Element * UI_Element::AddChild(const UI_Element* child, uint start_layer)
+void UI_Element::AddChild(UI_Element* child, uint start_layer)
 {
-	//Pointer to new
-	UI_Element* new_child = nullptr;
-
-	//Create the new element
-	switch (child->ui_type) {
-		case UI_TYPE::IMG:					new_child = new UI_IMG(((UI_IMG*)child));										break;
-		case UI_TYPE::STRING:				new_child = new UI_String((UI_String*)child);									break;
-		case UI_TYPE::BUTTON:				new_child = new UI_Button((UI_Button*)child);									break;
-		case UI_TYPE::TEXT_BOX:				new_child = new UI_Text_Box((UI_Text_Box*)child);								break;
-		case UI_TYPE::SCROLL:				new_child = new UI_Scroll((UI_Scroll*)child);									break;
-	}
-
 	//Set the new element parent
-	new_child->SetParent(this);
+	child->SetParent(this);
 	//Set child layer
-	new_child->layer = this->layer + 1 + start_layer;
+	child->layer = this->layer + 1 + start_layer;
 	//Add the new element to the list of this childs
-	this->childs.add(new_child);
-
-	return new_child;
+	childs.add(child);
 }
 
 bool UI_Element::Delete_Child(UI_Element* child)

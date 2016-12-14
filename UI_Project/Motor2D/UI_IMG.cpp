@@ -4,9 +4,7 @@
 #include "j1Gui.h"
 
 //Constructors
-UI_IMG::UI_IMG(const SDL_Rect& box, int texture_id, const SDL_Rect& texture_rect, int x_img, int y_img) : UI_Element(box, IMG), texture_rect(texture_rect), texture_id(texture_id), x_img(x_img), y_img(y_img) {}
-
-UI_IMG::UI_IMG(const SDL_Rect& box, const SDL_Rect & texture_rect, int x_img, int y_img) : UI_Element(box, IMG), texture_rect(texture_rect), texture_id(-1), x_img(x_img), y_img(y_img) {}
+UI_IMG::UI_IMG(const SDL_Rect& box, const SDL_Rect& texture_rect, int texture_id, int x_img, int y_img) : UI_Element(box, IMG), texture_rect(texture_rect), texture_id(texture_id), x_img(x_img), y_img(y_img) {}
 
 UI_IMG::UI_IMG(const UI_IMG* copy) : UI_Element(copy->box, IMG), texture_rect(copy->texture_rect), texture_id(copy->texture_id), x_img(copy->x_img), y_img(copy->y_img) {}
 

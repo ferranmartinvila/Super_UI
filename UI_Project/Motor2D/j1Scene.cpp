@@ -41,25 +41,17 @@ bool j1Scene::Start()
 	//UI Scene build --------------------------------------
 	scene_1_screen = new UI_Element({ 0,0,App->win->screen_surface->w, App->win->screen_surface->h }, UNDEFINED, true);
 
+	text_box = new UI_Text_Box({ 250,350,50,15 }, UI_String({ 0,0 }, "Your Name", App->font->default));
+	scene_1_screen->AddChild(text_box);
 
-	UI_IMG back({ 0,0 },2, { 970, 1844, 768, 579 });
-	background = (UI_IMG*)scene_1_screen->AddChild((UI_Element*)&back);
-
-	UI_IMG p1_item({ 240,78 }, 2, { 1485, 110, 72, 109 });
-	player1_item = (UI_IMG*)background->AddChild((UI_Element*)&p1_item);
-
-	UI_IMG p2_item({ 312,174 }, 2, { 1560, 110, 72, 109 });
-	player2_item = (UI_IMG*)background->AddChild((UI_Element*)&p2_item);
-
-	UI_IMG p1_avatar({ 24, 61 }, 2,{ 925, 605, 168, 279 });
-	player1_avatar = (UI_IMG*)background->AddChild((UI_Element*)&p1_avatar);
-
-	UI_IMG p2_avatar({ 543, 61 }, 2, { 1093, 884, 168, 279 });
-	player2_avatar = (UI_IMG*)background->AddChild((UI_Element*)&p2_avatar);
+	/*background = new UI_IMG({ 0,0 }, { 970, 1844, 768, 579 }, 2);
+	scene_1_screen->AddChild((UI_Element*)background);
+	*/
+	player1_item = new UI_IMG({ 240,78 }, { 1485, 110, 72, 109 }, 2);
+	scene_1_screen->AddChild((UI_Element*)player1_item);
 
 	App->gui->PushScreen(scene_1_screen);
 	App->gui->ItemSelected = player1_item;
-	current_id = &p1_avatar_id;
 
 	return true;
 }
@@ -73,61 +65,10 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
+	text_box->Select();
 
 	// Gui Input ------------------------------------------
 	App->gui->CalculateUpperElement(scene_1_screen,0);
-	bool action = false;
-
-	//Swap Selection
-	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN)
-	{
-		if (App->gui->ItemSelected == player1_item)
-		{
-			App->gui->ItemSelected = player2_item;
-			current_id = &p2_avatar_id;
-		}
-		else
-		{
-			App->gui->ItemSelected = player1_item;
-			current_id = &p1_avatar_id;
-		}
-	}
-
-	//Move Right
-	else if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN && App->gui->ItemSelected->box.x < 450)
-	{
-		App->gui->ItemSelected->MoveBox(72, 0);
-		*current_id += 1;
-		action = true;
-	}
-	//Move Left
-	else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN && App->gui->ItemSelected->box.x > 250)
-	{
-		App->gui->ItemSelected->MoveBox(-72, 0);
-		*current_id -= 1;
-		action = true;
-	}
-	//Move Up
-	else if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN && App->gui->ItemSelected->box.y > 170)
-	{
-		App->gui->ItemSelected->MoveBox(0, -96);
-		*current_id -= 4;
-		action = true;
-	}
-	//Move Down
-	else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN && App->gui->ItemSelected->box.y < 170)
-	{
-		App->gui->ItemSelected->MoveBox(0, 96);
-		*current_id += 4;
-		action = true;
-	}
-
-	//Change current player avatar
-	if (action)
-	{
-		if (App->gui->ItemSelected == player1_item)ChangeAvatar(player1_avatar);
-		else ChangeAvatar(player2_avatar);
-	}
 
 	return true;
 }
@@ -149,18 +90,4 @@ bool j1Scene::CleanUp()
 	LOG("Freeing scene");
 
 	return true;
-}
-
-void j1Scene::ChangeAvatar(UI_IMG * target)
-{
-	switch (*current_id) {
-	case 0:		target->ChangeTextureRect({ 925, 605, 168, 279 });		break;
-	case 1:		target->ChangeTextureRect({ 1093, 605, 168, 279 });		break;
-	case 2:		target->ChangeTextureRect({ 1261, 605, 168, 279 });		break;
-	case 3:		target->ChangeTextureRect({ 1429, 605, 168, 279 });		break;
-	case 4:		target->ChangeTextureRect({ 925, 884, 168, 279 });		break;
-	case 5:		target->ChangeTextureRect({ 1093, 884, 168, 279 });		break;
-	case 6:		target->ChangeTextureRect({ 1261, 884, 168, 279 });		break;
-	case 7:		target->ChangeTextureRect({ 1429, 884, 168, 279 });		break;
-	}
 }
