@@ -38,7 +38,7 @@ void UI_Scroll::Draw(bool debug) const
 	ScrollBack.DrawAt(box.x,box.y);
 	ScrollItem.DrawAt(box.x, box.y);
 	
-	//Draw the items -----------------------
+	//Draw scroll items --------------------
 	SDL_Rect view_port = { ContentWindow.x + box.x, ContentWindow.y + box.y, ContentWindow.w,ContentWindow.h };
 	SDL_RenderSetViewport(App->render->renderer,&view_port);
 	p2List_item<UI_Element*>* item = Items.start;
@@ -139,42 +139,27 @@ bool UI_Scroll::MoveScroll(int mouse_x_motion, int mouse_y_motion)
 	return ScrollSelected;
 }
 
-UI_Element* UI_Scroll::AddScrollItem(const UI_Element* new_item)
+void UI_Scroll::AddScrollItem(UI_Element* new_item)
 {
-	//Pointer to new item
-	UI_Element* item = nullptr;
-
-	//Create the new item
-	switch (new_item->ui_type)
-	{
-	case UI_TYPE::IMG:					item = new UI_IMG(((UI_IMG*)new_item));						break;
-	case UI_TYPE::STRING:				item = new UI_String((UI_String*)new_item);					break;
-	case UI_TYPE::BUTTON:				item = new UI_Button((UI_Button*)new_item);					break;
-	case UI_TYPE::TEXT_BOX:				item = new UI_Text_Box((UI_Text_Box*)new_item);				break;
-	case UI_TYPE::SCROLL:				item = new UI_Scroll((UI_Scroll*)new_item);					break;
-	}
-
 	//Calculate the size for the scroll
 	int lenght = 0;
 	if(Scroll_Type == VERTICAL || Scroll_Type == VERTICAL_INV)
 	{
 		//Vertical Scroll Case
-		lenght = item->box.y - (ContentWindow.h - ContentWindow.y) + item->box.h;
+		lenght = new_item->box.y - (ContentWindow.h - ContentWindow.y) + new_item->box.h;
 		if (lenght > 0 && lenght > ContentLenght)ContentLenght = lenght;
 	}
 		//Lateral Scroll Case
 	else
 	{
-		lenght = item->box.x - (ContentWindow.w - ContentWindow.x) + item->box.w;
+		lenght = new_item->box.x - (ContentWindow.w - ContentWindow.x) + new_item->box.w;
 		if (lenght > 0 && lenght > ContentLenght)ContentLenght = lenght;
 
 	}
 	//Set item layer
-	item->layer = this->layer + 1;
+	new_item->layer = this->layer + 1;
 
 	//Add the new item to the list of items
-	this->Items.add(item);
-
-	return item;
+	this->Items.add(new_item);
 }
 

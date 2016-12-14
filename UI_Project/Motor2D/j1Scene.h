@@ -44,10 +44,10 @@ private:
 	//Scene
 	UI_Element* scene_1_screen;
 
-	//Exam
-	UI_IMG* background;
+	UI_String* text;
 
-	UI_IMG* player1_item;
+	UI_IMG*		player1_item;
+	UI_Scroll*	scroll;
 
 	UI_Text_Box* text_box;
 

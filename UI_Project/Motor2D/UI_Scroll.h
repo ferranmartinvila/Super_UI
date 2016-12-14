@@ -47,7 +47,7 @@ public:
 
 	//Functionality
 	bool			MoveScroll(int mouse_y_motion, int mouse_x_motion);
-	UI_Element*		AddScrollItem(const UI_Element* new_item);
+	void			AddScrollItem(UI_Element* new_item);
 
 };
 #endif

@@ -6,7 +6,7 @@
 #include "UI_Text_Box.h"
 
 //Constructors ============================================
-UI_Text_Box::UI_Text_Box(const SDL_Rect& box, const UI_String& Text_entered, uint Cursor_w, uint Cursor_h, bool IsPassword, const Color& Cursor_color) :UI_Element(box, TEXT_BOX), Text_entered(Text_entered), Cursor_w(Cursor_w), Cursor_h(Cursor_h), IsPassword(IsPassword), Cursor_color(Cursor_color) {}
+UI_Text_Box::UI_Text_Box(const SDL_Rect& box, const UI_String& Text_entered, uint Cursor_w, uint Cursor_h, bool IsPassword, const SDL_Color& Cursor_color) :UI_Element(box, TEXT_BOX), Text_entered(Text_entered), Cursor_w(Cursor_w), Cursor_h(Cursor_h), IsPassword(IsPassword), Cursor_color(Cursor_color) {}
 
 UI_Text_Box::UI_Text_Box(const UI_Text_Box* copy) : UI_Element(copy->box, copy->ui_type), Text_entered(copy->Text_entered) , IsPassword(copy->IsPassword) {}
 
@@ -27,7 +27,7 @@ void UI_Text_Box::Draw(bool debug) const
 	if (debug)App->render->DrawQuad({ box.x, box.y, box.w, box.h }, 25, 25, 25);
 	
 	//Draw the cursor
-	if (App->gui->ItemSelected == this)App->render->DrawQuad({ box.x + (int)Cursor_screen_pos, box.y ,(int)Cursor_w,(int)Cursor_h }, Cursor_color.r, Cursor_color.g, Cursor_color.b);
+	if (App->gui->ItemSelected == this)App->render->DrawQuad({ box.x + (int)Cursor_screen_pos, box.y ,(int)Cursor_w,(int)Cursor_h }, Cursor_color.r, Cursor_color.g, Cursor_color.b, Cursor_color.a);
 
 	//Draw the Text
 	if (Text_entered.GetLenght() > 0)Text_entered.DrawAt(box.x, box.y);
