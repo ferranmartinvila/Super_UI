@@ -20,7 +20,7 @@ enum UI_TYPE {
 class UI_Element {
 public:
 
-	UI_Element(const SDL_Rect& box = {0,0,0,0}, UI_TYPE ui_type = UNDEFINED, bool IsActive = true, uint tab_num = 0);
+	UI_Element(const SDL_Rect& box = {0,0,0,0}, UI_TYPE ui_type = UNDEFINED, bool IsActive = true);
 	UI_Element(const UI_Element* copy);
 	UI_Element();
 
@@ -31,7 +31,7 @@ public:
 	SDL_Rect				box;
 	uint					layer = 0;
 	uint					tab_num = 0;
-	mutable bool			IsActive;
+	mutable bool			IsActive = true;
 	enum UI_TYPE			ui_type;
 
 	UI_Element*				parent;
@@ -50,8 +50,7 @@ public:
 	virtual void	HandleInput();
 
 	//Functionality
-	bool			MouseIsIn()const;
-	bool			MouseIsIn(int x, int y)const;
+	bool			MouseIsIn(int x = 0, int y = 0)const;
 	
 	void			SetBoxPosition(int new_pos_x, int new_pos_y);
 	virtual void	MoveBox(int x_vel, int y_vel);
@@ -61,7 +60,7 @@ public:
 	
 	bool			Drag();
 	bool			Select();
-
+	void			SetTabable();
 
 	void			Activate();
 	void			Desactivate();

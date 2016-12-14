@@ -39,27 +39,34 @@ private:
 
 
 	//UI elements
-	p2List<UI_Element*>		screen;
+	p2List<UI_Element*>		screens;
 
 	//UI Textures
 	SDL_Texture*			atlas;
 	p2List<SDL_Texture*>	ui_textures;
 	p2SString				atlas_file_name;
 
-
+	uint					tabable_elements = 0;
 
 public:
 
 	mutable UI_Element*			ItemSelected = nullptr;
 	mutable uint				upper_element = 0;
+	
 
 	//UI textures functions
 	const SDL_Texture*	GetAtlas() const;
 	SDL_Texture*		Get_UI_Texture(uint tex_id);
 
+	//UI tab functions
+	uint				GetTabNumber()const;
+	void				SetTabNumber(uint new_tab_num);
+	UI_Element*			GetTabElement(UI_Element* screen, uint index)const;
+
 	//UI elements functions
 	uint				PushScreen(const UI_Element* new_screen);
-	uint				CalculateUpperElement(const UI_Element* parent,uint layer)const;
+	UI_Element*			GetActiveScreen()const;
+	uint				CalculateUpperElement(const UI_Element* parent,uint layer = 0)const;
 
 };
 

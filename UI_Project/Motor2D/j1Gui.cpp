@@ -48,7 +48,7 @@ bool j1Gui::PreUpdate()
 {
 	bool ret = true;
 
-	p2List_item<UI_Element*>* item = screen.start;
+	p2List_item<UI_Element*>* item = screens.start;
 	while (item) {
 
 		if (item->data->IsActive)
@@ -66,9 +66,16 @@ bool j1Gui::PostUpdate()
 	//Debug Mode ------------------------------------------
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN && ItemSelected == nullptr)debug = !debug;
 
+	//Tab Input
+	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN)
+	{
+		if (ItemSelected == NULL)ItemSelected = GetTabElement(screens.start->data, 1);
+		else ItemSelected = GetTabElement(screens.start->data, ItemSelected->tab_num + 1);
+		
+	}
 
 	// Update & draw the UI screens
-	p2List_item<UI_Element*>* item = screen.start;
+	p2List_item<UI_Element*>* item = screens.start;
 	while (item) {
 
 		if (item->data->IsActive)
@@ -85,7 +92,7 @@ bool j1Gui::CleanUp()
 {
 	LOG("Freeing GUI");
 	bool ret = true;
-	p2List_item<UI_Element*>* item = screen.end;
+	p2List_item<UI_Element*>* item = screens.end;
 	p2List_item<UI_Element*>* item_prev = nullptr;
 
 	if (item != nullptr)item_prev = item->prev;
@@ -94,7 +101,7 @@ bool j1Gui::CleanUp()
 		//CleanUp the item childs
 		ret = item->data->CleanUp();
 		//Delete all item data
-		screen.del(item);
+		screens.del(item);
 
 		item = item_prev;
 		if(item_prev != nullptr)item_prev = item_prev->prev;
@@ -120,10 +127,52 @@ SDL_Texture * j1Gui::Get_UI_Texture(uint tex_id)
 	return ui_textures.At(tex_id)->data;
 }
 
+uint j1Gui::GetTabNumber() const
+{
+	return tabable_elements;
+}
+
+void j1Gui::SetTabNumber(uint new_tab_num)
+{
+	tabable_elements = new_tab_num;
+}
+
+UI_Element * j1Gui::GetTabElement(UI_Element* screen, uint index) const
+{
+	UI_Element* tab_element = nullptr;
+
+	p2List_item<UI_Element*>* item = screen->childs.start;
+
+	while (item) {
+
+		tab_element = GetTabElement(item->data,index);
+
+		if (item->data->tab_num == index && item->data->IsActive)
+		{
+			tab_element = item->data;
+			break;
+		}
+		item = item->next;
+
+	}
+	return tab_element;
+}
+
 uint j1Gui::PushScreen(const UI_Element* new_screen)
 {
-	screen.add((UI_Element*)new_screen);
-	return screen.count();
+	screens.add((UI_Element*)new_screen);
+	return screens.count();
+}
+
+UI_Element * j1Gui::GetActiveScreen() const
+{
+	p2List_item<UI_Element*>* item = screens.start;
+	while (item)
+	{
+		if (item->data->IsActive)return item->data;
+		item = item->next;
+	}
+	return nullptr;
 }
 
 uint j1Gui::CalculateUpperElement(const UI_Element* parent, uint layer) const

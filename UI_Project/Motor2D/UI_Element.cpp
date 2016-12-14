@@ -9,7 +9,7 @@
 #include "UI_Scroll.h"
 
 //Constructors
-UI_Element::UI_Element(const SDL_Rect& box, UI_TYPE ui_type, bool IsActive, uint tab_num) :box(box), ui_type(ui_type), IsActive(IsActive), tab_num(tab_num) {}
+UI_Element::UI_Element(const SDL_Rect& box, UI_TYPE ui_type, bool IsActive) :box(box), ui_type(ui_type), IsActive(IsActive) {}
 
 UI_Element::UI_Element(const UI_Element* copy) : box(copy->box), ui_type(copy->ui_type), IsActive(copy->IsActive), tab_num(copy->tab_num) {}
 
@@ -140,15 +140,6 @@ void UI_Element::MoveBox(int x_vel, int y_vel)
 	}
 }
 
-bool UI_Element::MouseIsIn() const
-{	
-	int x_pos,ypos;
-
-	App->input->GetMousePosition(x_pos, ypos);
-
-	return ((box.x < x_pos && (box.x + box.w) > x_pos) && (box.y < ypos && (box.y + box.h) > ypos));
-}
-
 bool UI_Element::MouseIsIn(int x, int y) const
 {
 	int x_pos, ypos;
@@ -168,21 +159,10 @@ bool UI_Element::RectIsIn(const SDL_Rect* target, int x_vel, int y_vel, bool x_a
 {
 	bool ret = false;
 	
-	
 	if (x_axis == false)
 	{
 
 		ret = (target->y <= box.y + y_vel && (target->y + target->h) >= (box.y + box.h + y_vel));
-		
-		//Update Rect for Scroll Velecities v
-		
-		//Lateral Scroll Implementation
-		//Swap Selection
-		//Button Super Update!
-		//Init End Text
-		//Text Selection
-		
-		
 
 	}
 	return ret;
@@ -237,8 +217,15 @@ bool UI_Element::Select()
 	return false;
 }
 
+void UI_Element::SetTabable()
+{
+	tab_num = App->gui->GetTabNumber() + 1;
+	App->gui->SetTabNumber(tab_num);
+}
+
 void UI_Element::HandleInput()
 {
+
 }
 
 void UI_Element::Activate()

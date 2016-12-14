@@ -41,13 +41,13 @@ bool j1Scene::Start()
 	//UI Scene build --------------------------------------
 	scene_1_screen = new UI_Element({ 0,0,App->win->screen_surface->w, App->win->screen_surface->h }, UNDEFINED, true);
 
-	text_box = new UI_Text_Box({ 250,350,50,15 }, UI_String({ 0,0 }, "Your Name", App->font->default));
+	text_box = new UI_Text_Box({ 250,350,50,15 }, UI_String({ 0,0 }, "Your Name", App->font->default), 3, 9, false, Pink);
+	text_box->SetTabable();
 	scene_1_screen->AddChild(text_box);
 
-	/*background = new UI_IMG({ 0,0 }, { 970, 1844, 768, 579 }, 2);
-	scene_1_screen->AddChild((UI_Element*)background);
-	*/
 	player1_item = new UI_IMG({ 240,78 }, { 1485, 110, 72, 109 }, 2);
+	player1_item->AdjustBox();
+	player1_item->SetTabable();
 	scene_1_screen->AddChild((UI_Element*)player1_item);
 
 	App->gui->PushScreen(scene_1_screen);
@@ -65,10 +65,16 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
+	UI_Element* tab = App->gui->GetTabElement(scene_1_screen, 3);
 	text_box->Select();
 
 	// Gui Input ------------------------------------------
-	App->gui->CalculateUpperElement(scene_1_screen,0);
+	App->gui->CalculateUpperElement(scene_1_screen);
+
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN && App->gui->ItemSelected == player1_item){
+	
+		this->player1_item->MoveBox(5, 0);
+	}
 
 	return true;
 }
