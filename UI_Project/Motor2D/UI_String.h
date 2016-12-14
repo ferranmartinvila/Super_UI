@@ -37,6 +37,7 @@ public:
 	void		BackSpace(uint position);
 	uint		GetPixelLenght(uint end)const;
 	void		DrawAt(int x, int y)const;
+	bool		TokenizeString();
 };
 
 #endif

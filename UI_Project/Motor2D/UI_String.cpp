@@ -74,3 +74,12 @@ void UI_String::DrawAt(int x, int y) const
 
 }
 
+bool UI_String::TokenizeString()
+{
+	char*	copy = (char*)text.GetString();
+	//SDL_CreateTexture()
+	//SDL_BlendMode()
+	//SDL_RenderTarget()
+	return false;
+}
+

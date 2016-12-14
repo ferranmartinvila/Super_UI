@@ -80,3 +80,8 @@ void UI_IMG::DrawAt(int x, int y) const
 
 		}
 }
+
+void UI_IMG::ChangeTextureRect(SDL_Rect new_rect)
+{
+	texture_rect = new_rect;
+}

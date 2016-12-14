@@ -37,7 +37,6 @@ void UI_Scroll::Draw(bool debug) const
 	//Draw the scroll img ------------------
 	ScrollBack.DrawAt(box.x,box.y);
 	ScrollItem.DrawAt(box.x, box.y);
-
 	
 	//Draw the items -----------------------
 	SDL_Rect view_port = { ContentWindow.x + box.x, ContentWindow.y + box.y, ContentWindow.w,ContentWindow.h };

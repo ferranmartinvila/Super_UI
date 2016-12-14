@@ -24,6 +24,7 @@ public:
 	void				Draw(bool debug)const;
 	SDL_Rect			AdjustBox();
 	void				DrawAt(int x, int y)const;
+	void				ChangeTextureRect(SDL_Rect new_rect);
 };
 
 #endif // __UI_IMG__

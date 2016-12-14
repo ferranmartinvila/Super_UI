@@ -41,28 +41,24 @@ public:
 
 private:
 
-	SDL_Texture* debug_tex;
-
-private:
-
 	//Scene
 	UI_Element* scene_1_screen;
 
-	//Scene Items
-	UI_IMG*		window_img;
-	UI_Button*	button;
+	//Exam
+	UI_IMG* background;
+	UI_IMG* player1_avatar;
+	UI_IMG* player2_avatar;
 
-	//UI_Interactive_String* interactive_text;
-	UI_IMG* blizzard_image;
-	UI_IMG* blizzard_child;
-	UI_IMG* blizzard_child_child;
+	UI_IMG* player1_item;
+	uint	p1_avatar_id = 0;
+	UI_IMG* player2_item;
+	uint	p2_avatar_id = 5;
+	uint*	current_id = 0;
 
+public:
 
-	//New Data
-	UI_Text_Box*	text_box;
-	UI_Scroll*		scroll;
-	UI_Scroll*		scroll_lateral;
-	
+	void ChangeAvatar(UI_IMG* target);
+
 };
 
 #endif // __j1SCENE_H__

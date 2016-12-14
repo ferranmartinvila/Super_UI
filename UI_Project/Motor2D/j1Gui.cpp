@@ -38,7 +38,7 @@ bool j1Gui::Start()
 	//Load other textures
 	ui_textures.add(App->tex->Load("gui/BlizzardLogo.png"));
 	ui_textures.add(App->tex->Load("gui/WOWLogo.png"));
-	
+	ui_textures.add(App->tex->Load("gui/sf2.png"));
 
 	return true;
 }
