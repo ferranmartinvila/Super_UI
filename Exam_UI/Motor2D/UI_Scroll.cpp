@@ -146,7 +146,7 @@ void UI_Scroll::AddScrollItem(UI_Element* new_item)
 	if(Scroll_Type == VERTICAL || Scroll_Type == VERTICAL_INV)
 	{
 		//Vertical Scroll Case
-		lenght = new_item->box.y - (ContentWindow.h - ContentWindow.y) + new_item->box.h;
+		lenght = new_item->box.y + new_item->box.h - ContentWindow.y;
 		if (lenght > 0 && lenght > ContentLenght)ContentLenght = lenght;
 	}
 		//Lateral Scroll Case

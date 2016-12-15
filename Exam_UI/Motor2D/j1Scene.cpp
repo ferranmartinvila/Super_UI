@@ -47,7 +47,7 @@ bool j1Scene::Start()
 	scene_1_screen->AddChild(text_box);
 	*/
 
-	player1_item = new UI_IMG({ 240,78 }, { 1485, 110, 72, 109 }, 2);
+	player1_item = new UI_IMG({ 20,450 }, { 1485, 110, 72, 109 },0);
 	player1_item->AdjustBox();
 	/*player1_item->SetTabable();
 	scene_1_screen->AddChild((UI_Element*)player1_item);
@@ -61,11 +61,11 @@ bool j1Scene::Start()
 	UI_IMG scroll_back({ 520,20 }, { 985,874,13,149 });
 	scroll_back.AdjustBox();
 	*/
-
-	scroll = new UI_Scroll({ 250,250,450,200 }, { 25,25,100,50 }, UI_IMG({ 197,20 }, { 1000,880,19,20 }), UI_IMG({ 200,20 }, { 985,874,13,149 }), VERTICAL, 1500);
+	UI_IMG item({ 397,20,19,40 }, { 1000,880,19,20 }, -1, 0, 20);
+	scroll = new UI_Scroll({ 250,250,450,350 }, { 20,20,300,250 }, item, UI_IMG({ 400,20 }, { 985,874,13,149 }), VERTICAL, 1500);
 	scroll->AddScrollItem(player1_item);
 	scroll->ScrollBack.AdjustBox();
-	scroll->ScrollItem.AdjustBox();
+	//scroll->ScrollItem.AdjustBox();
 	scroll->SetTabable();
 	scene_1_screen->AddChild(scroll);
 
