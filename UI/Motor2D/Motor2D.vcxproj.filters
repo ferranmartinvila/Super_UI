@@ -70,6 +70,9 @@
     <ClCompile Include="UI_Image.cpp">
       <Filter>Desenvolupament  ========\UserInteraface\UI_Elements</Filter>
     </ClCompile>
+    <ClCompile Include="j1Console.cpp">
+      <Filter>Desenvolupament  ========\UserInteraface\Console</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -159,6 +162,9 @@
     <ClInclude Include="UI_Image.h">
       <Filter>Desenvolupament  ========\UserInteraface\UI_Elements</Filter>
     </ClInclude>
+    <ClInclude Include="j1Console.h">
+      <Filter>Desenvolupament  ========\UserInteraface\Console</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">
@@ -184,6 +190,9 @@
     </Filter>
     <Filter Include="Desenvolupament  ========\UserInteraface\UI_Elements">
       <UniqueIdentifier>{284cbc2b-c97f-4e37-9735-d7d07abfd941}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Desenvolupament  ========\UserInteraface\Console">
+      <UniqueIdentifier>{c2b1b5cb-f746-4f36-ba24-80ebceee0eb7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
