@@ -3,40 +3,40 @@
 #include "j1Fonts.h"
 #include "j1Render.h"
 
-//Contructors
+//Contructors =============================================
 UI_String::UI_String(const SDL_Rect& box, char * text, uint font_size, const SDL_Color& text_color, _TTF_Font * text_font) : UI_Element(box, STRING), text(text), text_font(text_font),font_size(font_size), text_color(text_color), text_texture(App->font->Print(this->text.GetString(), text_color, text_font)) {}
 
 UI_String::UI_String(const UI_String* copy) : UI_Element(copy->box, STRING), text(copy->text), text_font(copy->text_font), text_texture(copy->text_texture), text_color(copy->text_color) {}
 
 UI_String::UI_String() : UI_Element({0,0}, STRING), text(nullptr), text_font(nullptr) {}
 
-//Destructor
+//Destructor ==============================================
 UI_String::~UI_String()
 {
 
 }
 
 
-// ==========================
+//Game Loop ===============================================
 void UI_String::Draw(bool debug) const
 {
 	//This Draw
 	
 	if (debug)App->render->DrawQuad(box, 255, 255, 255);
-	App->render->Blit(text_texture, box.x - App->render->camera.x, box.y - App->render->camera.y);
+	if(text_texture != nullptr)App->render->Blit(text_texture, box.x - App->render->camera.x, box.y - App->render->camera.y);
 
 	//Childs Draw
 	DrawChilds(debug);
 }
 
 
-// ==========================
+//Functionality ===========================================
 char * UI_String::GetString() const
 {
 	return (char*)text.GetString();
 }
 
-uint UI_String::GetLenght() const
+uint UI_String::GetLenght()const
 {
 	return uint(text.Length());
 }
@@ -54,10 +54,12 @@ void UI_String::PushString(char * new_text, uint position)
 	text_texture = App->font->Print(text.GetString(), text_color, text_font);
 }
 
-void UI_String::DeleteChar(uint position)
+bool UI_String::DeleteChar(uint position)
 {
-	text.DeleteChar(position);
-	text_texture = App->font->Print(text.GetString(), text_color, text_font);
+	bool ret = text.DeleteChar(position);
+	if(ret)text_texture = App->font->Print(text.GetString(), text_color, text_font);
+	else if(text.Length() == 0)text_texture = nullptr;
+	return ret;
 }
 
 uint UI_String::GetPixelLenght(uint end) const
@@ -70,9 +72,7 @@ uint UI_String::GetPixelLenght(uint end) const
 
 void UI_String::DrawAt(int x, int y) const
 {
-	//This Draw
-	App->render->Blit(text_texture, box.x + x - App->render->camera.x, box.y + y - App->render->camera.y);
-
+	if(text_texture != nullptr)App->render->Blit(text_texture, box.x + x - App->render->camera.x, box.y + y - App->render->camera.y);
 }
 
 bool UI_String::TokenizeString(uint margin)

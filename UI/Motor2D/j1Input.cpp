@@ -139,10 +139,19 @@ bool j1Input::PreUpdate()
 			mouse_y = event.motion.y / scale;
 			break;
 		}
+
+		case SDL_EventType::SDL_KEYDOWN:
+
+			if (event.key.keysym.scancode == SDL_SCANCODE_GRAVE)
+			{
+				App->console->ActiveConsole();
+			}
+
+			break;
+
 		case SDL_EventType::SDL_TEXTINPUT:
 		{
-			if (App->gui->ItemSelected != nullptr && App->gui->ItemSelected->GetUItype() == UI_TYPE::TEXT_BOX) {
-
+			if (App->gui->ItemSelected != nullptr && App->gui->ItemSelected->GetUItype() == UI_TYPE::TEXT_BOX && event.text.text[0] != 'Â') {
 				((UI_Text_Box*)App->gui->ItemSelected)->PushTextSegment(event.text.text, ((UI_Text_Box*)App->gui->ItemSelected)->GetCursorPos());
 				((UI_Text_Box*)App->gui->ItemSelected)->SetCursorPos(((UI_Text_Box*)App->gui->ItemSelected)->GetCursorPos() + 1);
 			}
@@ -161,12 +170,6 @@ bool j1Input::PreUpdate()
 			//selection_len = event.edit.length;
 
 			break;
-
-		case SDL_EventType::SDL_KEYDOWN:
-
-			if (event.key.keysym.scancode == SDL_SCANCODE_GRAVE)App->console->ActiveConsole();
-
-		break;
 
 		}
 	

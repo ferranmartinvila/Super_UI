@@ -48,9 +48,9 @@ private:
 	UI_Element* scene_1_screen;
 
 	//Scene UI Elements
-	UI_Image*	player1_item;
-	UI_Scroll*	scroll;
-
+	UI_Image*		player1_item;
+	UI_Scroll*		scroll;
+	UI_Text_Box*	text_box;
 };
 
 #endif // __j1SCENE_H__

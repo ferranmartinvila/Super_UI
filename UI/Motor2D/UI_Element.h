@@ -44,7 +44,7 @@ public:
 
 public:
 
-	//App Loop
+	//Game Loop
 	virtual bool	Update();
 	bool			UpdateChilds();
 	virtual bool	CleanUp();

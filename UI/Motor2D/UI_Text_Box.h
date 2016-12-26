@@ -24,7 +24,7 @@ private:
 
 public:
 
-	//App Loop
+	//Game Loop
 	void	Draw(bool debug)const;
 	void	HandleInput();
 
@@ -34,12 +34,10 @@ public:
 	void	SetText(char* new_text);
 	void	PushTextSegment(char* textsegment, uint position);
 	void	DeleteTextChar(uint position);
-	void	SetCursorPos(uint position);
-	uint	GetCursorPos()const;
 	
-	/*
-	home/end
-	*/
+	void	SetCursorPos(uint position);
+	void	SetCursorScreenPos(uint position);
+	uint	GetCursorPos()const;
 };
 
 #endif

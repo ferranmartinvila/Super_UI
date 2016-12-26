@@ -251,7 +251,7 @@ public:
 	//Delete the character located in the index
 	bool DeleteChar(uint index) {
 
-		if (index >= size)return false;
+		if (index >= size -1)return false;
 
 		for (uint k = index; k < size; k++) {
 
@@ -259,7 +259,6 @@ public:
 
 		}
 		size--;
-		index--;
 		return true;
 	}
 

@@ -53,6 +53,7 @@ void UI_Scroll::Draw(bool debug) const
 bool UI_Scroll::Update()
 {
 	HandleInput();
+
 	if (ScrollLastLocation == ScrollLocation)return true;
 
 	//Calculate the distance that the items have to move
@@ -90,9 +91,6 @@ bool UI_Scroll::Update()
 // Functionality =========================================
 bool UI_Scroll::MoveScroll(int mouse_x_motion, int mouse_y_motion)
 {
-	//Get mouse left button state
-	j1KeyState mouse_button_1 = App->input->GetMouseButtonDown(1);
-
 	//Select the Scroll Item ----------
 	if (ScrollItem.MouseIsIn(box.x,box.y) || ScrollSelected)
 	{

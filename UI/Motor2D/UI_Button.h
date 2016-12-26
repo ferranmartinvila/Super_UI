@@ -26,15 +26,14 @@ public:
 	UI_Image			tex_on;
 	UI_Image			tex_off;
 	UI_Image			tex_over;
-	BUTTON_STATE	button_state;
+	BUTTON_STATE		button_state;
 
 public:
 
-	//App Loop
+	//Game Loop
 	void			Draw(bool debug)const;
 	bool			Update();
 	void			HandleInput();
-
 
 	//Functionality
 	BUTTON_STATE	Change_State(BUTTON_STATE new_button_state);

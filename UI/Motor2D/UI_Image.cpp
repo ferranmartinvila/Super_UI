@@ -1,21 +1,21 @@
 #include "UI_Image.h"
 #include "j1Render.h"
 
-//Constructors
+//Constructors ============================================
 UI_Image::UI_Image(const SDL_Rect& box, const SDL_Rect& texture_rect, int texture_id) : UI_Element(box, IMG), texture_rect(texture_rect), texture_id(texture_id) {}
 
 UI_Image::UI_Image(const UI_Image* copy) : UI_Element(copy->box, IMG), texture_rect(copy->texture_rect), texture_id(copy->texture_id) {}
 
 UI_Image::UI_Image() : UI_Element({ 0,0,0,0 }, IMG), texture_rect({ 0,0,0,0 }) {}
 
-//Destructors
+//Destructors =============================================
 UI_Image::~UI_Image()
 {
 
 }
 
 
-// ==========================
+//Game Loop ===============================================
 void UI_Image::Draw(bool debug)const
 {
 	//This Draw
@@ -38,6 +38,7 @@ void UI_Image::Draw(bool debug)const
 	DrawChilds(debug);
 }
 
+//Functionality ===========================================
 SDL_Rect UI_Image::AdjustBox()
 {
 	

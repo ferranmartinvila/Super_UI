@@ -157,6 +157,16 @@ void UI_Element::HandleInput()
 		App->gui->GetInputTarget()->GUI_Input(this, DOWN_ARROW);
 	}
 
+	//Backspace/Delete --------------------------
+	else if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN)
+	{
+		App->gui->GetInputTarget()->GUI_Input(this, BACKSPACE);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
+	{
+		App->gui->GetInputTarget()->GUI_Input(this, SUPR);
+	}
+
 	//Mouse In/Out ------------------------------
 	else if (this->MouseIsIn())
 	{

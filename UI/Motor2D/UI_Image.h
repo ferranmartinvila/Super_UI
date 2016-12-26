@@ -19,7 +19,10 @@ private:
 
 public:
 
+	//Game Loop
 	void				Draw(bool debug)const;
+
+	//Functionality
 	SDL_Rect			AdjustBox();
 	void				DrawAt(int x, int y)const;
 	void				ChangeTextureRect(SDL_Rect new_rect);

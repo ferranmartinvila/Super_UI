@@ -27,16 +27,18 @@ private:
 
 public:
 
-	//App loop
+	//Game loop
 	void		Draw(bool debug)const;
 
 	//Functionality
 	char*		GetString()const;
-	uint		GetLenght()const;
 	void		SetString(char* new_text);
 	void		PushString(char* new_text,uint position);
-	void		DeleteChar(uint position);
+	bool		DeleteChar(uint position);
+
 	uint		GetPixelLenght(uint end)const;
+	uint		GetLenght()const;
+
 	void		DrawAt(int x, int y)const;
 	bool		TokenizeString(uint margin = 0);
 	SDL_Rect	AdjustBox();
