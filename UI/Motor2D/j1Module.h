@@ -9,7 +9,9 @@
 #include "p2SString.h"
 #include "PugiXml\src\pugixml.hpp"
 
-class j1App;
+struct j1App;
+struct UI_Element;
+enum GUI_INPUT;
 
 class j1Module
 {
@@ -70,6 +72,11 @@ public:
 	virtual bool Save(pugi::xml_node&) const
 	{
 		return true;
+	}
+
+	virtual void GUI_Input(UI_Element* target, GUI_INPUT input)
+	{
+
 	}
 
 public:

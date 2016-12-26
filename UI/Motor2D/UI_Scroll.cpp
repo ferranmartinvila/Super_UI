@@ -52,6 +52,7 @@ void UI_Scroll::Draw(bool debug) const
 
 bool UI_Scroll::Update()
 {
+	HandleInput();
 	if (ScrollLastLocation == ScrollLocation)return true;
 
 	//Calculate the distance that the items have to move
@@ -85,12 +86,6 @@ bool UI_Scroll::Update()
 	return true;
 }
 
-void UI_Scroll::HandleInput()
-{
-	//Handle the input of the items and mouse gary
-}
-
-
 
 // Functionality =========================================
 bool UI_Scroll::MoveScroll(int mouse_x_motion, int mouse_y_motion)
@@ -99,16 +94,9 @@ bool UI_Scroll::MoveScroll(int mouse_x_motion, int mouse_y_motion)
 	j1KeyState mouse_button_1 = App->input->GetMouseButtonDown(1);
 
 	//Select the Scroll Item ----------
-	if (ScrollItem.MouseIsIn(box.x,box.y) && mouse_button_1 == KEY_DOWN && App->gui->upper_element == this->layer)
+	if (ScrollItem.MouseIsIn(box.x,box.y) || ScrollSelected)
 	{
 		ScrollSelected = true;
-		App->gui->ItemSelected = this;
-	}
-	
-	//Unselect the Scroll Item --------
-	else if (ScrollSelected && mouse_button_1 == KEY_UP)
-	{
-		ScrollSelected = false;
 	}
 
 	//Drag the Scroll Item ------------
@@ -129,10 +117,14 @@ bool UI_Scroll::MoveScroll(int mouse_x_motion, int mouse_y_motion)
 		ScrollItem.MoveBox(0, mouse_y_motion);
 		ScrollLocation += mouse_y_motion;
 		Value += (((float)mouse_y_motion / (float)ContentLenght)* (float)MaxValue);
-		//LOG("%f", Value);
 	}
 
 	return ScrollSelected;
+}
+
+void UI_Scroll::UnselectScroll()
+{
+	ScrollSelected = false;
 }
 
 void UI_Scroll::AddScrollItem(UI_Element* new_item)

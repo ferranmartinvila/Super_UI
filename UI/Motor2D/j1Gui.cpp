@@ -62,7 +62,7 @@ bool j1Gui::PreUpdate()
 bool j1Gui::PostUpdate()
 {
 	//Debug Mode ------------------------------------------
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN && ItemSelected == nullptr)debug = !debug;
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_DOWN && ItemSelected != nullptr && ItemSelected->GetUItype() != TEXT_BOX)debug = !debug;
 
 	//Tab Input
 	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN)
@@ -189,5 +189,15 @@ uint j1Gui::CalculateUpperElement(const UI_Element* parent, uint layer) const
 	}
 	upper_element = layer;
 	return uint(layer);
+}
+
+void j1Gui::SetInputTarget(j1Module * target)
+{
+	input_target = target;
+}
+
+j1Module * j1Gui::GetInputTarget() const
+{
+	return input_target;
 }
 

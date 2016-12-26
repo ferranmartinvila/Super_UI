@@ -1,12 +1,8 @@
 #include "UI_Element.h"
-
 #include "j1App.h"
 #include "j1Input.h"
 #include "j1Gui.h"
-
-#include "UI_Text_Box.h"
-#include "UI_Button.h"
-#include "UI_Scroll.h"
+#include "SDL/include/SDL.h"
 
 //Constructors
 UI_Element::UI_Element(const SDL_Rect& box, UI_TYPE ui_type, bool IsActive) :box(box), ui_type(ui_type), IsActive(IsActive) {}
@@ -111,6 +107,64 @@ void UI_Element::DrawChilds(bool debug) const
 	}
 }
 
+void UI_Element::HandleInput()
+{
+	//Mouse Left Button -------------------------
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		if (this->MouseIsIn() && App->gui->upper_element == this->layer)
+		{
+			App->gui->ItemSelected = this;
+			App->gui->GetInputTarget()->GUI_Input(this, MOUSE_LEFT_BUTTON_DOWN);
+		}
+		else if (App->gui->ItemSelected == this)
+		{
+			App->gui->ItemSelected = nullptr;
+			return;
+		}
+	}
+	if (App->gui->ItemSelected != this)return;
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	{
+		App->gui->GetInputTarget()->GUI_Input(this, MOUSE_LEFT_BUTTON_REPEAT);
+	}
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
+	{
+		App->gui->GetInputTarget()->GUI_Input(this, MOUSE_LEFT_BUTTON_UP);
+	}
+
+	//Mouse Right Button ------------------------
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	{
+		App->gui->GetInputTarget()->GUI_Input(this, MOUSE_RIGHT_BUTTON);
+	}
+
+	//Arrows ------------------------------------
+	else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
+	{
+		App->gui->GetInputTarget()->GUI_Input(this, LEFT_ARROW);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
+	{
+		App->gui->GetInputTarget()->GUI_Input(this, RIGHT_ARROW);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+	{
+		App->gui->GetInputTarget()->GUI_Input(this, UP_ARROW);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
+	{
+		App->gui->GetInputTarget()->GUI_Input(this, DOWN_ARROW);
+	}
+
+	//Mouse In/Out ------------------------------
+	else if (this->MouseIsIn())
+	{
+		App->gui->GetInputTarget()->GUI_Input(this, MOUSE_IN);
+	}
+	else App->gui->GetInputTarget()->GUI_Input(this, MOUSE_OUT);
+}
+
 // Functionality ==========================================
 void UI_Element::SetBoxPosition(int new_pos_x, int new_pos_y)
 {
@@ -179,55 +233,6 @@ bool UI_Element::RectIsIn(const SDL_Rect* target, int x_vel, int y_vel, bool x_a
 	return ret;
 }
 
-bool UI_Element::Drag()
-{
-	//Get mouse left button state
-	j1KeyState mouse_button_1 = App->input->GetMouseButtonDown(1);
-	//Return if theres no input
-	if (mouse_button_1 == KEY_IDLE)return false;
-	//Get Mouse Motion
-	int x_motion, y_motion;
-	App->input->GetMouseMotion(x_motion, y_motion);
-
-	if (MouseIsIn() == false && App->gui->ItemSelected == this && (mouse_button_1 == KEY_DOWN))
-	{
-		App->gui->ItemSelected = nullptr;
-		return false;
-	}
-
-	else if (App->gui->ItemSelected == this && mouse_button_1 == KEY_REPEAT)
-	{
-		this->MoveBox(x_motion, y_motion);
-		return true;
-	}
-
-	else if (MouseIsIn() && App->gui->ItemSelected != this && mouse_button_1 == KEY_DOWN && App->gui->upper_element == this->layer)
-	{
-		App->gui->ItemSelected = this;
-		return true;
-	}
-}
-
-bool UI_Element::Select()
-{
-	//Get mouse left button state
-	j1KeyState mouse_button_1 = App->input->GetMouseButtonDown(1);
-	//Return if theres no input
-	if (mouse_button_1 == KEY_IDLE)return false;
-
-	if (MouseIsIn() == false && App->gui->ItemSelected == this && (mouse_button_1 == KEY_DOWN))
-	{
-		App->gui->ItemSelected = nullptr;
-		return false;
-	}
-	else if (MouseIsIn() && App->gui->ItemSelected != this && mouse_button_1 == KEY_DOWN && App->gui->upper_element == this->layer)
-	{
-		App->gui->ItemSelected = this;
-		return true;
-	}
-	return false;
-}
-
 void UI_Element::SetTabable()
 {
 	tab_num = App->gui->GetTabNumber() + 1;
@@ -252,11 +257,6 @@ uint UI_Element::GetLayer() const
 UI_TYPE UI_Element::GetUItype() const
 {
 	return ui_type;
-}
-
-void UI_Element::HandleInput()
-{
-
 }
 
 void UI_Element::Activate()

@@ -39,17 +39,17 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	// Recieve UI input and work with it
+	void GUI_Input(UI_Element* target, GUI_INPUT input);
+
 private:
 
-	//Scene
+	//Scene	UI
 	UI_Element* scene_1_screen;
 
-	UI_String* text;
-
+	//Scene UI Elements
 	UI_Image*	player1_item;
 	UI_Scroll*	scroll;
-
-	UI_Text_Box* text_box;
 
 };
 

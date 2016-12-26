@@ -41,50 +41,30 @@ bool j1Scene::Start()
 	//UI Scene build --------------------------------------
 	scene_1_screen = new UI_Element({ 0,0,App->win->screen_surface->w, App->win->screen_surface->h }, UNDEFINED, true);
 
-	_TTF_Font* test_font = App->font->Load("fonts/open_sans/OpenSans-BoldItalic.ttf", 26);
-	/*
-	text_box = new UI_Text_Box({ 250,350,50,15 }, UI_String({ 0,0 }, "Your Name"), 3, 9, false);
-	text_box->SetTabable();
-	scene_1_screen->AddChild(text_box);
-	*/
 
-	player1_item = new UI_Image({ 20,450 }, { 1485, 110, 72, 109 },0);
+	player1_item = new UI_Image({ 20,450 }, { 1485, 110, 72, 109 }, 0);
 	player1_item->AdjustBox();
-	scene_1_screen->AddChild(player1_item);
-	/*player1_item->SetTabable();
-	scene_1_screen->AddChild((UI_Element*)player1_item);
-	*/
 
-	/*
-	UI_IMG({ 197,20 }, { 1000,880,19,20 });
-	UI_IMG scroll_item({ 517,20 }, { 1000,880,19,20 });
+
+	
+	UI_Image({ 197,20 }, { 1000,880,19,20 });
+	UI_Image scroll_item({ 517,20 }, { 1000,880,19,20 });
 	scroll_item.AdjustBox();
-	UI_IMG({ 200,20 }, { 985,874,13,149 });
-	UI_IMG scroll_back({ 520,20 }, { 985,874,13,149 });
+	UI_Image({ 200,20 }, { 985,874,13,149 });
+	UI_Image scroll_back({ 520,20 }, { 985,874,13,149 });
 	scroll_back.AdjustBox();
-	*/
+
 	UI_Image item({ 397,20,19,40 }, { 1000,880,19,20 });
-	scroll = new UI_Scroll({ 250,250,450,350 }, { 20,20,300,250 }, item, UI_Image({ 400,20 }, { 985,874,13,149 }), VERTICAL, 1500);
+	scroll = new UI_Scroll({ 250,250,450,350 }, { 20,20,300,250 }, item, UI_Image({ 400,20 }, { 985,874,13,149 }), VERTICAL);
 	scroll->AddScrollItem(player1_item);
 	scroll->ScrollBack.AdjustBox();
-	//scroll->ScrollItem.AdjustBox();
+	scroll->ScrollItem.AdjustBox();
 	scroll->SetTabable();
 	scene_1_screen->AddChild(scroll);
 
-	
-	text = new UI_String({ 400,500,0,0 }, "This code \n is a prank \n plz stop or I will kill myself gg.", 26, {255,255,255,255}, test_font);
-	text->TokenizeString(5);
-	text->AdjustBox();
-	//text->TokenizeString();
-
-	scene_1_screen->AddChild(text);
-	
-
-	/*
-	ui coordinates
-	- button 414,169,224,64
-	*/
 	App->gui->PushScreen(scene_1_screen);
+	App->gui->SetInputTarget(this);
+	// ----------------------------------------------------
 
 	return true;
 }
@@ -98,24 +78,8 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	//Mouse Inputs ----------------------------------------
-	int x, y;
-	App->input->GetMouseMotion(x, y);
-
-	
-	if (scroll->MoveScroll(x, y) == false) {
-		scroll->Drag();
-	}
-	
-	text->Drag();
-	player1_item->Drag();
-	// Gui Input ------------------------------------------
+	// Gui Upper Element ---------------------------
 	App->gui->CalculateUpperElement(scene_1_screen);
-
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN && App->gui->ItemSelected == player1_item) {
-
-		this->player1_item->MoveBox(5, 0);
-	}
 
 	return true;
 }
@@ -137,4 +101,45 @@ bool j1Scene::CleanUp()
 	LOG("Freeing scene");
 
 	return true;
+}
+
+void j1Scene::GUI_Input(UI_Element* target, GUI_INPUT input)
+{
+	int x, y;
+	App->input->GetMouseMotion(x, y);
+	switch (input)
+	{
+	case UP_ARROW:
+		break;
+	case DOWN_ARROW:
+		break;
+	case LEFT_ARROW:
+		break;
+	case RIGHT_ARROW:
+		break;
+	case MOUSE_LEFT_BUTTON_DOWN:
+		break;
+	case MOUSE_LEFT_BUTTON_REPEAT:
+		if (target == player1_item)
+		{
+			player1_item->MoveBox(x, y);
+		}
+		else if (target == scroll)
+		{
+			if (scroll->MoveScroll(x,y) == false)scroll->MoveBox(x, y);
+		}
+		break;
+	case MOUSE_LEFT_BUTTON_UP:
+		if (target == scroll)
+		{
+			scroll->UnselectScroll();
+		}
+		break;
+	case MOUSE_RIGHT_BUTTON:
+		break;
+	case MOUSE_IN:
+		break;
+	case MOUSE_OUT:
+		break;
+	}
 }

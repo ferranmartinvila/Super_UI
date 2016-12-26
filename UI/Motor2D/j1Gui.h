@@ -5,8 +5,21 @@
 
 struct UI_Element;
 struct SDL_Texture;
-#define CURSOR_WIDTH 2
 
+enum GUI_INPUT {
+
+	UP_ARROW,
+	DOWN_ARROW,
+	LEFT_ARROW,
+	RIGHT_ARROW,
+	MOUSE_LEFT_BUTTON_DOWN,
+	MOUSE_LEFT_BUTTON_REPEAT,
+	MOUSE_LEFT_BUTTON_UP,
+	MOUSE_RIGHT_BUTTON,
+	MOUSE_IN,
+	MOUSE_OUT
+
+};
 
 // ---------------------------------------------------
 class j1Gui : public j1Module
@@ -35,24 +48,25 @@ public:
 
 private:
 
-	bool debug = false;
-
+	//UI debug mode
+	mutable bool			debug = false;
 
 	//UI elements
 	p2List<UI_Element*>		screens;
+	uint					tabable_elements = 0;
 
 	//UI Textures
 	SDL_Texture*			atlas;
 	p2List<SDL_Texture*>	ui_textures;
 	p2SString				atlas_file_name;
 
-	uint					tabable_elements = 0;
+	//Target Module of gui input
+	j1Module*				input_target;
 
 public:
 
 	mutable UI_Element*			ItemSelected = nullptr;
 	mutable uint				upper_element = 0;
-
 
 	//UI textures functions
 	const SDL_Texture*	GetAtlas() const;
@@ -68,6 +82,9 @@ public:
 	UI_Element*			GetActiveScreen()const;
 	uint				CalculateUpperElement(const UI_Element* parent, uint layer = 0)const;
 
+	//Gui taget funtions
+	void				SetInputTarget(j1Module* target);
+	j1Module*			GetInputTarget()const;
 };
 
 #endif // __GUI_H__

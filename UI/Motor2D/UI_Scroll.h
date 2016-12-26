@@ -43,11 +43,11 @@ public:
 	//Game Loop
 	void	Draw(bool debug)const;
 	bool	Update();
-	void	HandleInput();
-
+	
 
 	//Functionality
 	bool			MoveScroll(int mouse_y_motion, int mouse_x_motion);
+	void			UnselectScroll();
 	void			AddScrollItem(UI_Element* new_item);
 
 };

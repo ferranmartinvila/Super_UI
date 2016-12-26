@@ -55,7 +55,7 @@ public:
 	virtual void	HandleInput();
 
 	//Functionality
-	bool			MouseIsIn(int x = 0, int y = 0)const;
+	bool				MouseIsIn(int x = 0, int y = 0)const;
 	
 	void				SetBoxPosition(int new_pos_x, int new_pos_y);
 	virtual void		MoveBox(int x_vel, int y_vel);
@@ -63,26 +63,23 @@ public:
 	virtual SDL_Rect	AdjustBox();
 	SDL_Rect*			GetBox()const;
 
-	bool			RectIsIn(const SDL_Rect* target, int x_vel, int y_vel, bool x_axis = false)const;
-	
-	bool			Drag();
-	bool			Select();
+	bool				RectIsIn(const SDL_Rect* target, int x_vel, int y_vel, bool x_axis = false)const;
 
-	void			SetTabable();
-	uint			GetTabNum()const;
-	void			SetLayer(uint new_layer);
-	uint			GetLayer()const;
-	UI_TYPE			GetUItype()const;
+	void				SetTabable();
+	uint				GetTabNum()const;
+	void				SetLayer(uint new_layer);
+	uint				GetLayer()const;
+	UI_TYPE				GetUItype()const;
 
-	void			Activate();
-	void			Desactivate();
-	bool			GetActiveState()const;
+	void				Activate();
+	void				Desactivate();
+	bool				GetActiveState()const;
 
-	void			AddChild(UI_Element* child, uint start_layer = 0);
-	bool			Delete_Child(UI_Element* child);
-	bool			Delete_Child(uint index);
-	UI_Element*		SetParent(const UI_Element* parent);
-	UI_Element*		GetParent()const;
+	void				AddChild(UI_Element* child, uint start_layer = 0);
+	bool				Delete_Child(UI_Element* child);
+	bool				Delete_Child(uint index);
+	UI_Element*			SetParent(const UI_Element* parent);
+	UI_Element*			GetParent()const;
 };
 
 #endif // __UI_ELEMENT__
