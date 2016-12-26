@@ -51,6 +51,8 @@ private:
 	UI_Image*		player1_item;
 	UI_Scroll*		scroll;
 	UI_Text_Box*	text_box;
+	UI_Button*		button;
+
 };
 
 #endif // __j1SCENE_H__

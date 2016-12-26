@@ -109,6 +109,16 @@ void UI_Element::DrawChilds(bool debug) const
 
 void UI_Element::HandleInput()
 {
+	//Mouse In/Out ------------------------------
+	if (this->MouseIsIn())
+	{
+		App->gui->GetInputTarget()->GUI_Input(this, MOUSE_IN);
+	}
+	else
+	{
+		App->gui->GetInputTarget()->GUI_Input(this, MOUSE_OUT);
+	}
+
 	//Mouse Left Button -------------------------
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
@@ -166,13 +176,6 @@ void UI_Element::HandleInput()
 	{
 		App->gui->GetInputTarget()->GUI_Input(this, SUPR);
 	}
-
-	//Mouse In/Out ------------------------------
-	else if (this->MouseIsIn())
-	{
-		App->gui->GetInputTarget()->GUI_Input(this, MOUSE_IN);
-	}
-	else App->gui->GetInputTarget()->GUI_Input(this, MOUSE_OUT);
 }
 
 // Functionality ==========================================

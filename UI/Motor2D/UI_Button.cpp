@@ -42,15 +42,6 @@ void UI_Button::Draw(bool debug)const
 	DrawChilds(debug);
 }
 
-bool UI_Button::Update()
-{
-	HandleInput();
-
-
-	UpdateChilds();
-	return true;
-}
-
 //Functionality ===========================================
 BUTTON_STATE UI_Button::Change_State(BUTTON_STATE new_button_state)
 {
@@ -66,22 +57,76 @@ BUTTON_STATE UI_Button::Get_State() const
 
 void UI_Button::HandleInput()
 {
-
-	j1KeyState mouse_key_1 = App->input->GetMouseButtonDown(1);
-
-	//Pass Case
-	if (mouse_key_1 == KEY_IDLE && MouseIsIn() && App->gui->upper_element == this->layer) {
+	//Mouse In/Out ------------------------------
+	if (this->MouseIsIn() && App->gui->upper_element == this->layer)
+	{
 		button_state = OVER;
+		App->gui->GetInputTarget()->GUI_Input(this, MOUSE_IN);
 	}
-	//Push Case
-	else if (mouse_key_1 == KEY_DOWN && App->gui->upper_element == this->layer && MouseIsIn()) {
-		this->button_state = ON;
-		App->gui->ItemSelected = this;
+	else
+	{
+		button_state = OFF;
+		App->gui->GetInputTarget()->GUI_Input(this, MOUSE_OUT);
 	}
-	else if (App->gui->ItemSelected == this && mouse_key_1 == KEY_REPEAT  && MouseIsIn()) {
-		button_state = ON;
-	}
-	//Idle Case
-	else button_state = OFF;
 
+	//Mouse Left Button -------------------------
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		if (this->MouseIsIn() && App->gui->upper_element == this->layer)
+		{
+			App->gui->ItemSelected = this;
+			button_state = ON;
+			App->gui->GetInputTarget()->GUI_Input(this, MOUSE_LEFT_BUTTON_DOWN);
+		}
+		else if (App->gui->ItemSelected == this)
+		{
+			App->gui->ItemSelected = nullptr;
+			return;
+		}
+	}
+	if (App->gui->ItemSelected != this)return;
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	{
+		button_state = ON;
+		App->gui->GetInputTarget()->GUI_Input(this, MOUSE_LEFT_BUTTON_REPEAT);
+	}
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
+	{
+		button_state = OVER;
+		App->gui->GetInputTarget()->GUI_Input(this, MOUSE_LEFT_BUTTON_UP);
+	}
+
+	//Mouse Right Button ------------------------
+	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
+	{
+		App->gui->GetInputTarget()->GUI_Input(this, MOUSE_RIGHT_BUTTON);
+	}
+
+	//Arrows ------------------------------------
+	else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
+	{
+		App->gui->GetInputTarget()->GUI_Input(this, LEFT_ARROW);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
+	{
+		App->gui->GetInputTarget()->GUI_Input(this, RIGHT_ARROW);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
+	{
+		App->gui->GetInputTarget()->GUI_Input(this, UP_ARROW);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
+	{
+		App->gui->GetInputTarget()->GUI_Input(this, DOWN_ARROW);
+	}
+
+	//Backspace/Delete --------------------------
+	else if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN)
+	{
+		App->gui->GetInputTarget()->GUI_Input(this, BACKSPACE);
+	}
+	else if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
+	{
+		App->gui->GetInputTarget()->GUI_Input(this, SUPR);
+	}
 }

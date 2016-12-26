@@ -45,12 +45,14 @@ bool j1Scene::Start()
 	player1_item = new UI_Image({ 20,450 }, { 1485, 110, 72, 109 }, 0);
 	player1_item->AdjustBox();
 
+	UI_Image on({ 0,0 }, { 5,116,220,59 });
+	UI_Image off({ 0,0 }, { 648,172,219,59 });
+	UI_Image over({ 0,0 }, { 416,170,220,62 });
+	button = new UI_Button({ 50,50,230,60 }, on, off, over);
+	scene_1_screen->AddChild(button);
 
-	
-	UI_Image({ 197,20 }, { 1000,880,19,20 });
 	UI_Image scroll_item({ 517,20 }, { 1000,880,19,20 });
 	scroll_item.AdjustBox();
-	UI_Image({ 200,20 }, { 985,874,13,149 });
 	UI_Image scroll_back({ 520,20 }, { 985,874,13,149 });
 	scroll_back.AdjustBox();
 

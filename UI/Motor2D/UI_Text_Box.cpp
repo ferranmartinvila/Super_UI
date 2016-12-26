@@ -43,6 +43,17 @@ void UI_Text_Box::Draw(bool debug) const
 
 void UI_Text_Box::HandleInput()
 {
+
+	//Mouse In/Out ------------------------------
+	if (this->MouseIsIn())
+	{
+		App->gui->GetInputTarget()->GUI_Input(this, MOUSE_IN);
+	}
+	else
+	{
+		App->gui->GetInputTarget()->GUI_Input(this, MOUSE_OUT);
+	}
+
 	//Mouse Left Button -------------------------
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 	{
@@ -116,14 +127,6 @@ void UI_Text_Box::HandleInput()
 		Text_entered.DeleteChar(Cursor_pos);
 		App->gui->GetInputTarget()->GUI_Input(this, SUPR);
 	}
-
-	//Mouse In/Out ------------------------------
-	else if (this->MouseIsIn())
-	{
-		App->gui->GetInputTarget()->GUI_Input(this, MOUSE_IN);
-	}
-	else App->gui->GetInputTarget()->GUI_Input(this, MOUSE_OUT);
-
 }
 
 

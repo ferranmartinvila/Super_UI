@@ -32,7 +32,6 @@ public:
 
 	//Game Loop
 	void			Draw(bool debug)const;
-	bool			Update();
 	void			HandleInput();
 
 	//Functionality
