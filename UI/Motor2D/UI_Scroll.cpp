@@ -149,3 +149,18 @@ void UI_Scroll::AddScrollItem(UI_Element* new_item)
 	this->Items.add(new_item);
 }
 
+void UI_Scroll::AddScrollItemAtBottom(UI_Element * new_item)
+{
+	//Locat item at the bottom of the scroll
+	new_item->SetBoxPosition(0, ContentLenght);
+	
+	//Update the scroll length
+	ContentLenght += new_item->GetBox()->h;
+	
+	//Set item layer
+	new_item->SetLayer(this->layer + 1);
+
+	//Add the new item to the list of items
+	this->Items.add(new_item);
+}
+

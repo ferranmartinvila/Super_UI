@@ -64,7 +64,7 @@ bool j1Scene::Start()
 	scroll->SetTabable();
 	scene_1_screen->AddChild(scroll);
 
-	text_box = new UI_Text_Box({ 0,0,50,50 }, UI_String({ 0,0,0,0 }, "gg", 10) , 2, 5);
+	text_box = new UI_Text_Box({ 0,0,50,50 }, UI_String({ 0,0,0,0 }, "") , 2, 5);
 	scene_1_screen->AddChild(text_box);
 
 	App->gui->PushScreen(scene_1_screen);

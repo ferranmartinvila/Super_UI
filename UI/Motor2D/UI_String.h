@@ -11,7 +11,7 @@ struct SDL_Texture;
 class UI_String : public UI_Element {
 public:
 
-	UI_String(const SDL_Rect& box, char* text, uint font_size , const SDL_Color& text_color = { 255,255,255,255 }, _TTF_Font* text_font = App->font->default);
+	UI_String(const SDL_Rect& box, char* text, const SDL_Color& text_color = { 255,255,255,255 }, _TTF_Font* text_font = App->font->default);
 	UI_String(const UI_String* copy);
 	UI_String();
 
@@ -23,7 +23,6 @@ private:
 	_TTF_Font*			text_font;
 	SDL_Texture*		text_texture;
 	SDL_Color			text_color;
-	uint				font_size;
 
 public:
 

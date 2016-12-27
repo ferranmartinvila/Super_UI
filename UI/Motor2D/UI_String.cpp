@@ -4,7 +4,7 @@
 #include "j1Render.h"
 
 //Contructors =============================================
-UI_String::UI_String(const SDL_Rect& box, char * text, uint font_size, const SDL_Color& text_color, _TTF_Font * text_font) : UI_Element(box, STRING), text(text), text_font(text_font),font_size(font_size), text_color(text_color), text_texture(App->font->Print(this->text.GetString(), text_color, text_font)) {}
+UI_String::UI_String(const SDL_Rect& box, char * text, const SDL_Color& text_color, _TTF_Font * text_font) : UI_Element(box, STRING), text(text), text_font(text_font), text_color(text_color), text_texture(App->font->Print(this->text.GetString(), text_color, text_font)) {}
 
 UI_String::UI_String(const UI_String* copy) : UI_Element(copy->box, STRING), text(copy->text), text_font(copy->text_font), text_texture(copy->text_texture), text_color(copy->text_color) {}
 

@@ -3,6 +3,10 @@
 #include "j1Module.h"
 #include "SDL\include\SDL_rect.h"
 
+struct UI_Text_Box;
+struct UI_Scroll;
+struct _TTF_Font;
+
 class j1Console : public j1Module {
 public:
 
@@ -21,15 +25,18 @@ public:
 
 private:
 
-	SDL_Rect console_area;
-	uint r = 0;
-	uint g = 0;
-	uint b = 0;
-	uint a = 0;
-
+	SDL_Rect		console_area;
+	SDL_Color		console_color;
+	UI_Text_Box*	console_input_box;
+	UI_Scroll*		console_scroll;
+	_TTF_Font*		font;
+	SDL_Color		font_color;
 public:
 
-	void ActiveConsole();
+	//Active / Desactive the Console
+	void ChangeConsoleState();
+	//Add a label in the console text scroll
+	void AddConsoleText(char* new_text);
 
 };
 #endif

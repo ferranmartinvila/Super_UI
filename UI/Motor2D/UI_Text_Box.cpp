@@ -144,6 +144,7 @@ uint UI_Text_Box::GetTextLength() const
 void UI_Text_Box::SetText(char * new_text)
 {
 	Text_entered.SetString(new_text);
+	Cursor_pos = Cursor_screen_pos = 0;
 }
 
 void UI_Text_Box::PushTextSegment(char * textsegment, uint position)

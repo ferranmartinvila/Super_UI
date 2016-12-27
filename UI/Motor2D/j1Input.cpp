@@ -144,7 +144,7 @@ bool j1Input::PreUpdate()
 
 			if (event.key.keysym.scancode == SDL_SCANCODE_GRAVE)
 			{
-				App->console->ActiveConsole();
+				App->console->ChangeConsoleState();
 			}
 
 			break;
