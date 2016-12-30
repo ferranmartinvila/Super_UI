@@ -77,7 +77,7 @@ bool UI_Element::CleanUpChilds()
 	return ret;
 }
 
-void UI_Element::Draw(bool debug)const
+void UI_Element::Draw(bool debug)
 {
 	/*
 			This Draw

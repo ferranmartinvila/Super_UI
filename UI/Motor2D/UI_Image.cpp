@@ -16,7 +16,7 @@ UI_Image::~UI_Image()
 
 
 //Game Loop ===============================================
-void UI_Image::Draw(bool debug)const
+void UI_Image::Draw(bool debug)
 {
 	//This Draw
 	if(debug)App->render->DrawQuad({ box.x, box.y, box.w, box.h }, 150, 50, 0);

@@ -20,7 +20,7 @@ private:
 public:
 
 	//Game Loop
-	void				Draw(bool debug)const;
+	void				Draw(bool debug);
 
 	//Functionality
 	SDL_Rect			AdjustBox();

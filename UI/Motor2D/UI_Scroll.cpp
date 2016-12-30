@@ -17,9 +17,8 @@ UI_Scroll::~UI_Scroll()
 
 }
 
-
 //Game Loop ===============================================
-void UI_Scroll::Draw(bool debug) const
+void UI_Scroll::Draw(bool debug)
 {
 	//Draw Scroll & Content View Area Qwad -
 	if (debug)
@@ -37,9 +36,10 @@ void UI_Scroll::Draw(bool debug) const
 	//Draw scroll items --------------------
 	SDL_Rect view_port = { ContentWindow.x + box.x, ContentWindow.y + box.y, ContentWindow.w,ContentWindow.h };
 	SDL_RenderSetViewport(App->render->renderer,&view_port);
+	
 	p2List_item<UI_Element*>* item = Items.start;
 	while (item) {
-		
+
 		item->data->Draw(debug);
 
 		item = item->next;
@@ -50,45 +50,15 @@ void UI_Scroll::Draw(bool debug) const
 	DrawChilds(debug);
 }
 
-bool UI_Scroll::Update()
+// Functionality =========================================
+int UI_Scroll::CalculateScrollDesp()
 {
-	HandleInput();
-
-	if (ScrollLastLocation == ScrollLocation)return true;
-
-	//Calculate the distance that the items have to move
-	double y_desp = 0;
-	double x_desp = 0;
-
-	switch (Scroll_Type)
-	{
-	case SCROLL_TYPE::VERTICAL:			y_desp = -((float)ScrollLocation - (float)ScrollLastLocation) * ((float)ContentLenght / (float)ScrollBack.GetBox()->h);	break;
-	case SCROLL_TYPE::VERTICAL_INV:		y_desp = ((float)ScrollLocation - (float)ScrollLastLocation) * ((float)ContentLenght / (float)ScrollBack.GetBox()->h);	break;
-	}
-
-
-	//Round the distance (because we are moving in pixels)
-	y_desp = (y_desp - floor(y_desp) > 0.4) ? ceil(y_desp) : floor(y_desp);
-	x_desp = (x_desp - floor(x_desp) > 0.4) ? ceil(x_desp) : floor(x_desp);
-
-	//Move the items 
-	p2List_item<UI_Element*>*  item = Items.start;
-
-	while (item) {
-
-		item->data->MoveBox(x_desp, y_desp);
-		item = item->next;
-
-	}
-	
-	//Update the ScrollLastLocation used for calculate the motion
-	ScrollLastLocation = ScrollLocation;
-
-	return true;
+	float y_loc = -((ScrollItem.GetBox()->y - ScrollBack.GetBox()->y));
+	if (y_loc == 0) return 0;
+	float y_desp = (y_loc * ContentLenght) / (ScrollBack.GetBox()->h - ScrollItem.GetBox()->h);
+	return y_desp = (y_desp - floor(y_desp) > 0.5) ? ceil(y_desp) : floor(y_desp);;
 }
 
-
-// Functionality =========================================
 bool UI_Scroll::MoveScroll(int mouse_x_motion, int mouse_y_motion)
 {
 	//Select the Scroll Item ----------
@@ -112,8 +82,24 @@ bool UI_Scroll::MoveScroll(int mouse_x_motion, int mouse_y_motion)
 				mouse_y_motion = ScrollBack.GetBox()->y + ScrollBack.GetBox()->h - (ScrollItem.GetBox()->h + ScrollItem.GetBox()->y);
 			}
 		}
+		//Move the scroll Item ---
 		ScrollItem.MoveBox(0, mouse_y_motion);
-		ScrollLocation += mouse_y_motion;
+		
+		//Move the scroll items --
+		int desp = CalculateScrollDesp();
+		p2List_item<UI_Element*>* item = Items.start;
+		p2List_item<iPoint>* item_location = Items_location.start;
+		while (item_location)
+		{
+			item->data->SetBoxPosition(item_location->data.x, item_location->data.y + desp);
+			item = item->next;
+			item_location = item_location->next;
+		}
+
+		//Update the scroll pos --
+		ScrollPosition += mouse_y_motion;
+		
+		//Update scroll value ----
 		Value += (((float)mouse_y_motion / (float)ContentLenght)* (float)MaxValue);
 	}
 
@@ -132,21 +118,16 @@ void UI_Scroll::AddScrollItem(UI_Element* new_item)
 	if(Scroll_Type == VERTICAL || Scroll_Type == VERTICAL_INV)
 	{
 		//Vertical Scroll Case
-		lenght = new_item->GetBox()->y + new_item->GetBox()->h - ContentWindow.y;
+		lenght = (new_item->GetBox()->y + new_item->GetBox()->h + ContentWindow.y) - (ContentWindow.h + ContentWindow.y);
 		if (lenght > 0 && lenght > ContentLenght)ContentLenght = lenght;
 	}
-		//Lateral Scroll Case
-	else
-	{
-		lenght = new_item->GetBox()->x - (ContentWindow.w - ContentWindow.x) + new_item->GetBox()->w;
-		if (lenght > 0 && lenght > ContentLenght)ContentLenght = lenght;
 
-	}
 	//Set item layer
 	new_item->SetLayer(this->layer + 1);
 
 	//Add the new item to the list of items
 	this->Items.add(new_item);
+	this->Items_location.add(iPoint(new_item->GetBox()->x, new_item->GetBox()->y));
 }
 
 void UI_Scroll::AddScrollItemAtBottom(UI_Element * new_item)
@@ -162,6 +143,7 @@ void UI_Scroll::AddScrollItemAtBottom(UI_Element * new_item)
 
 	//Add the new item to the list of items
 	this->Items.add(new_item);
+	this->Items_location.add(iPoint(new_item->GetBox()->x, new_item->GetBox()->y));
 }
 
 uint UI_Scroll::GetScrollItemsNum() const

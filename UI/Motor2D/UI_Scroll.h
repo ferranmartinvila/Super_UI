@@ -20,29 +20,34 @@ public:
 
 private:
 
-	SDL_Rect				ContentWindow;
 	SCROLL_TYPE				Scroll_Type;
+	bool					ScrollSelected;
+	
+	SDL_Rect				ContentWindow;
+
 	uint					ContentLenght = 0;
+	uint					ScrollPosition = 0;
+	
 	float					Value = 0.0f;
 	uint					MaxValue = 0;
 
-	int						ScrollLastLocation = 0;
-	int						ScrollLocation = 0;
-
+	//List of the scroll items 
 	p2List<UI_Element*>		Items;
+	p2List<iPoint>			Items_location;
 	
-	bool					ScrollSelected;
-
 public:
 
 	UI_Image				ScrollItem;
 	UI_Image				ScrollBack;
+
+private:
+
+	int			CalculateScrollDesp();
 	
 public:
 
 	//Game Loop
-	void		Draw(bool debug)const;
-	bool		Update();
+	void		Draw(bool debug);
 	
 
 	//Functionality

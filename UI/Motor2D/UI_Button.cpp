@@ -20,7 +20,7 @@ UI_Button::~UI_Button()
 
 
 //Game Loop ===============================================
-void UI_Button::Draw(bool debug)const
+void UI_Button::Draw(bool debug)
 {
 
 	//This Draw

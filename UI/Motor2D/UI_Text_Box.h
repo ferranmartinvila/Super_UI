@@ -25,7 +25,7 @@ private:
 public:
 
 	//Game Loop
-	void	Draw(bool debug)const;
+	void	Draw(bool debug);
 	void	HandleInput();
 
 	//Functionality

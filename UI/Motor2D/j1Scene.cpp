@@ -44,7 +44,7 @@ bool j1Scene::Start()
 	scene_1_screen = new UI_Element({ 0,0,App->win->screen_surface->w, App->win->screen_surface->h }, UNDEFINED, true);
 
 
-	player1_item = new UI_Image({ 20,450 }, { 1485, 110, 72, 109 }, 0);
+	player1_item = new UI_Image({ 20,360 }, { 1485, 110, 72, 109 }, 0);
 	player1_item->AdjustBox();
 
 	UI_Image on({ 0,0 }, { 5,116,220,59 });

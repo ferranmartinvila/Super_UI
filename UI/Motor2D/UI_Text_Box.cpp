@@ -21,7 +21,7 @@ UI_Text_Box::~UI_Text_Box()
 
 
 // Game Loop ==============================================
-void UI_Text_Box::Draw(bool debug) const
+void UI_Text_Box::Draw(bool debug) 
 {
 	//Draw the debug Quad
 	if (debug)App->render->DrawQuad({ box.x, box.y, box.w, box.h }, 25, 25, 25);

@@ -24,7 +24,7 @@ bool UI_String::Start()
 	return true;
 }
 
-void UI_String::Draw(bool debug) const
+void UI_String::Draw(bool debug)
 {
 	//This Draw
 	

@@ -28,7 +28,7 @@ public:
 
 	//Game loop
 	bool		Start();
-	void		Draw(bool debug)const;
+	void		Draw(bool debug);
 
 	//Functionality
 	char*		GetString()const;
