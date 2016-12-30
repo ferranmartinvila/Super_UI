@@ -68,7 +68,7 @@ bool j1Console::Awake(pugi::xml_node& config)
 	UI_Image scroll_back({ console_area.w - 25,20 }, { 985,874,13,149 });
 	scroll_back.AdjustBox();
 	SDL_Rect scroll_area = { console_area.x,console_area.y,console_area.w,console_area.y - (console_area.y - input_box.y) };
-	SDL_Rect viewport_area = { scroll_area.x,scroll_area.y,scroll_area.w - 30,scroll_area.h - 25};
+	SDL_Rect viewport_area = { scroll_area.x,scroll_area.y,scroll_item.GetBox()->x,input_box.y };
 	console_labels_scroll = new UI_Scroll(scroll_area, viewport_area, scroll_item, scroll_back);
 
 	LOG("Console Build");

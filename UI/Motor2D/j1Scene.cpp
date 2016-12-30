@@ -59,7 +59,7 @@ bool j1Scene::Start()
 	scroll_back.AdjustBox();
 
 	UI_Image item({ 397,20,19,40 }, { 1000,880,19,20 });
-	scroll = new UI_Scroll({ 250,250,450,350 }, { 20,20,300,250 }, item, UI_Image({ 400,20 }, { 985,874,13,149 }), VERTICAL);
+	scroll = new UI_Scroll({ 250,250,450,350 }, { 20,20,300,250 }, item, UI_Image({ 400,20 }, { 985,874,13,149 }), VERTICAL,500);
 	scroll->AddScrollItem(player1_item);
 	scroll->ScrollBack.AdjustBox();
 	scroll->ScrollItem.AdjustBox();

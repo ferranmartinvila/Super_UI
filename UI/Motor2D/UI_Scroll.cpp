@@ -6,7 +6,7 @@
 
 
 //Constructors ============================================
-UI_Scroll::UI_Scroll(const SDL_Rect& box, const SDL_Rect& ContentWindow, const UI_Image& ScrollItem, const UI_Image& ScrollBack, SCROLL_TYPE Scroll_Type, uint MaxValue) :UI_Element(box, SCROLL), ContentWindow(ContentWindow), ScrollItem(ScrollItem), ScrollBack(ScrollBack), Scroll_Type(Scroll_Type), MaxValue(MaxValue) {}
+UI_Scroll::UI_Scroll(const SDL_Rect& box, const SDL_Rect& ContentWindow, const UI_Image& ScrollItem, const UI_Image& ScrollBack, SCROLL_TYPE Scroll_Type, int MaxValue) :UI_Element(box, SCROLL), ContentWindow(ContentWindow), ScrollItem(ScrollItem), ScrollBack(ScrollBack), Scroll_Type(Scroll_Type), MaxValue(MaxValue) {}
 
 UI_Scroll::UI_Scroll(const UI_Scroll* copy) : UI_Element(copy->box, SCROLL), ContentWindow(copy->ContentWindow), ScrollItem(copy->ScrollItem), ScrollBack(copy->ScrollBack), Scroll_Type(copy->Scroll_Type), MaxValue(copy->MaxValue) {}
 
@@ -100,7 +100,8 @@ bool UI_Scroll::MoveScroll(int mouse_x_motion, int mouse_y_motion)
 		ScrollPosition += mouse_y_motion;
 		
 		//Update scroll value ----
-		Value += (((float)mouse_y_motion / (float)ContentLenght)* (float)MaxValue);
+		Value = ((ScrollItem.GetBox()->y - ScrollBack.GetBox()->y) * MaxValue) / (float)(ScrollBack.GetBox()->h - ScrollItem.GetBox()->h);
+
 	}
 
 	return ScrollSelected;
@@ -133,10 +134,12 @@ void UI_Scroll::AddScrollItem(UI_Element* new_item)
 void UI_Scroll::AddScrollItemAtBottom(UI_Element * new_item)
 {
 	//Locat item at the bottom of the scroll
-	new_item->SetBoxPosition(0, ContentLenght);
+	if(Items.end != nullptr)new_item->SetBoxPosition(0, Items.end->data->GetBox()->y + Items.end->data->GetBox()->h);
+	else new_item->SetBoxPosition(0, 0);
 	
 	//Update the scroll length
-	ContentLenght += new_item->GetBox()->h;
+	int lenght = (new_item->GetBox()->y + new_item->GetBox()->h + ContentWindow.y) - (ContentWindow.h + ContentWindow.y);
+	if (lenght > 0 && lenght > ContentLenght)ContentLenght = lenght;
 	
 	//Set item layer
 	new_item->SetLayer(this->layer + 1);

@@ -14,7 +14,7 @@ enum SCROLL_TYPE {
 class UI_Scroll : public UI_Element {
 public:
 
-	UI_Scroll(const SDL_Rect& box, const SDL_Rect& ContentWindow, const UI_Image& ScrollItem, const UI_Image& ScrollBack, SCROLL_TYPE Scroll_Type = VERTICAL, uint MaxValue = 0);
+	UI_Scroll(const SDL_Rect& box, const SDL_Rect& ContentWindow, const UI_Image& ScrollItem, const UI_Image& ScrollBack, SCROLL_TYPE Scroll_Type = VERTICAL, int MaxValue = 0);
 	UI_Scroll(const UI_Scroll* copy);
 	~UI_Scroll();
 
@@ -29,7 +29,7 @@ private:
 	uint					ScrollPosition = 0;
 	
 	float					Value = 0.0f;
-	uint					MaxValue = 0;
+	int					MaxValue = 0;
 
 	//List of the scroll items 
 	p2List<UI_Element*>		Items;
