@@ -164,3 +164,13 @@ void UI_Scroll::AddScrollItemAtBottom(UI_Element * new_item)
 	this->Items.add(new_item);
 }
 
+uint UI_Scroll::GetScrollItemsNum() const
+{
+	return uint(Items.count());
+}
+
+UI_Element * UI_Scroll::GetScrollItem(uint index)
+{
+	return this->Items.At(index)->data;
+}
+

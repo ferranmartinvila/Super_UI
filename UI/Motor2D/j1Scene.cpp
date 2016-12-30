@@ -38,6 +38,8 @@ bool j1Scene::Awake()
 // Called before the first frame
 bool j1Scene::Start()
 {
+	App->gui->SetDefaultInputTarget(this);
+
 	//UI Scene build --------------------------------------
 	scene_1_screen = new UI_Element({ 0,0,App->win->screen_surface->w, App->win->screen_surface->h }, UNDEFINED, true);
 
@@ -68,7 +70,6 @@ bool j1Scene::Start()
 	scene_1_screen->AddChild(text_box);
 
 	App->gui->PushScreen(scene_1_screen);
-	App->gui->SetInputTarget(this);
 	// ----------------------------------------------------
 
 	return true;

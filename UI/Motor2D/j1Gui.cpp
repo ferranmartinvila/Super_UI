@@ -191,13 +191,14 @@ uint j1Gui::CalculateUpperElement(const UI_Element* parent, uint layer) const
 	return uint(layer);
 }
 
-void j1Gui::SetInputTarget(j1Module * target)
+void j1Gui::SetDefaultInputTarget(j1Module * target)
 {
-	input_target = target;
+	default_input_target = target;
 }
 
-j1Module * j1Gui::GetInputTarget() const
+j1Module * j1Gui::GetDefaultInputTarget() const
 {
-	return input_target;
+	if (default_input_target == nullptr)return nullptr;
+	return default_input_target;
 }
 

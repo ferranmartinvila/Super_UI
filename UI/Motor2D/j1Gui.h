@@ -63,7 +63,7 @@ private:
 	p2SString				atlas_file_name;
 
 	//Target Module of gui input
-	j1Module*				input_target;
+	j1Module*				default_input_target;
 
 public:
 
@@ -85,8 +85,8 @@ public:
 	uint				CalculateUpperElement(const UI_Element* parent, uint layer = 0)const;
 
 	//Gui taget funtions
-	void				SetInputTarget(j1Module* target);
-	j1Module*			GetInputTarget()const;
+	void				SetDefaultInputTarget(j1Module* target);
+	j1Module*			GetDefaultInputTarget()const;
 };
 
 #endif // __GUI_H__

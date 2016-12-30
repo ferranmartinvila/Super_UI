@@ -50,6 +50,8 @@ public:
 	void		UnselectScroll();
 	void		AddScrollItem(UI_Element* new_item);
 	void		AddScrollItemAtBottom(UI_Element* new_item);
+	uint		GetScrollItemsNum()const;
+	UI_Element*	GetScrollItem(uint index);
 
 };
 #endif

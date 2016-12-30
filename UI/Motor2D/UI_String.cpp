@@ -4,7 +4,7 @@
 #include "j1Render.h"
 
 //Contructors =============================================
-UI_String::UI_String(const SDL_Rect& box, char * text, const SDL_Color& text_color, _TTF_Font * text_font) : UI_Element(box, STRING), text(text), text_font(text_font), text_color(text_color), text_texture(App->font->Print(this->text.GetString(), text_color, text_font)) {}
+UI_String::UI_String(const SDL_Rect& box, char * text, const SDL_Color& text_color, _TTF_Font * text_font) : UI_Element(box, STRING), text(text), text_font(text_font), text_color(text_color) {}
 
 UI_String::UI_String(const UI_String* copy) : UI_Element(copy->box, STRING), text(copy->text), text_font(copy->text_font), text_texture(copy->text_texture), text_color(copy->text_color) {}
 
@@ -18,6 +18,12 @@ UI_String::~UI_String()
 
 
 //Game Loop ===============================================
+bool UI_String::Start()
+{
+	GenerateTexture();
+	return true;
+}
+
 void UI_String::Draw(bool debug) const
 {
 	//This Draw
@@ -117,6 +123,13 @@ bool UI_String::TokenizeString(uint margin)
 	return true;
 }
 
+bool UI_String::GenerateTexture()
+{
+	text_texture = App->font->Print(this->text.GetString(), text_color, text_font);
+	if(text_texture != nullptr)return true;
+	return false;
+}
+
 SDL_Rect UI_String::AdjustBox()
 {
 	int w, h;
@@ -136,5 +149,18 @@ bool UI_String::SetFont(char* font_dir, uint size)
 		text_font = new_font;
 		return true;
 	}
+}
+
+bool UI_String::SetFont(_TTF_Font * new_font)
+{
+	if (new_font == nullptr)return false;
+	
+	text_font = new_font;
+	return true;
+}
+
+void UI_String::SetColor(SDL_Color new_color)
+{
+	this->text_color = new_color;
 }
 

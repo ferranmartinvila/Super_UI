@@ -5,11 +5,11 @@
 #include "SDL/include/SDL.h"
 
 //Constructors
-UI_Element::UI_Element(const SDL_Rect& box, UI_TYPE ui_type, bool IsActive) :box(box), ui_type(ui_type), IsActive(IsActive) {}
+UI_Element::UI_Element(const SDL_Rect& box, UI_TYPE ui_type, bool IsActive) :box(box), ui_type(ui_type), IsActive(IsActive), input_target(App->gui->GetDefaultInputTarget()) {}
 
-UI_Element::UI_Element(const UI_Element* copy) : box(copy->box), ui_type(copy->ui_type), IsActive(copy->IsActive), tab_num(copy->tab_num) {}
+UI_Element::UI_Element(const UI_Element* copy) : box(copy->box), ui_type(copy->ui_type), IsActive(copy->IsActive), tab_num(copy->tab_num), input_target(copy->input_target) {}
 
-UI_Element::UI_Element() : box({0,0,0,0}), ui_type(UNDEFINED), IsActive(false) {}
+UI_Element::UI_Element() : box({0,0,0,0}), ui_type(UNDEFINED), IsActive(false), input_target(nullptr) {}
 
 //Destructor
 UI_Element::~UI_Element()
@@ -22,7 +22,6 @@ UI_Element::~UI_Element()
 bool UI_Element::Update()
 {
 	HandleInput();
-
 	/*
 			This Update
 	*/
@@ -112,11 +111,11 @@ void UI_Element::HandleInput()
 	//Mouse In/Out ------------------------------
 	if (this->MouseIsIn())
 	{
-		App->gui->GetInputTarget()->GUI_Input(this, MOUSE_IN);
+		input_target->GUI_Input(this, MOUSE_IN);
 	}
 	else
 	{
-		App->gui->GetInputTarget()->GUI_Input(this, MOUSE_OUT);
+		input_target->GUI_Input(this, MOUSE_OUT);
 	}
 
 	//Mouse Left Button -------------------------
@@ -125,7 +124,7 @@ void UI_Element::HandleInput()
 		if (this->MouseIsIn() && App->gui->upper_element == this->layer)
 		{
 			App->gui->ItemSelected = this;
-			App->gui->GetInputTarget()->GUI_Input(this, MOUSE_LEFT_BUTTON_DOWN);
+			input_target->GUI_Input(this, MOUSE_LEFT_BUTTON_DOWN);
 		}
 		else if (App->gui->ItemSelected == this)
 		{
@@ -136,45 +135,45 @@ void UI_Element::HandleInput()
 	if (App->gui->ItemSelected != this)return;
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
-		App->gui->GetInputTarget()->GUI_Input(this, MOUSE_LEFT_BUTTON_REPEAT);
+		input_target->GUI_Input(this, MOUSE_LEFT_BUTTON_REPEAT);
 	}
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 	{
-		App->gui->GetInputTarget()->GUI_Input(this, MOUSE_LEFT_BUTTON_UP);
+		input_target->GUI_Input(this, MOUSE_LEFT_BUTTON_UP);
 	}
 
 	//Mouse Right Button ------------------------
 	else if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN)
 	{
-		App->gui->GetInputTarget()->GUI_Input(this, MOUSE_RIGHT_BUTTON);
+		input_target->GUI_Input(this, MOUSE_RIGHT_BUTTON);
 	}
 
 	//Arrows ------------------------------------
 	else if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
 	{
-		App->gui->GetInputTarget()->GUI_Input(this, LEFT_ARROW);
+		input_target->GUI_Input(this, LEFT_ARROW);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
 	{
-		App->gui->GetInputTarget()->GUI_Input(this, RIGHT_ARROW);
+		input_target->GUI_Input(this, RIGHT_ARROW);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN)
 	{
-		App->gui->GetInputTarget()->GUI_Input(this, UP_ARROW);
+		input_target->GUI_Input(this, UP_ARROW);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_DOWN)
 	{
-		App->gui->GetInputTarget()->GUI_Input(this, DOWN_ARROW);
+		input_target->GUI_Input(this, DOWN_ARROW);
 	}
 
 	//Backspace/Delete --------------------------
 	else if (App->input->GetKey(SDL_SCANCODE_BACKSPACE) == KEY_DOWN)
 	{
-		App->gui->GetInputTarget()->GUI_Input(this, BACKSPACE);
+		input_target->GUI_Input(this, BACKSPACE);
 	}
 	else if (App->input->GetKey(SDL_SCANCODE_DELETE) == KEY_DOWN)
 	{
-		App->gui->GetInputTarget()->GUI_Input(this, SUPR);
+		input_target->GUI_Input(this, SUPR);
 	}
 }
 
@@ -320,4 +319,14 @@ UI_Element * UI_Element::SetParent(const UI_Element* parent)
 UI_Element * UI_Element::GetParent() const
 {
 	return parent;
+}
+
+void UI_Element::SetInputTarget(j1Module * target)
+{
+	this->input_target = target;
+}
+
+j1Module * UI_Element::GetInputTarget() const
+{
+	return this->input_target;
 }

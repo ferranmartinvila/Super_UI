@@ -27,6 +27,7 @@ private:
 public:
 
 	//Game loop
+	bool		Start();
 	void		Draw(bool debug)const;
 
 	//Functionality
@@ -40,9 +41,12 @@ public:
 
 	void		DrawAt(int x, int y)const;
 	bool		TokenizeString(uint margin = 0);
+	bool		GenerateTexture();
+
 	SDL_Rect	AdjustBox();
 	bool		SetFont(char* font_dir, uint size);
-
+	bool		SetFont(_TTF_Font* new_font);
+	void		SetColor(SDL_Color new_color);
 };
 
 #endif

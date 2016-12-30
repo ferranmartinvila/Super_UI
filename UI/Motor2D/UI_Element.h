@@ -36,7 +36,9 @@ protected:
 	mutable bool			IsActive = true;
 	UI_TYPE					ui_type;
 
-	UI_Element*				parent;
+	UI_Element*				parent = nullptr;
+
+	j1Module*				input_target;
 
 public:
 
@@ -55,31 +57,37 @@ public:
 	virtual void	HandleInput();
 
 	//Functionality
+	//Box functions
 	bool				MouseIsIn(int x = 0, int y = 0)const;
-	
 	void				SetBoxPosition(int new_pos_x, int new_pos_y);
 	virtual void		MoveBox(int x_vel, int y_vel);
 	void				ResizeBox(const iPoint& new_size);
 	virtual SDL_Rect	AdjustBox();
 	SDL_Rect*			GetBox()const;
-
 	bool				RectIsIn(const SDL_Rect* target, int x_vel, int y_vel, bool x_axis = false)const;
 
+	//Tab/Layer functions
 	void				SetTabable();
 	uint				GetTabNum()const;
 	void				SetLayer(uint new_layer);
 	uint				GetLayer()const;
 	UI_TYPE				GetUItype()const;
 
+	//Active/Desactive functions
 	void				Activate();
 	void				Desactivate();
 	bool				GetActiveState()const;
 
+	//Tree functions
 	void				AddChild(UI_Element* child, uint start_layer = 0);
 	bool				Delete_Child(UI_Element* child);
 	bool				Delete_Child(uint index);
 	UI_Element*			SetParent(const UI_Element* parent);
 	UI_Element*			GetParent()const;
+
+	// Input taget functions
+	void				SetInputTarget(j1Module* target);
+	j1Module*			GetInputTarget()const;
 };
 
 #endif // __UI_ELEMENT__
