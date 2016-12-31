@@ -29,7 +29,7 @@ private:
 	uint					ScrollPosition = 0;
 	
 	float					Value = 0.0f;
-	int					MaxValue = 0;
+	int						MaxValue = 0;
 
 	//List of the scroll items 
 	p2List<UI_Element*>		Items;

@@ -151,5 +151,7 @@ void j1Scene::GUI_Input(UI_Element* target, GUI_INPUT input)
 		break;
 	case MOUSE_OUT:
 		break;
+	case ENTER:
+		break;
 	}
 }

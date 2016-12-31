@@ -50,7 +50,7 @@ uint UI_String::GetLenght()const
 void UI_String::SetString(char * new_text)
 {
 	text.create(new_text);
-	text_texture = App->font->Print(text.GetString(), text_color, text_font);
+	if(new_text != nullptr)text_texture = App->font->Print(text.GetString(), text_color, text_font);
 }
 
 void UI_String::PushString(char * new_text, uint position)

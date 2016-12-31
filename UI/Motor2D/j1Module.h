@@ -12,6 +12,7 @@
 struct j1App;
 struct UI_Element;
 enum GUI_INPUT;
+struct Cvar;
 
 class j1Module
 {
@@ -74,7 +75,14 @@ public:
 		return true;
 	}
 
+	//GUI functions -------------------
 	virtual void GUI_Input(UI_Element* target, GUI_INPUT input)
+	{
+
+	}
+
+	//Console funtcions ---------------
+	virtual void Console_Input(Cvar* cvar, char* input)
 	{
 
 	}

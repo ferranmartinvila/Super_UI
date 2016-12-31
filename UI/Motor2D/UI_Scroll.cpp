@@ -134,7 +134,7 @@ void UI_Scroll::AddScrollItem(UI_Element* new_item)
 void UI_Scroll::AddScrollItemAtBottom(UI_Element * new_item)
 {
 	//Locat item at the bottom of the scroll
-	if(Items.end != nullptr)new_item->SetBoxPosition(0, Items.end->data->GetBox()->y + Items.end->data->GetBox()->h);
+	if(Items.end != nullptr)new_item->SetBoxPosition(0, Items_location.end->data.y + Items.end->data->GetBox()->h);
 	else new_item->SetBoxPosition(0, 0);
 	
 	//Update the scroll length

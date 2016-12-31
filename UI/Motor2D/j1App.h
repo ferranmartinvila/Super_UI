@@ -97,6 +97,9 @@ public:
 	j1Gui*				gui = NULL;
 	j1Console*			console = NULL;
 
+	//Get Module pointer by name
+	j1Module*	GetModule(char* module_name)const;
+
 private:
 
 	p2List<j1Module*>	modules;
