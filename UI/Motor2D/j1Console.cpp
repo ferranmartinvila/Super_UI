@@ -85,18 +85,19 @@ bool j1Console::Awake(pugi::xml_node& config)
 		const char* name = c_var.attribute("name").as_string();
 		const char* description = c_var.attribute("description").as_string();
 		char* value = (char*)c_var.attribute("value").as_string();
-		C_VAR_TYPE type = this->StringtoCvarType((char*)c_var.attribute("type").as_string());
+		const char* type_c = c_var.attribute("type").as_string();
+		C_VAR_TYPE type = StringtoCvarType(type_c);
 		j1Module* module = App->GetModule((char*)c_var.attribute("module").as_string());
 		
 		//Build the new cvar
-		AddCvar(name, description, value, type, module);
-		LOG("-- %s -- Cvar added", name);
+		Cvar* new_cvar = AddCvar(name, description, value, type, module);
+		//LOG("-- %s -- Cvar from module %s added", new_cvar->GetCvarName(),new_cvar->GetCvarModule()->name.GetString());
 
 		//Focus next cvar from config.xml
 		c_var = c_var.next_sibling();
-
 	}
-		LOG("Console config.xml Variables Generated");
+	
+	LOG("Console config.xml Variables Generated");
 
 	return true;
 }
@@ -240,7 +241,7 @@ void j1Console::UpdateConsoleLabels()
 	}
 }
 
-bool j1Console::AddCvar(const char * name,const char * description,char * value, C_VAR_TYPE cvar_type,j1Module* module_target)
+Cvar* j1Console::AddCvar(const char * name,const char * description,char * value, C_VAR_TYPE cvar_type,j1Module* module_target)
 {
 	//Check if the cvar already exist
 	uint num = console_variables.Count();
@@ -254,20 +255,20 @@ bool j1Console::AddCvar(const char * name,const char * description,char * value,
 	//Add it to the cvars array
 	console_variables.PushBack(new_cvar);
 	
-	return true;
+	return new_cvar;
 }
 
 Cvar * j1Console::GetCvarfromInput(char * input) const
 {
-	char* cvar_name = nullptr;
-	char* module_name = nullptr;
+	char* cvar_name = new char[10];
+	char* module_name = new char[10];
 
 	uint name_init = 0;
 	uint name_end = 0;
 	uint module_init = 0;
 
 	//Get the var name start and end position
-	uint char_num = strlen(input);
+	uint char_num = strlen(input) + 1;
 	for (uint k = 0; k < char_num; k++)
 	{
 		if (input[k] == '/')module_init = k + 1;
@@ -282,7 +283,7 @@ Cvar * j1Console::GetCvarfromInput(char * input) const
 		j++;
 	}
 	//Copy the module name in a new string
-	uint s = 0;
+	j = 0;
 	for (uint k = module_init; k < name_init - 1; k++)
 	{
 		module_name[j] = input[k];
@@ -318,12 +319,16 @@ char * j1Console::GetValuefromInput(char * input) const
 
 char * j1Console::GetInputType(char * input)
 {
-	char* command_type = nullptr;
+	char* command_type = new char[4];
 
 	uint char_num = strlen(input);
 	for (uint k = 0; k < char_num; k++)
 	{
-		if (input[k] == '/')break;
+		if (input[k] == '/')
+		{
+			command_type[k] = '\0';
+			break;
+		}
 		command_type[k] = input[k];
 
 	}
@@ -342,12 +347,15 @@ char * j1Console::CvarTypetoString(C_VAR_TYPE cvar_type) const
 	}
 }
 
-C_VAR_TYPE j1Console::StringtoCvarType(char * string) const
+C_VAR_TYPE j1Console::StringtoCvarType(const char* string) const
 {
-	if			(string == "integrer")		return INT_VAR;
-	else if		(string == "float")			return FLOAT_VAR;
-	else if		(string == "character")		return CHAR_VAR;
-	else if		(string == "boolean")		return BOOLEAN_VAR;
+	if			(string == "integrer")return INT_VAR;
+	else if		(string == "float")	return FLOAT_VAR;
+	else if		(string == "character")return CHAR_VAR;
+	else if		(string == "boolean")
+	{
+		return BOOLEAN_VAR;
+	}
 	else return UNDEF;
 }
 

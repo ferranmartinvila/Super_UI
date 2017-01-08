@@ -459,12 +459,17 @@ bool j1App::SavegameNow() const
 	return ret;
 }
 
-j1Module * j1App::GetModule(char * module_name) const
+j1Module * j1App::GetModule(char* module_name) const
 {
 	p2List_item<j1Module*>* item = modules.start;
+	
 	while (item)
 	{
-		if (item->data->name.GetString() == module_name)return (j1Module*)item->data;
+		if (item->data->name.GetString() == module_name)
+		{
+			return item->data;
+		}
+
 		item = item->next;
 	}
 	return nullptr;

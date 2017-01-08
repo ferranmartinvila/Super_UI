@@ -59,7 +59,7 @@ public:
 
 	//Console Input -----------------------------
 	//Add Console Variable
-	bool AddCvar(const char* name, const char* description, char* value, C_VAR_TYPE cvar_type, j1Module* module_target);
+	Cvar* AddCvar(const char* name, const char* description, char* value, C_VAR_TYPE cvar_type, j1Module* module_target);
 	//Get Cvar from input
 	Cvar* GetCvarfromInput(char* input)const;
 	//Get value from input
@@ -69,7 +69,7 @@ public:
 
 	//Cvar type transformations
 	char*		CvarTypetoString(C_VAR_TYPE cvar_type)const;
-	C_VAR_TYPE	StringtoCvarType(char* string)const;
+	C_VAR_TYPE	StringtoCvarType(const char* string)const;
 
 	//Handle Console Input
 	void Console_Input(Cvar* cvar, char* input);

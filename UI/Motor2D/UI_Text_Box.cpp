@@ -127,6 +127,12 @@ void UI_Text_Box::HandleInput()
 		Text_entered.DeleteChar(Cursor_pos);
 		input_target->GUI_Input(this, SUPR);
 	}
+
+	//Enter -------------------------------------
+	else if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN)
+	{
+		input_target->GUI_Input(this, ENTER);
+	}
 }
 
 
