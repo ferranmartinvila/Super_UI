@@ -17,13 +17,20 @@ class Cvar {
 public:
 
 	Cvar(const char* name, const char* description, char* value, C_VAR_TYPE var_type,j1Module* module_var) :name(name), description(description), value(value), var_type(var_type), module_var(module_var) {}
+	Cvar(p2SString* name, p2SString* description, p2SString* value, C_VAR_TYPE var_type, j1Module* module_var) :name(*name), description(*description), value(*value), var_type(var_type), module_var(module_var) {}
+
 	Cvar() {};
+
+	~Cvar()
+	{
+		module_var = nullptr;
+	}
 
 private:
 
-	const char*		name;
-	const char*		description;
-	char*		value;
+	p2SString	name;
+	p2SString	description;
+	p2SString	value;
 	C_VAR_TYPE	var_type;
 	j1Module*	module_var;
 
@@ -31,14 +38,14 @@ public:
 
 	//Cvar general data functions -------------------------
 	//Get cvar name
-	const char*	GetCvarName()const
+	const p2SString* GetCvarName()const
 	{
-		return name;
+		return &name;
 	}
 	//Get cvar description
-	const char* GetCvarDescription()const
+	const p2SString* GetCvarDescription()const
 	{
-		return description;
+		return &description;
 	}
 	//Get cvar type
 	C_VAR_TYPE GetCvarType()const
@@ -66,9 +73,9 @@ public:
 		}
 	}
 	//Get cvar value string
-	char*	GetValueString()const
+	const p2SString* GetValueString()const
 	{
-		return value;
+		return &value;
 	}
 	//Set cvar value
 	void	SetValue(char* new_value)

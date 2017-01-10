@@ -24,6 +24,8 @@
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
+	name.create("app");
+
 	PERF_START(ptimer);
 
 	input = new j1Input();
@@ -148,10 +150,13 @@ bool j1App::Awake()
 			//Build CVar
 			Cvar* cv = App->console->LoadCvar(name.GetString(), description.GetString(), value.GetString(), cv_type, cv_module);
 
-			LOG("-- %s -- CVar added at module %s", cv->GetCvarName(), cv->GetCvarModule()->name.GetString());
+			LOG("-- %s -- CVar added at module %s", cv->GetCvarName()->GetString(), cv->GetCvarModule()->name.GetString());
+			
+			//Next cvar
 			cvar = cvar.next_sibling();
 		}
 
+		//Next module
 		module_node = module_node.next_sibling();
 	}
 
@@ -504,4 +509,9 @@ j1Module * j1App::GetModule(const p2SString* module_name) const
 		item = item->next;
 	}
 	return nullptr;
+}
+
+pugi::xml_node j1App::GetConfigXML() const
+{
+	return config_node;
 }

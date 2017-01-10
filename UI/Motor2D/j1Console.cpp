@@ -76,29 +76,6 @@ bool j1Console::Awake(pugi::xml_node& config)
 
 	LOG("Console UI Build");
 
-	//Build Cvars from config.xml
-	pugi::xml_node c_var = config.child("c_vars").first_child();
-	
-	while (c_var != NULL)
-	{
-		/*//Load the cvar data from config.xml
-		const char* name = c_var.attribute("name").as_string();
-		const char* description = c_var.attribute("description").as_string();
-		char* value = (char*)c_var.attribute("value").as_string();
-		const char* type_c = c_var.attribute("type").as_string();
-		C_VAR_TYPE type = StringtoCvarType(type_c);
-		j1Module* module = App->GetModule((char*)c_var.attribute("module").as_string());
-		
-		//Build the new cvar
-		Cvar* new_cvar = AddCvar(name, description, value, type, module);
-		//LOG("-- %s -- Cvar from module %s added", new_cvar->GetCvarName(),new_cvar->GetCvarModule()->name.GetString());
-
-		//Focus next cvar from config.xml
-		c_var = c_var.next_sibling();*/
-	}
-	
-	LOG("Console config.xml Variables Generated");
-
 	return true;
 }
 
@@ -134,6 +111,19 @@ bool j1Console::PostUpdate()
 
 bool j1Console::CleanUp()
 {
+	uint var_count = console_variables.Count();
+	for (uint k = 0; k < var_count; k++)
+	{
+		delete console_variables[k];
+	}
+	uint labels_count = console_labels.Count();
+	for (uint k = 0; k < labels_count; k++)
+	{
+		delete console_labels[k];
+	}
+	delete console_input_box;
+	delete console_labels_scroll;
+
 	return true;
 }
 
@@ -180,11 +170,9 @@ void j1Console::GUI_Input(UI_Element * target, GUI_INPUT input)
 		if (target == console_input_box)
 		{
 			Cvar* target_cvar = GetCvarfromInput(console_input_box->GetText());
-			if (GetInputType(console_input_box->GetText()) == "get")
-			{
-				Console_Input(target_cvar, nullptr);
-			}
-			else Console_Input(target_cvar, this->GetValuefromInput(console_input_box->GetText()));
+			p2SString input = GetValuefromInput(console_input_box->GetText());
+			CONSOLE_COMMAND_TYPE command = GetInputType(console_input_box->GetText());
+			target_cvar->GetCvarModule()->Console_Input(target_cvar, command, &input);
 		}
 		break;
 	}
@@ -260,6 +248,7 @@ Cvar * j1Console::GetCvarfromInput(char * input) const
 		else if (input[k] == '.')name_init = k + 1;
 		else if (input[k] == '\0' || input[k] == '=')name_end = k;
 	}
+
 	//Copy the name in a new string
 	uint j = 0;
 	for (uint pos = name_init; pos < name_end; pos++)
@@ -267,6 +256,8 @@ Cvar * j1Console::GetCvarfromInput(char * input) const
 		cvar_name[j] = input[pos];
 		j++;
 	}
+	cvar_name[j] = '\0';
+
 	//Copy the module name in a new string
 	j = 0;
 	for (uint k = module_init; k < name_init - 1; k++)
@@ -274,11 +265,13 @@ Cvar * j1Console::GetCvarfromInput(char * input) const
 		module_name[j] = input[k];
 		j++;
 	}
+	module_name[j] = '\0';
+
 	//Search the Cvar with the name build
 	uint cvar_num = console_variables.Count();
 	for (uint k = 0; k < cvar_num; k++)
 	{
-		if (console_variables[k]->GetCvarName() == cvar_name && console_variables[k]->GetCvarModule()->name.GetString() == module_name)return console_variables[k];
+		if (*console_variables[k]->GetCvarName() == cvar_name && console_variables[k]->GetCvarModule()->name == module_name)return console_variables[k];
 	}
 	return nullptr;
 }
@@ -302,7 +295,7 @@ char * j1Console::GetValuefromInput(char * input) const
 	return nullptr;
 }
 
-char * j1Console::GetInputType(char * input)
+CONSOLE_COMMAND_TYPE j1Console::GetInputType(char* input)
 {
 	char* command_type = new char[4];
 
@@ -317,7 +310,9 @@ char * j1Console::GetInputType(char * input)
 		command_type[k] = input[k];
 
 	}
-	return command_type;
+	p2SString command = command_type;
+	delete command_type;
+	return StringtoCommandType(&command);
 }
 
 char * j1Console::CvarTypetoString(C_VAR_TYPE cvar_type) const
@@ -334,11 +329,18 @@ char * j1Console::CvarTypetoString(C_VAR_TYPE cvar_type) const
 
 C_VAR_TYPE j1Console::StringtoCvarType(const p2SString* string) const
 {
-	if			(*string == "integrer")		return INT_VAR;
+	if			(*string == "integrer")			return INT_VAR;
 	else if		(*string == "float")			return FLOAT_VAR;
 	else if		(*string == "character")		return CHAR_VAR;
-	else if		(*string == "boolean")		return BOOLEAN_VAR;
+	else if		(*string == "boolean")			return BOOLEAN_VAR;
 	else return UNDEF;
+}
+
+CONSOLE_COMMAND_TYPE j1Console::StringtoCommandType(const p2SString * string) const
+{
+	if		(*string == "get")		return GET;
+	else if (*string == "set")		return SET;
+	else return INVALID;
 }
 
 //Console Variables Creation ----------------
@@ -348,7 +350,7 @@ Cvar* j1Console::AddCvar(const char* name, const char* description,const char* v
 	uint num = console_variables.Count();
 	for (uint k = 0; k < num; k++)
 	{
-		if (module_target == console_variables[k]->GetCvarModule() && name == console_variables[k]->GetCvarName())return false;
+		if (console_variables[k]->GetCvarModule() == module_target && *console_variables[k]->GetCvarName() == name)return false;
 	}
 
 	//Create the new cvar
@@ -365,7 +367,7 @@ Cvar* j1Console::AddCvar(const char* name, const char* description,const char* v
 Cvar* j1Console::LoadCvar(const char* name, const char* description,const char* value, C_VAR_TYPE cvar_type, j1Module* module_target)
 {
 	//Create the new cvar
-	if (module_target == NULL)module_target = this;
+	if (module_target == NULL)module_target = App;
 	Cvar* new_cvar = new Cvar(name, description, (char*)value, cvar_type, module_target);
 
 	//Add it to the cvars array
@@ -374,14 +376,26 @@ Cvar* j1Console::LoadCvar(const char* name, const char* description,const char* 
 	return new_cvar;
 }
 
-bool j1Console::SaveCvar(Cvar* cvar, pugi::xml_node& config)
+bool j1Console::CreateCvar(const char* name, const char* description, const char* value, C_VAR_TYPE cvar_type, j1Module* module_target)
 {
-	pugi::xml_node module_node = config.child(cvar->GetCvarModule()->name.GetString());
+	
+
+
 	return false;
 }
 
 //Handle Console Input ----------------------
-void j1Console::Console_Input(Cvar * cvar, char * input)
+void j1Console::Console_Input(Cvar* cvar, CONSOLE_COMMAND_TYPE command_type, p2SString* input)
 {
-	// TODO: update app state with cvars input
+	switch (command_type)
+	{
+	case INVALID:
+		break;
+	case GET:
+		break;
+	case SET:
+		break;
+	default:
+		break;
+	}
 }

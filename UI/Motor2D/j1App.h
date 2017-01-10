@@ -21,7 +21,7 @@ class j1Fonts;
 class j1Gui;
 class j1Console;
 
-class j1App
+class j1App : public j1Module
 {
 public:
 
@@ -100,7 +100,12 @@ public:
 	//Get Module pointer by name
 	j1Module*	GetModule(const p2SString* module_name)const;
 
+	//Get config xml file
+	pugi::xml_node GetConfigXML()const;
+
 private:
+
+	pugi::xml_node config_node;
 
 	p2List<j1Module*>	modules;
 	int					argc;

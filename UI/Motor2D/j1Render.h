@@ -5,6 +5,8 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
+struct Cvar;
+
 class j1Render : public j1Module
 {
 public:
@@ -51,6 +53,11 @@ public:
 	SDL_Rect		camera;
 	SDL_Rect		viewport;
 	SDL_Color		background;
+
+public:
+
+	void Console_Input(Cvar* cvar, CONSOLE_COMMAND_TYPE command_type, p2SString* input);
+
 };
 
 #endif // __j1RENDER_H__

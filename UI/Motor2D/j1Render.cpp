@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Render.h"
+#include "j1Console.h"
 
 #define VSYNC true
 
@@ -250,4 +251,23 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 	}
 
 	return ret;
+}
+
+void j1Render::Console_Input(Cvar* cvar, CONSOLE_COMMAND_TYPE command_type, p2SString * input)
+{
+	switch (command_type)
+	{
+	case INVALID:
+		break;
+	case GET:
+		if (*cvar->GetCvarName() == "vsync")
+		{
+			LOG("vsync: %s", cvar->GetValueString()->GetString());
+		}
+		break;
+	case SET:
+		break;
+	default:
+		break;
+	}
 }

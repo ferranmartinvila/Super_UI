@@ -11,6 +11,13 @@ struct UI_Scroll;
 struct UI_String;
 struct _TTF_Font;
 
+enum CONSOLE_COMMAND_TYPE 
+{
+	INVALID,
+	GET,
+	SET
+};
+
 class j1Console : public j1Module {
 public:
 
@@ -63,11 +70,12 @@ public:
 	//Get value from input
 	char* GetValuefromInput(char* input)const;
 	//Get input data
-	char* GetInputType(char* input);
+	CONSOLE_COMMAND_TYPE GetInputType(char* input);
 	//Cvar type transformations
 	char*		CvarTypetoString(C_VAR_TYPE cvar_type)const;
 	C_VAR_TYPE	StringtoCvarType(const p2SString* string)const;
-
+	//Command type transformations
+	CONSOLE_COMMAND_TYPE StringtoCommandType(const p2SString* string)const;
 
 	//Console Variables Creation ----------------
 	//Add Console Variable
@@ -75,12 +83,12 @@ public:
 	//Load Console Variable
 	Cvar* LoadCvar(const char* name, const char* description,const char* value, C_VAR_TYPE cvar_type, j1Module* module_target);
 	//Save Console Variable
-	bool SaveCvar(Cvar* cvar, pugi::xml_node& config);
+	bool CreateCvar(const char* name, const char* description, const char* value, C_VAR_TYPE cvar_type, j1Module* module_target);
 
 
 
 	//Handle Console Input ----------------------
-	void Console_Input(Cvar* cvar, char* input);
+	void Console_Input(Cvar* cvar, CONSOLE_COMMAND_TYPE command_type, p2SString* input);
 
 };
 #endif
