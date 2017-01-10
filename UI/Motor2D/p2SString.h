@@ -114,9 +114,17 @@ public:
 
 	bool operator== (const char* string) const
 	{
-		if (string != NULL)
-			return strcmp(string, str) == 0;
-		return false;
+		if (string == NULL)return false;
+		uint char_num = strlen(string);
+		if (char_num != strlen(this->str))return false;
+
+		bool ret = true;
+		for (uint k = 0; k < char_num; k++)
+		{
+			ret = (string[k] == str[k]);
+			if (!ret)return false;
+		}
+		return ret;
 	}
 
 	bool operator!= (const p2SString& string) const

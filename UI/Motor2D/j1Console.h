@@ -58,20 +58,28 @@ public:
 	void UpdateConsoleLabels();
 
 	//Console Input -----------------------------
-	//Add Console Variable
-	Cvar* AddCvar(const char* name, const char* description, char* value, C_VAR_TYPE cvar_type, j1Module* module_target);
 	//Get Cvar from input
 	Cvar* GetCvarfromInput(char* input)const;
 	//Get value from input
 	char* GetValuefromInput(char* input)const;
 	//Get input data
 	char* GetInputType(char* input);
-
 	//Cvar type transformations
 	char*		CvarTypetoString(C_VAR_TYPE cvar_type)const;
-	C_VAR_TYPE	StringtoCvarType(const char* string)const;
+	C_VAR_TYPE	StringtoCvarType(const p2SString* string)const;
 
-	//Handle Console Input
+
+	//Console Variables Creation ----------------
+	//Add Console Variable
+	Cvar* AddCvar(const char* name, const char* description,const char* value, C_VAR_TYPE cvar_type, j1Module* module_target);
+	//Load Console Variable
+	Cvar* LoadCvar(const char* name, const char* description,const char* value, C_VAR_TYPE cvar_type, j1Module* module_target);
+	//Save Console Variable
+	bool SaveCvar(Cvar* cvar, pugi::xml_node& config);
+
+
+
+	//Handle Console Input ----------------------
 	void Console_Input(Cvar* cvar, char* input);
 
 };

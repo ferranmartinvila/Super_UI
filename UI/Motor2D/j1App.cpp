@@ -1,4 +1,6 @@
-#include <iostream> 
+#define _CRT_SECURE_NO_WARNINGS
+
+#include <iostream>		
 #include <sstream> 
 
 #include "p2Defs.h"
@@ -96,6 +98,7 @@ bool j1App::Awake()
 		
 	config = LoadConfig(config_file);
 
+	//Load App config data
 	if(config.empty() == false)
 	{
 		// self-config
@@ -112,6 +115,7 @@ bool j1App::Awake()
 		}
 	}
 
+	//Call modules Awake method
 	if(ret == true)
 	{
 		p2List_item<j1Module*>* item;
@@ -122,6 +126,33 @@ bool j1App::Awake()
 			ret = item->data->Awake(config.child(item->data->name.GetString()));
 			item = item->next;
 		}
+	}
+
+	//Load Cvars 
+	pugi::xml_node module_node = app_config;
+	while (module_node != NULL)
+	{
+
+		pugi::xml_node cvar = module_node.child("c_vars").first_child();
+		while (cvar != NULL)
+		{
+			//Load CVar data
+			p2SString name = cvar.attribute("name").value();
+			p2SString description = cvar.attribute("description").value();
+			p2SString value = cvar.attribute("value").value();
+			const p2SString type = cvar.attribute("type").value();
+			C_VAR_TYPE cv_type = App->console->StringtoCvarType(&type);
+			const p2SString module = module_node.name();
+			j1Module* cv_module = App->GetModule(&module);
+			
+			//Build CVar
+			Cvar* cv = App->console->LoadCvar(name.GetString(), description.GetString(), value.GetString(), cv_type, cv_module);
+
+			LOG("-- %s -- CVar added at module %s", cv->GetCvarName(), cv->GetCvarModule()->name.GetString());
+			cvar = cvar.next_sibling();
+		}
+
+		module_node = module_node.next_sibling();
 	}
 
 	PERF_PEEK(ptimer);
@@ -459,13 +490,13 @@ bool j1App::SavegameNow() const
 	return ret;
 }
 
-j1Module * j1App::GetModule(char* module_name) const
+j1Module * j1App::GetModule(const p2SString* module_name) const
 {
 	p2List_item<j1Module*>* item = modules.start;
 	
 	while (item)
 	{
-		if (item->data->name.GetString() == module_name)
+		if (*module_name == item->data->name.GetString())
 		{
 			return item->data;
 		}

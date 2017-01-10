@@ -98,7 +98,7 @@ public:
 	j1Console*			console = NULL;
 
 	//Get Module pointer by name
-	j1Module*	GetModule(char* module_name)const;
+	j1Module*	GetModule(const p2SString* module_name)const;
 
 private:
 
@@ -125,6 +125,6 @@ private:
 	int					capped_ms = -1;
 };
 
-extern j1App* App; // No student is asking me about that ... odd :-S
+extern j1App* App;
 
 #endif

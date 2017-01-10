@@ -81,7 +81,7 @@ bool j1Console::Awake(pugi::xml_node& config)
 	
 	while (c_var != NULL)
 	{
-		//Load the cvar data from config.xml
+		/*//Load the cvar data from config.xml
 		const char* name = c_var.attribute("name").as_string();
 		const char* description = c_var.attribute("description").as_string();
 		char* value = (char*)c_var.attribute("value").as_string();
@@ -94,7 +94,7 @@ bool j1Console::Awake(pugi::xml_node& config)
 		//LOG("-- %s -- Cvar from module %s added", new_cvar->GetCvarName(),new_cvar->GetCvarModule()->name.GetString());
 
 		//Focus next cvar from config.xml
-		c_var = c_var.next_sibling();
+		c_var = c_var.next_sibling();*/
 	}
 	
 	LOG("Console config.xml Variables Generated");
@@ -208,6 +208,7 @@ void j1Console::ChangeConsoleState()
 	}
 }
 
+//Console Output ----------------------------
 void j1Console::AddConsoleText(char* new_text)
 {
 	UI_String* label = new UI_String({ 0,0,0,0 }, new_text, font_color, font);
@@ -241,23 +242,7 @@ void j1Console::UpdateConsoleLabels()
 	}
 }
 
-Cvar* j1Console::AddCvar(const char * name,const char * description,char * value, C_VAR_TYPE cvar_type,j1Module* module_target)
-{
-	//Check if the cvar already exist
-	uint num = console_variables.Count();
-	for (uint k = 0; k < num; k++)
-	{
-		if (name == console_variables[k]->GetCvarName())return false;
-	}
-	
-	//Create the new cvar
-	Cvar* new_cvar = new Cvar(name, description, value, cvar_type, module_target);
-	//Add it to the cvars array
-	console_variables.PushBack(new_cvar);
-	
-	return new_cvar;
-}
-
+//Console Input -----------------------------
 Cvar * j1Console::GetCvarfromInput(char * input) const
 {
 	char* cvar_name = new char[10];
@@ -347,18 +332,55 @@ char * j1Console::CvarTypetoString(C_VAR_TYPE cvar_type) const
 	}
 }
 
-C_VAR_TYPE j1Console::StringtoCvarType(const char* string) const
+C_VAR_TYPE j1Console::StringtoCvarType(const p2SString* string) const
 {
-	if			(string == "integrer")return INT_VAR;
-	else if		(string == "float")	return FLOAT_VAR;
-	else if		(string == "character")return CHAR_VAR;
-	else if		(string == "boolean")
-	{
-		return BOOLEAN_VAR;
-	}
+	if			(*string == "integrer")		return INT_VAR;
+	else if		(*string == "float")			return FLOAT_VAR;
+	else if		(*string == "character")		return CHAR_VAR;
+	else if		(*string == "boolean")		return BOOLEAN_VAR;
 	else return UNDEF;
 }
 
+//Console Variables Creation ----------------
+Cvar* j1Console::AddCvar(const char* name, const char* description,const char* value, C_VAR_TYPE cvar_type, j1Module* module_target)
+{
+	//Check if the cvar already exist
+	uint num = console_variables.Count();
+	for (uint k = 0; k < num; k++)
+	{
+		if (module_target == console_variables[k]->GetCvarModule() && name == console_variables[k]->GetCvarName())return false;
+	}
+
+	//Create the new cvar
+	Cvar* new_cvar = new Cvar(name, description, (char*)value, cvar_type, module_target);
+
+	//Save it in the config.xml 
+
+	//Add it to the cvars array
+	console_variables.PushBack(new_cvar);
+
+	return new_cvar;
+}
+
+Cvar* j1Console::LoadCvar(const char* name, const char* description,const char* value, C_VAR_TYPE cvar_type, j1Module* module_target)
+{
+	//Create the new cvar
+	if (module_target == NULL)module_target = this;
+	Cvar* new_cvar = new Cvar(name, description, (char*)value, cvar_type, module_target);
+
+	//Add it to the cvars array
+	console_variables.PushBack(new_cvar);
+
+	return new_cvar;
+}
+
+bool j1Console::SaveCvar(Cvar* cvar, pugi::xml_node& config)
+{
+	pugi::xml_node module_node = config.child(cvar->GetCvarModule()->name.GetString());
+	return false;
+}
+
+//Handle Console Input ----------------------
 void j1Console::Console_Input(Cvar * cvar, char * input)
 {
 	// TODO: update app state with cvars input
