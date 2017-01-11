@@ -333,6 +333,8 @@ bool j1App::PostUpdate()
 		ret = item->data->PostUpdate();
 	}
 
+	ret = !want_to_quit;
+
 	return ret;
 }
 
@@ -514,4 +516,27 @@ j1Module * j1App::GetModule(const p2SString* module_name) const
 pugi::xml_node j1App::GetConfigXML() const
 {
 	return config_node;
+}
+
+void j1App::Console_Input(Cvar * cvar, CONSOLE_COMMAND_TYPE command_type, p2SString * input)
+{
+	switch (command_type)
+	{
+	case INVALID:
+		break;
+	case GET:
+		break;
+	case SET:
+		break;
+	case QUIT:
+		SetQuit(true);
+		break;
+	default:
+		break;
+	}
+}
+
+void j1App::SetQuit(bool value)
+{
+	want_to_quit = value;
 }

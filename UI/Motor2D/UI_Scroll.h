@@ -43,7 +43,9 @@ public:
 private:
 
 	int			CalculateScrollDesp();
-	
+	void		MoveScrollItems();
+	uint		UpdateContentLenght(UI_Element* new_item);
+
 public:
 
 	//Game Loop
@@ -52,9 +54,13 @@ public:
 
 	//Functionality
 	bool		MoveScroll(int mouse_y_motion, int mouse_x_motion);
+	void		GoBottom();
+
 	void		UnselectScroll();
+
 	void		AddScrollItem(UI_Element* new_item);
 	void		AddScrollItemAtBottom(UI_Element* new_item);
+
 	uint		GetScrollItemsNum()const;
 	UI_Element*	GetScrollItem(uint index);
 

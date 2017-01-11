@@ -169,10 +169,20 @@ void j1Console::GUI_Input(UI_Element * target, GUI_INPUT input)
 	case ENTER:
 		if (target == console_input_box)
 		{
+			//Get data from input
 			Cvar* target_cvar = GetCvarfromInput(console_input_box->GetText());
 			p2SString input = GetValuefromInput(console_input_box->GetText());
 			CONSOLE_COMMAND_TYPE command = GetInputType(console_input_box->GetText());
-			target_cvar->GetCvarModule()->Console_Input(target_cvar, command, &input);
+			
+			//Only command case
+			if (target_cvar == NULL)App->Console_Input(NULL, command, nullptr);
+			//Cvar case
+			else target_cvar->GetCvarModule()->Console_Input(target_cvar, command, &input);
+
+			//Clean console box
+			console_input_box->SetText(nullptr);
+			//Go at bottom of scroll
+			console_labels_scroll->GoBottom();
 		}
 		break;
 	}
@@ -233,9 +243,8 @@ void j1Console::UpdateConsoleLabels()
 //Console Input -----------------------------
 Cvar * j1Console::GetCvarfromInput(char * input) const
 {
-	char* cvar_name = new char[10];
-	char* module_name = new char[10];
 
+	//String position of input elements
 	uint name_init = 0;
 	uint name_end = 0;
 	uint module_init = 0;
@@ -249,7 +258,13 @@ Cvar * j1Console::GetCvarfromInput(char * input) const
 		else if (input[k] == '\0' || input[k] == '=')name_end = k;
 	}
 
-	//Copy the name in a new string
+	if (module_init == 0 || name_init == 0)return nullptr;
+
+	//Build the module & cvar name
+	char* cvar_name = new char[10];
+	char* module_name = new char[10];
+	
+	//Copy the cvar name in a new string
 	uint j = 0;
 	for (uint pos = name_init; pos < name_end; pos++)
 	{
@@ -258,7 +273,7 @@ Cvar * j1Console::GetCvarfromInput(char * input) const
 	}
 	cvar_name[j] = '\0';
 
-	//Copy the module name in a new string
+	//Copy the cvar module name in a new string
 	j = 0;
 	for (uint k = module_init; k < name_init - 1; k++)
 	{
@@ -297,7 +312,7 @@ char * j1Console::GetValuefromInput(char * input) const
 
 CONSOLE_COMMAND_TYPE j1Console::GetInputType(char* input)
 {
-	char* command_type = new char[4];
+	char* command_type = new char[strlen(input)];
 
 	uint char_num = strlen(input);
 	for (uint k = 0; k < char_num; k++)
@@ -340,6 +355,7 @@ CONSOLE_COMMAND_TYPE j1Console::StringtoCommandType(const p2SString * string) co
 {
 	if		(*string == "get")		return GET;
 	else if (*string == "set")		return SET;
+	else if (*string == "quit")		return QUIT;
 	else return INVALID;
 }
 

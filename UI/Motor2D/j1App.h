@@ -103,6 +103,9 @@ public:
 	//Get config xml file
 	pugi::xml_node GetConfigXML()const;
 
+	//Handle Console Input ----------------------
+	void Console_Input(Cvar* cvar, CONSOLE_COMMAND_TYPE command_type, p2SString* input);
+
 private:
 
 	pugi::xml_node config_node;
@@ -128,6 +131,13 @@ private:
 	uint32				prev_last_sec_frame_count = 0;
 	float				dt = 0.0f;
 	int					capped_ms = -1;
+
+	bool				want_to_quit = false;
+
+public:
+
+	void SetQuit(bool value);
+
 };
 
 extern j1App* App;

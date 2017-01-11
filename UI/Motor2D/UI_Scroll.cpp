@@ -59,6 +59,27 @@ int UI_Scroll::CalculateScrollDesp()
 	return y_desp = (y_desp - floor(y_desp) > 0.5) ? ceil(y_desp) : floor(y_desp);;
 }
 
+void UI_Scroll::MoveScrollItems()
+{
+	//Move the scroll items --
+	int desp = CalculateScrollDesp();
+	p2List_item<UI_Element*>* item = Items.start;
+	p2List_item<iPoint>* item_location = Items_location.start;
+	while (item_location)
+	{
+		item->data->SetBoxPosition(item_location->data.x, item_location->data.y + desp);
+		item = item->next;
+		item_location = item_location->next;
+	}
+}
+
+uint UI_Scroll::UpdateContentLenght(UI_Element * new_item)
+{
+	int lenght = (new_item->GetBox()->y + new_item->GetBox()->h + ContentWindow.y) - (ContentWindow.h + ContentWindow.y);
+	if (lenght > 0 && lenght > ContentLenght)ContentLenght = lenght;
+	return uint(lenght);
+}
+
 bool UI_Scroll::MoveScroll(int mouse_x_motion, int mouse_y_motion)
 {
 	//Select the Scroll Item ----------
@@ -86,15 +107,7 @@ bool UI_Scroll::MoveScroll(int mouse_x_motion, int mouse_y_motion)
 		ScrollItem.MoveBox(0, mouse_y_motion);
 		
 		//Move the scroll items --
-		int desp = CalculateScrollDesp();
-		p2List_item<UI_Element*>* item = Items.start;
-		p2List_item<iPoint>* item_location = Items_location.start;
-		while (item_location)
-		{
-			item->data->SetBoxPosition(item_location->data.x, item_location->data.y + desp);
-			item = item->next;
-			item_location = item_location->next;
-		}
+		MoveScrollItems();
 
 		//Update the scroll pos --
 		ScrollPosition += mouse_y_motion;
@@ -107,6 +120,22 @@ bool UI_Scroll::MoveScroll(int mouse_x_motion, int mouse_y_motion)
 	return ScrollSelected;
 }
 
+void UI_Scroll::GoBottom()
+{
+	//Update the scroll pos --
+	UpdateContentLenght(Items.end->data);
+
+	//Move the scroll Item ---
+	ScrollItem.MoveBox(0, ScrollBack.GetBox()->y + ScrollBack.GetBox()->h - (ScrollItem.GetBox()->h + ScrollItem.GetBox()->y));
+
+	//Move the scroll items --
+	CalculateScrollDesp();
+	MoveScrollItems();
+
+	//Update scroll value ----
+	Value = ((ScrollItem.GetBox()->y - ScrollBack.GetBox()->y) * MaxValue) / (float)(ScrollBack.GetBox()->h - ScrollItem.GetBox()->h);
+}
+
 void UI_Scroll::UnselectScroll()
 {
 	ScrollSelected = false;
@@ -115,13 +144,7 @@ void UI_Scroll::UnselectScroll()
 void UI_Scroll::AddScrollItem(UI_Element* new_item)
 {
 	//Calculate the size for the scroll
-	int lenght = 0;
-	if(Scroll_Type == VERTICAL || Scroll_Type == VERTICAL_INV)
-	{
-		//Vertical Scroll Case
-		lenght = (new_item->GetBox()->y + new_item->GetBox()->h + ContentWindow.y) - (ContentWindow.h + ContentWindow.y);
-		if (lenght > 0 && lenght > ContentLenght)ContentLenght = lenght;
-	}
+	UpdateContentLenght(new_item);
 
 	//Set item layer
 	new_item->SetLayer(this->layer + 1);
@@ -138,8 +161,7 @@ void UI_Scroll::AddScrollItemAtBottom(UI_Element * new_item)
 	else new_item->SetBoxPosition(0, 0);
 	
 	//Update the scroll length
-	int lenght = (new_item->GetBox()->y + new_item->GetBox()->h + ContentWindow.y) - (ContentWindow.h + ContentWindow.y);
-	if (lenght > 0 && lenght > ContentLenght)ContentLenght = lenght;
+	UpdateContentLenght(new_item);
 	
 	//Set item layer
 	new_item->SetLayer(this->layer + 1);

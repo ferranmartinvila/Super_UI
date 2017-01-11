@@ -15,7 +15,8 @@ enum CONSOLE_COMMAND_TYPE
 {
 	INVALID,
 	GET,
-	SET
+	SET,
+	QUIT
 };
 
 class j1Console : public j1Module {
@@ -57,7 +58,7 @@ public:
 	void ChangeConsoleState();
 	
 	//Console Output ----------------------------
-	//Add a label in the console text scroll
+	//Add a text at text list of scroll
 	void AddConsoleText(char* new_text);
 	//Generate labels textures
 	void GenerateLabelsTextures(uint index = 0);
