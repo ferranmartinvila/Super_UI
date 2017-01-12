@@ -5,19 +5,12 @@
 #include "SDL\include\SDL_rect.h"
 #include "p2DynArray.h"
 #include "C_var.h"
+#include "Command.h"
 
 struct UI_Text_Box;
 struct UI_Scroll;
 struct UI_String;
 struct _TTF_Font;
-
-enum CONSOLE_COMMAND_TYPE 
-{
-	INVALID,
-	GET,
-	SET,
-	QUIT
-};
 
 class j1Console : public j1Module {
 public:
@@ -46,6 +39,7 @@ private:
 	bool					can_texturize_strings = false;
 	
 	p2DynArray<Cvar*>		console_variables;
+	p2DynArray<Command*>	commands;
 	
 	_TTF_Font*				font;
 	SDL_Color				font_color;
@@ -73,14 +67,12 @@ public:
 	//Get value from input
 	char*					GetValuefromInput(char* input)const;
 	//Get input data
-	CONSOLE_COMMAND_TYPE	GetInputType(char* input);
+	Command*				GetCommandfromInput(char* input)const;
 
 	//Transformations ---------------------------
 	//Cvar type transformations
 	char*					CvarTypetoString(C_VAR_TYPE cvar_type)const;
 	C_VAR_TYPE				StringtoCvarType(const p2SString* string)const;
-	//Command type transformations
-	CONSOLE_COMMAND_TYPE	StringtoCommandType(const p2SString* string)const;
 
 	//Console Variables Creation ----------------
 	//Add Console Variable
@@ -88,9 +80,12 @@ public:
 	//Load Console Variable
 	Cvar* LoadCvar(const char* name, const char* description,const char* value, C_VAR_TYPE cvar_type, j1Module* module_target);
 
+	//Console Commands Creation -----------------
+	Command* AddCommand(const char* command_str, j1Module* module_target);
+
 
 	//Handle Console Input ----------------------
-	void Console_Input(Cvar* cvar, CONSOLE_COMMAND_TYPE command_type, p2SString* input);
+	void Console_Command_Input(Command* command, Cvar* cvar, p2SString* input);
 
 };
 #endif

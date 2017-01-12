@@ -116,7 +116,7 @@ public:
 	{
 		if (string == NULL)return false;
 		uint char_num = strlen(string);
-		if (char_num != strlen(this->str))return false;
+		if (char_num != strlen(str))return false;
 
 		bool ret = true;
 		for (uint k = 0; k < char_num; k++)

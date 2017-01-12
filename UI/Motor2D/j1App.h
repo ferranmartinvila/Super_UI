@@ -104,7 +104,8 @@ public:
 	pugi::xml_node GetConfigXML()const;
 
 	//Handle Console Input ----------------------
-	void Console_Input(Cvar* cvar, CONSOLE_COMMAND_TYPE command_type, p2SString* input);
+	void Console_Command_Input(Command* command, Cvar* cvar, p2SString* input);
+	void Console_Cvar_Input(Cvar* cvar, Command* command_type, p2SString* input);
 
 private:
 
@@ -136,7 +137,7 @@ private:
 
 public:
 
-	void SetQuit(bool value);
+	void SetQuit();
 
 };
 

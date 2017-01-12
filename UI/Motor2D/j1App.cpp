@@ -182,6 +182,9 @@ bool j1App::Start()
 
 	PERF_PEEK(ptimer);
 
+	//Add Console Commands
+	console->AddCommand("quit", this);
+
 	return ret;
 }
 
@@ -518,29 +521,19 @@ pugi::xml_node j1App::GetConfigXML() const
 	return config_node;
 }
 
-void j1App::Console_Input(Cvar * cvar, CONSOLE_COMMAND_TYPE command_type, p2SString * input)
+void j1App::Console_Command_Input(Command * command, Cvar * cvar, p2SString * input)
 {
-	switch (command_type)
-	{
-	case INVALID:
-		break;
-	case GET:
-		if (cvar->GetCvarName()->GetString() == "maxfps")
-		{
-
-		}
-		break;
-	case SET:
-		break;
-	case QUIT:
-		SetQuit(true);
-		break;
-	}
+	if (*command->GetCommandStr() == "quit")SetQuit();
 }
 
-void j1App::SetQuit(bool value)
+void j1App::Console_Cvar_Input(Cvar * cvar, Command* command_type, p2SString * input)
 {
-	want_to_quit = value;
+
+}
+
+void j1App::SetQuit()
+{
+	want_to_quit = true;
 }
 
 

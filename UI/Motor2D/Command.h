@@ -3,12 +3,12 @@
 
 #include "j1Module.h"
 
-class command
+class Command
 {
 public:
 
-	command(const char* command_str, j1Module* module_target) :command_str(command_str), module_target(module_target) {}
-	~command() {}
+	Command(const char* command_str, j1Module* module_target) :command_str(command_str), module_target(module_target) {}
+	~Command() {}
 
 private:
 

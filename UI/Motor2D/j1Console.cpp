@@ -81,11 +81,15 @@ bool j1Console::Awake(pugi::xml_node& config)
 
 bool j1Console::Start()
 {
+	//Now is able to generate texture for console scrolllabels
 	can_texturize_strings = true;
-
 	UpdateConsoleLabels();
-	LOG("Console Labels Generated");
 
+	//Add Console Commands
+	AddCommand("get", this);
+
+
+	LOG("Console Labels Generated");
 	return true;
 }
 
@@ -174,26 +178,16 @@ void j1Console::GUI_Input(UI_Element * target, GUI_INPUT input)
 			//Get data from input
 			Cvar* target_cvar = GetCvarfromInput(console_input_box->GetText());
 			p2SString input = GetValuefromInput(console_input_box->GetText());
-			CONSOLE_COMMAND_TYPE command = GetInputType(console_input_box->GetText());
-			
+			Command* command = GetCommandfromInput(console_input_box->GetText());
 
-			switch (command)
+			//Send command to each module or print error str
+			if (command == nullptr)
 			{
-			case INVALID:
-
 				App->console->GenerateConsoleLabel("Error Input: %s", console_input_box->GetText());
-					
-				break;
-			case GET:
-
-				App->console->GenerateConsoleLabel("%s: %s", target_cvar->GetCvarName()->GetString(), target_cvar->GetValueString()->GetString());
-
-				break;
-			case SET:
-				break;
-			case QUIT:
-					App->Console_Input(NULL, QUIT, nullptr);
-				break;
+			}
+			else
+			{
+				command->GetModuleTarget()->Console_Command_Input(command, target_cvar, &input);
 			}
 			
 			//Clean console box
@@ -346,11 +340,12 @@ char * j1Console::GetValuefromInput(char * input) const
 	return nullptr;
 }
 
-CONSOLE_COMMAND_TYPE j1Console::GetInputType(char* input)
+Command* j1Console::GetCommandfromInput(char* input)const
 {
-	char* command_type = new char[strlen(input)];
+	//Build the command string
+	const uint char_num = strlen(input);
+	char* command_type = new char[char_num];
 
-	uint char_num = strlen(input);
 	for (uint k = 0; k < char_num; k++)
 	{
 		if (input[k] == '/')
@@ -361,9 +356,20 @@ CONSOLE_COMMAND_TYPE j1Console::GetInputType(char* input)
 		command_type[k] = input[k];
 
 	}
-	p2SString command = command_type;
+	
+	//Search the commands in the array
+	uint command_num = commands.Count();
+	for (uint k = 0; k < command_num; k++)
+	{
+		if (*commands[k]->GetCommandStr() == command_type)
+		{
+			return commands[k];
+			delete command_type;
+		}
+	}
+
 	delete command_type;
-	return StringtoCommandType(&command);
+	return nullptr;
 }
 
 //Transformations ---------------------------
@@ -388,14 +394,6 @@ C_VAR_TYPE j1Console::StringtoCvarType(const p2SString* string) const
 	else return UNDEF;
 }
 
-CONSOLE_COMMAND_TYPE j1Console::StringtoCommandType(const p2SString * string) const
-{
-	if		(*string == "get")		return GET;
-	else if (*string == "set")		return SET;
-	else if (*string == "quit")		return QUIT;
-	else return INVALID;
-}
-
 //Console Variables Creation ----------------
 Cvar* j1Console::AddCvar(const char* name, const char* description,const char* value, C_VAR_TYPE cvar_type, j1Module* module_target)
 {
@@ -403,13 +401,11 @@ Cvar* j1Console::AddCvar(const char* name, const char* description,const char* v
 	uint num = console_variables.Count();
 	for (uint k = 0; k < num; k++)
 	{
-		if (console_variables[k]->GetCvarModule() == module_target && *console_variables[k]->GetCvarName() == name)return false;
+		if (*console_variables[k]->GetCvarName() == name)return nullptr;
 	}
 
 	//Create the new cvar
 	Cvar* new_cvar = new Cvar(name, description, (char*)value, cvar_type, module_target);
-
-	//Save it in the config.xml 
 
 	//Add it to the cvars array
 	console_variables.PushBack(new_cvar);
@@ -421,26 +417,46 @@ Cvar* j1Console::LoadCvar(const char* name, const char* description,const char* 
 {
 	//Create the new cvar
 	if (module_target == NULL)module_target = App;
-	Cvar* new_cvar = new Cvar(name, description, (char*)value, cvar_type, module_target);
+	uint cvars_num = console_variables.Count();
+	for (uint k = 0; k < cvars_num; k++)
+	{
+		if (console_variables[k]->GetCvarName()->GetString() == name)return nullptr;
+	}
 
-	//Add it to the cvars array
+	//Create the new Cvar
+	Cvar* new_cvar = new Cvar(name, description, (char*)value, cvar_type, module_target);
 	console_variables.PushBack(new_cvar);
 
 	return new_cvar;
 }
 
-//Handle Console Input ----------------------
-void j1Console::Console_Input(Cvar* cvar, CONSOLE_COMMAND_TYPE command_type, p2SString* input)
+//Console Commands Creation -----------------
+Command * j1Console::AddCommand(const char * command_str, j1Module * module_target)
 {
-	switch (command_type)
+	//Check if the command already exist
+	uint commands_num = commands.Count();
+	for (uint k = 0; k < commands_num; k++)
 	{
-	case INVALID:
-		break;
-	case GET:
-		break;
-	case SET:
-		break;
-	default:
-		break;
+		if (commands[k]->GetCommandStr()->GetString() == command_str)
+		{
+			return nullptr;
+		}
+	}
+
+	//Create the new command
+	Command* new_command = new Command(command_str, module_target);
+	commands.PushBack(new_command);
+	
+	LOG("- %s - command added", new_command->GetCommandStr()->GetString());
+
+	return new_command;
+}
+
+//Handle Console Input ----------------------
+void j1Console::Console_Command_Input(Command * command, Cvar * cvar, p2SString * input)
+{
+	if (*command->GetCommandStr() == "get")
+	{
+		GenerateConsoleLabel("%s: %s", cvar->GetCvarName()->GetString(), cvar->GetValueString()->GetString());
 	}
 }

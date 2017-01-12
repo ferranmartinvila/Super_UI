@@ -56,7 +56,7 @@ public:
 
 public:
 
-	void Console_Input(Cvar* cvar, CONSOLE_COMMAND_TYPE command_type, p2SString* input);
+	void Console_Cvar_Input(Cvar* cvar, CONSOLE_COMMAND_TYPE command_type, p2SString* input);
 
 };
 

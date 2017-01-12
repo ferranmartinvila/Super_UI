@@ -14,6 +14,7 @@ struct UI_Element;
 enum GUI_INPUT;
 enum CONSOLE_COMMAND_TYPE;
 struct Cvar;
+struct Command;
 
 class j1Module
 {
@@ -82,8 +83,12 @@ public:
 
 	}
 
-	//Console funtcions ---------------
-	virtual void Console_Input(Cvar* cvar, CONSOLE_COMMAND_TYPE command_type, p2SString* input)
+	//Console functions ---------------
+	virtual void Console_Cvar_Input(Cvar* cvar, Command* command, p2SString* input)
+	{
+
+	}
+	virtual void Console_Command_Input(Command* command, Cvar* cvar, p2SString* input)
 	{
 
 	}
