@@ -5,14 +5,14 @@
     <title>Pathfinding Test</title>
     <organization>UPC</organization>
     <c_vars>
-      <c_var name = "maxfps"	description = "Limit Max framerate"	value = "60"	type = "integrer"/>
+      <c_var name = "maxfps"	description = "Limit Max framerate"	value = "60"	type = "integrer"	only_read="false"/>
     </c_vars>
   </app>
 	
   <renderer>
     <vsync value="true"/>
     <c_vars>
-      <c_var name = "vsync"	description = "Active/Desactive vsync"	value = "1"	type = "boolean"/>
+      <c_var name = "vsync"	description = "Active/Desactive vsync"	value = "1"	type = "boolean"	only_read="false"/>
     </c_vars>
   </renderer>
 

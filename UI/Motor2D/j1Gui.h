@@ -20,7 +20,8 @@ enum GUI_INPUT {
 	MOUSE_OUT,
 	SUPR,
 	BACKSPACE,
-	ENTER
+	ENTER,
+	TAB
 
 };
 

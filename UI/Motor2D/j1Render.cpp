@@ -4,8 +4,7 @@
 #include "j1Window.h"
 #include "j1Render.h"
 #include "j1Console.h"
-
-#define VSYNC true
+#include "SDL\include\SDL.h"
 
 j1Render::j1Render() : j1Module()
 {
@@ -31,6 +30,7 @@ bool j1Render::Awake(pugi::xml_node& config)
 	if(config.child("vsync").attribute("value").as_bool(true) == true)
 	{
 		flags |= SDL_RENDERER_PRESENTVSYNC;
+		
 		LOG("Using vsync");
 	}
 
@@ -106,6 +106,11 @@ bool j1Render::Save(pugi::xml_node& data) const
 void j1Render::SetBackgroundColor(SDL_Color color)
 {
 	background = color;
+}
+
+void j1Render::ChangeVSYNCstate(bool state)
+{
+	SDL_GL_SetSwapInterval(state);
 }
 
 void j1Render::SetViewPort(const SDL_Rect& rect)
@@ -253,7 +258,16 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 	return ret;
 }
 
-void j1Render::Console_Cvar_Input(Cvar* cvar, CONSOLE_COMMAND_TYPE command_type, p2SString * input)
+void j1Render::Console_Cvar_Input(Cvar* cvar, Command* command_type, p2SString * input)
 {
-
+	if (*cvar->GetCvarName() == "vsync")
+	{
+		if(*input == "1")ChangeVSYNCstate(true);
+		else if (*input == "0")ChangeVSYNCstate(false);
+		else App->console->GenerateConsoleLabel("Value error vsync Cvar[0/1]");
+	}
+	else
+	{
+		App->console->GenerateConsoleLabel("Cvar id Error at module Render");
+	}
 }

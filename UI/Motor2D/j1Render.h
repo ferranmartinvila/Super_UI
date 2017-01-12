@@ -47,6 +47,9 @@ public:
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
 
+	//Active/Desactive vsync
+	void ChangeVSYNCstate(bool state);
+
 public:
 
 	SDL_Renderer*	renderer;
@@ -56,7 +59,7 @@ public:
 
 public:
 
-	void Console_Cvar_Input(Cvar* cvar, CONSOLE_COMMAND_TYPE command_type, p2SString* input);
+	void Console_Cvar_Input(Cvar* cvar, Command* command_type, p2SString* input);
 
 };
 

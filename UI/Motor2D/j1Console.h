@@ -51,7 +51,10 @@ public:
 
 	//Active / Desactive the Console
 	void ChangeConsoleState();
+
+	//Console UI interaction --------------------
 	void GoScrollBottom();
+	bool AutoCompleteInputBox(char* input);
 
 	//Console Output ----------------------------
 	//Add a text at text list of scroll
@@ -76,9 +79,9 @@ public:
 
 	//Console Variables Creation ----------------
 	//Add Console Variable
-	Cvar* AddCvar(const char* name, const char* description,const char* value, C_VAR_TYPE cvar_type, j1Module* module_target);
+	Cvar* AddCvar(const char* name, const char* description,const char* value, C_VAR_TYPE cvar_type, j1Module* module_target, bool only_read);
 	//Load Console Variable
-	Cvar* LoadCvar(const char* name, const char* description,const char* value, C_VAR_TYPE cvar_type, j1Module* module_target);
+	Cvar* LoadCvar(const char* name, const char* description,const char* value, C_VAR_TYPE cvar_type, j1Module* module_target, bool only_read);
 
 	//Console Commands Creation -----------------
 	Command* AddCommand(const char* command_str, j1Module* module_target);

@@ -142,13 +142,17 @@ bool j1App::Awake()
 			p2SString name = cvar.attribute("name").value();
 			p2SString description = cvar.attribute("description").value();
 			p2SString value = cvar.attribute("value").value();
+			
 			const p2SString type = cvar.attribute("type").value();
 			C_VAR_TYPE cv_type = App->console->StringtoCvarType(&type);
+			
 			const p2SString module = module_node.name();
 			j1Module* cv_module = App->GetModule(&module);
+
+			bool only_read = cvar.attribute("only_read").as_bool();
 			
 			//Build CVar
-			Cvar* cv = App->console->LoadCvar(name.GetString(), description.GetString(), value.GetString(), cv_type, cv_module);
+			Cvar* cv = App->console->LoadCvar(name.GetString(), description.GetString(), value.GetString(), cv_type, cv_module,only_read);
 
 			LOG("-- %s -- CVar added at module %s", cv->GetCvarName()->GetString(), cv->GetCvarModule()->name.GetString());
 			

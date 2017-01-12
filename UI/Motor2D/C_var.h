@@ -16,8 +16,7 @@ enum C_VAR_TYPE {
 class Cvar {
 public:
 
-	Cvar(const char* name, const char* description, char* value, C_VAR_TYPE var_type,j1Module* module_var) :name(name), description(description), value(value), var_type(var_type), module_var(module_var) {}
-	Cvar(p2SString* name, p2SString* description, p2SString* value, C_VAR_TYPE var_type, j1Module* module_var) :name(*name), description(*description), value(*value), var_type(var_type), module_var(module_var) {}
+	Cvar(const char* name, const char* description, char* value, C_VAR_TYPE var_type,j1Module* module_var, bool only_read) :name(name), description(description), value(value), var_type(var_type), module_var(module_var), only_read(only_read) {}
 
 	Cvar() {};
 
@@ -30,8 +29,12 @@ private:
 
 	p2SString	name;
 	p2SString	description;
+
 	p2SString	value;
 	C_VAR_TYPE	var_type;
+
+	bool only_read;
+
 	j1Module*	module_var;
 
 public:
