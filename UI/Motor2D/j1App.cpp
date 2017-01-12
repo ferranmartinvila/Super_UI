@@ -525,13 +525,15 @@ void j1App::Console_Input(Cvar * cvar, CONSOLE_COMMAND_TYPE command_type, p2SStr
 	case INVALID:
 		break;
 	case GET:
+		if (cvar->GetCvarName()->GetString() == "maxfps")
+		{
+
+		}
 		break;
 	case SET:
 		break;
 	case QUIT:
 		SetQuit(true);
-		break;
-	default:
 		break;
 	}
 }
@@ -540,3 +542,5 @@ void j1App::SetQuit(bool value)
 {
 	want_to_quit = value;
 }
+
+

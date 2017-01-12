@@ -43,6 +43,7 @@ private:
 
 	UI_Scroll*				console_labels_scroll;
 	p2DynArray<UI_String*>	console_labels;
+	bool					can_texturize_strings = false;
 	
 	p2DynArray<Cvar*>		console_variables;
 	
@@ -56,36 +57,36 @@ public:
 
 	//Active / Desactive the Console
 	void ChangeConsoleState();
-	
+	void GoScrollBottom();
+
 	//Console Output ----------------------------
 	//Add a text at text list of scroll
 	void AddConsoleText(char* new_text);
-	//Generate labels textures
-	void GenerateLabelsTextures(uint index = 0);
+	//Generate log text widouth send it to the debug output
+	char* GenerateConsoleLabel(char* new_text,...);
 	//Texturize the console labels and push it to the scroll
 	void UpdateConsoleLabels();
 
 	//Console Input -----------------------------
 	//Get Cvar from input
-	Cvar* GetCvarfromInput(char* input)const;
+	Cvar*					GetCvarfromInput(char* input)const;
 	//Get value from input
-	char* GetValuefromInput(char* input)const;
+	char*					GetValuefromInput(char* input)const;
 	//Get input data
-	CONSOLE_COMMAND_TYPE GetInputType(char* input);
+	CONSOLE_COMMAND_TYPE	GetInputType(char* input);
+
+	//Transformations ---------------------------
 	//Cvar type transformations
-	char*		CvarTypetoString(C_VAR_TYPE cvar_type)const;
-	C_VAR_TYPE	StringtoCvarType(const p2SString* string)const;
+	char*					CvarTypetoString(C_VAR_TYPE cvar_type)const;
+	C_VAR_TYPE				StringtoCvarType(const p2SString* string)const;
 	//Command type transformations
-	CONSOLE_COMMAND_TYPE StringtoCommandType(const p2SString* string)const;
+	CONSOLE_COMMAND_TYPE	StringtoCommandType(const p2SString* string)const;
 
 	//Console Variables Creation ----------------
 	//Add Console Variable
 	Cvar* AddCvar(const char* name, const char* description,const char* value, C_VAR_TYPE cvar_type, j1Module* module_target);
 	//Load Console Variable
 	Cvar* LoadCvar(const char* name, const char* description,const char* value, C_VAR_TYPE cvar_type, j1Module* module_target);
-	//Save Console Variable
-	bool CreateCvar(const char* name, const char* description, const char* value, C_VAR_TYPE cvar_type, j1Module* module_target);
-
 
 
 	//Handle Console Input ----------------------

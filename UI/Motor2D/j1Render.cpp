@@ -262,7 +262,8 @@ void j1Render::Console_Input(Cvar* cvar, CONSOLE_COMMAND_TYPE command_type, p2SS
 	case GET:
 		if (*cvar->GetCvarName() == "vsync")
 		{
-			LOG("vsync: %s", cvar->GetValueString()->GetString());
+			char* text = App->console->GenerateConsoleLabel("vsync: %s", cvar->GetValueString()->GetString());
+			App->console->GoScrollBottom();
 		}
 		break;
 	case SET:

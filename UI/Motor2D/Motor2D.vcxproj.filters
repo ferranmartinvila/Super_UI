@@ -168,6 +168,9 @@
     <ClInclude Include="C_var.h">
       <Filter>Develop  ========\UserInteraface\Console</Filter>
     </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>Develop  ========\UserInteraface\Console</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Develop  ========">

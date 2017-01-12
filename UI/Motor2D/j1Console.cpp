@@ -81,7 +81,8 @@ bool j1Console::Awake(pugi::xml_node& config)
 
 bool j1Console::Start()
 {
-	GenerateLabelsTextures();
+	can_texturize_strings = true;
+
 	UpdateConsoleLabels();
 	LOG("Console Labels Generated");
 
@@ -94,9 +95,8 @@ bool j1Console::PostUpdate()
 	console_input_box->HandleInput();
 	console_labels_scroll->HandleInput();
 	
-	//Update Console LOG Labels
 	UpdateConsoleLabels();
-	
+
 	//Draw Console Area
 	App->render->DrawQuad(console_area, console_color.r, console_color.g, console_color.b, console_color.a);
 
@@ -111,6 +111,8 @@ bool j1Console::PostUpdate()
 
 bool j1Console::CleanUp()
 {
+	can_texturize_strings = false;
+
 	uint var_count = console_variables.Count();
 	for (uint k = 0; k < var_count; k++)
 	{
@@ -174,11 +176,26 @@ void j1Console::GUI_Input(UI_Element * target, GUI_INPUT input)
 			p2SString input = GetValuefromInput(console_input_box->GetText());
 			CONSOLE_COMMAND_TYPE command = GetInputType(console_input_box->GetText());
 			
-			//Only command case
-			if (target_cvar == NULL)App->Console_Input(NULL, command, nullptr);
-			//Cvar case
-			else target_cvar->GetCvarModule()->Console_Input(target_cvar, command, &input);
 
+			switch (command)
+			{
+			case INVALID:
+
+				App->console->GenerateConsoleLabel("Error Input: %s", console_input_box->GetText());
+					
+				break;
+			case GET:
+
+				App->console->GenerateConsoleLabel("%s: %s", target_cvar->GetCvarName()->GetString(), target_cvar->GetValueString()->GetString());
+
+				break;
+			case SET:
+				break;
+			case QUIT:
+					App->Console_Input(NULL, QUIT, nullptr);
+				break;
+			}
+			
 			//Clean console box
 			console_input_box->SetText(nullptr);
 			//Go at bottom of scroll
@@ -206,24 +223,40 @@ void j1Console::ChangeConsoleState()
 	}
 }
 
+void j1Console::GoScrollBottom()
+{
+	console_labels_scroll->GoBottom();
+}
+
 //Console Output ----------------------------
 void j1Console::AddConsoleText(char* new_text)
 {
 	UI_String* label = new UI_String({ 0,0,0,0 }, new_text, font_color, font);
-	console_labels.PushBack(label);
+	if (!can_texturize_strings)
+	{
+		console_labels.PushBack(label);
+	}
+	else
+	{
+		console_labels.PushBack(label);
+		UpdateConsoleLabels();
+	}
 }
 
-void j1Console::GenerateLabelsTextures(uint index)
+char * j1Console::GenerateConsoleLabel(char * new_text,...)
 {
-	uint labels_num = console_labels.Count();
-	for (uint k = index; k < labels_num; k++)
-	{
-		console_labels[k]->SetFont(font);
-		console_labels[k]->SetColor(font_color);
-		console_labels[k]->GenerateTexture();
-		console_labels[k]->AdjustBox();
-		
-	}
+	static char tmp_string[1000];
+	static va_list ap;
+
+	va_start(ap,new_text);
+	vsprintf_s(tmp_string, 1000, new_text, ap);
+	va_end(ap);
+
+	UI_String* label = new UI_String({ 0,0,0,0 }, tmp_string, font_color, font);
+	console_labels.PushBack(label);
+	UpdateConsoleLabels();
+
+	return tmp_string;
 }
 
 void j1Console::UpdateConsoleLabels()
@@ -236,7 +269,10 @@ void j1Console::UpdateConsoleLabels()
 	for (uint k = scroll_labels_num; k < labels_num; k++)
 	{
 		console_labels_scroll->AddScrollItemAtBottom(((UI_String*)*console_labels.At(k)));
-		GenerateLabelsTextures(k);
+		console_labels[k]->SetFont(font);
+		console_labels[k]->SetColor(font_color);
+		console_labels[k]->GenerateTexture();
+		console_labels[k]->AdjustBox();
 	}
 }
 
@@ -330,6 +366,7 @@ CONSOLE_COMMAND_TYPE j1Console::GetInputType(char* input)
 	return StringtoCommandType(&command);
 }
 
+//Transformations ---------------------------
 char * j1Console::CvarTypetoString(C_VAR_TYPE cvar_type) const
 {
 	switch (cvar_type)
@@ -390,14 +427,6 @@ Cvar* j1Console::LoadCvar(const char* name, const char* description,const char* 
 	console_variables.PushBack(new_cvar);
 
 	return new_cvar;
-}
-
-bool j1Console::CreateCvar(const char* name, const char* description, const char* value, C_VAR_TYPE cvar_type, j1Module* module_target)
-{
-	
-
-
-	return false;
 }
 
 //Handle Console Input ----------------------
