@@ -51,23 +51,59 @@ void UI_Scroll::Draw(bool debug)
 }
 
 // Functionality =========================================
-int UI_Scroll::CalculateScrollDesp()
+iPoint UI_Scroll::CalculateScrollDesp()
 {
-	float y_loc = -((ScrollItem.GetBox()->y - ScrollBack.GetBox()->y));
-	if (y_loc == 0) return 0;
-	float y_desp = (y_loc * ContentLenght) / (ScrollBack.GetBox()->h - ScrollItem.GetBox()->h);
-	return y_desp = (y_desp - floor(y_desp) > 0.5) ? ceil(y_desp) : floor(y_desp);;
+	float loc = 0, desp_x = 0, desp_y = 0;
+
+	switch (Scroll_Type)
+	{
+	case VERTICAL:
+
+		loc = -(ScrollItem.GetBox()->y - ScrollBack.GetBox()->y);
+		if (loc == 0) break;
+		desp_y = (loc * ContentLenght) / (ScrollBack.GetBox()->h - ScrollItem.GetBox()->h);
+		break;
+
+	case VERTICAL_INV:
+
+		loc = (ScrollItem.GetBox()->y - ScrollBack.GetBox()->y);
+		if (loc == 0) break;
+		desp_y = (loc * ContentLenght) / (ScrollBack.GetBox()->h - ScrollItem.GetBox()->h);
+		break;
+
+	case LATERAL:
+
+		loc = (ScrollItem.GetBox()->x - ScrollBack.GetBox()->x);
+		if (loc == 0) break;
+		desp_x = -(loc * ContentLenght) / (ScrollBack.GetBox()->w - ScrollItem.GetBox()->w);
+		break;
+
+	case LATERAL_INV:
+
+		loc = (ScrollItem.GetBox()->x - ScrollBack.GetBox()->x);
+		if (loc == 0) break;
+		desp_x = (loc * ContentLenght) / (ScrollBack.GetBox()->w - ScrollItem.GetBox()->w);
+		break;
+
+	case FREE_DIRECTION:
+		break;
+	}
+
+	desp_x = (desp_x - floor(desp_x) > 0.5) ? ceil(desp_x) : floor(desp_x);
+	desp_y = (desp_y - floor(desp_y) > 0.5) ? ceil(desp_y) : floor(desp_y);
+
+	return iPoint(desp_x, desp_y);
 }
 
 void UI_Scroll::MoveScrollItems()
 {
 	//Move the scroll items --
-	int desp = CalculateScrollDesp();
+	iPoint desp = CalculateScrollDesp();
 	p2List_item<UI_Element*>* item = Items.start;
 	p2List_item<iPoint>* item_location = Items_location.start;
 	while (item_location)
 	{
-		item->data->SetBoxPosition(item_location->data.x, item_location->data.y + desp);
+		item->data->SetBoxPosition(item_location->data.x + desp.x, item_location->data.y + desp.y);
 		item = item->next;
 		item_location = item_location->next;
 	}
@@ -75,9 +111,32 @@ void UI_Scroll::MoveScrollItems()
 
 uint UI_Scroll::UpdateContentLenght(UI_Element * new_item)
 {
-	int lenght = (new_item->GetBox()->y + new_item->GetBox()->h + ContentWindow.y) - (ContentWindow.h + ContentWindow.y);
-	if (lenght > 0 && lenght > ContentLenght)ContentLenght = lenght;
-	return uint(lenght);
+	int length = 0;
+	
+	switch (Scroll_Type)
+	{
+	case VERTICAL:
+		length = (new_item->GetBox()->y + new_item->GetBox()->h) - (ContentWindow.h);
+		break;
+
+	case VERTICAL_INV:
+		length = -new_item->GetBox()->y;
+		break;
+
+	case LATERAL:
+		length = (new_item->GetBox()->x + new_item->GetBox()->w) - (ContentWindow.w);
+		break;
+	
+	case LATERAL_INV:
+		length = -new_item->GetBox()->x;
+		break;
+	
+	case FREE_DIRECTION:
+		break;
+	}
+
+	if (length > 0 && length > ContentLenght)ContentLenght = length;
+	return uint(length);
 }
 
 bool UI_Scroll::MoveScroll(int mouse_x_motion, int mouse_y_motion)
@@ -91,30 +150,57 @@ bool UI_Scroll::MoveScroll(int mouse_x_motion, int mouse_y_motion)
 	//Drag the Scroll Item ------------
 	if (ScrollSelected)
 	{
-		if (ScrollItem.RectIsIn(ScrollBack.GetBox(), mouse_x_motion, mouse_y_motion)  == false)
+		if (Scroll_Type == VERTICAL || Scroll_Type == VERTICAL_INV)
 		{
-			//Put the Scroll Item at the limit 
-			if (mouse_y_motion < 0)
+			mouse_x_motion = 0;
+
+			if (ScrollItem.RectIsIn(ScrollBack.GetBox(), mouse_x_motion, mouse_y_motion) == false)
 			{
-				mouse_y_motion = ScrollBack.GetBox()->y - ScrollItem.GetBox()->y;
+				//Set at limits
+				if (mouse_y_motion < 0)
+				{
+					mouse_y_motion = ScrollBack.GetBox()->y - ScrollItem.GetBox()->y;
+				}
+				else if (mouse_y_motion > 0)
+				{
+					mouse_y_motion = ScrollBack.GetBox()->y + ScrollBack.GetBox()->h - (ScrollItem.GetBox()->h + ScrollItem.GetBox()->y);
+				}
 			}
-			else if (mouse_y_motion > 0)
-			{
-				mouse_y_motion = ScrollBack.GetBox()->y + ScrollBack.GetBox()->h - (ScrollItem.GetBox()->h + ScrollItem.GetBox()->y);
-			}
+
+			//Update scroll position
+			ScrollPosition += mouse_y_motion;
+
+			//Update scroll value
+			Value = ((ScrollItem.GetBox()->y - ScrollBack.GetBox()->y) * MaxValue) / (float)(ScrollBack.GetBox()->h - ScrollItem.GetBox()->h);
 		}
+		else if (Scroll_Type == LATERAL || Scroll_Type == LATERAL_INV)
+		{
+			mouse_y_motion = 0;
+
+			if (ScrollItem.RectIsIn(ScrollBack.GetBox(), mouse_x_motion, mouse_y_motion, true) == false)
+			{
+				if (mouse_x_motion < 0)
+				{
+					mouse_x_motion = -(ScrollItem.GetBox()->x - ScrollBack.GetBox()->x);
+				}
+				else if (mouse_x_motion > 0)
+				{
+					mouse_x_motion = (ScrollBack.GetBox()->x + ScrollBack.GetBox()->w) - (ScrollItem.GetBox()->x + ScrollItem.GetBox()->w);
+				}
+			}
+
+			//Update scroll position
+			ScrollPosition += mouse_x_motion;
+
+			//Update scroll value
+			Value = ((ScrollItem.GetBox()->x - ScrollBack.GetBox()->x) * MaxValue) / (float)(ScrollBack.GetBox()->w - ScrollItem.GetBox()->w);
+		}
+
 		//Move the scroll Item ---
-		ScrollItem.MoveBox(0, mouse_y_motion);
+		ScrollItem.MoveBox(mouse_x_motion, mouse_y_motion);
 		
 		//Move the scroll items --
 		MoveScrollItems();
-
-		//Update the scroll pos --
-		ScrollPosition += mouse_y_motion;
-		
-		//Update scroll value ----
-		Value = ((ScrollItem.GetBox()->y - ScrollBack.GetBox()->y) * MaxValue) / (float)(ScrollBack.GetBox()->h - ScrollItem.GetBox()->h);
-
 	}
 
 	return ScrollSelected;

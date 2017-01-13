@@ -8,6 +8,9 @@ enum SCROLL_TYPE {
 
 	VERTICAL,
 	VERTICAL_INV,
+	LATERAL,
+	LATERAL_INV,
+	FREE_DIRECTION
 
 };
 
@@ -42,7 +45,7 @@ public:
 
 private:
 
-	int			CalculateScrollDesp();
+	iPoint		CalculateScrollDesp();
 	void		MoveScrollItems();
 	uint		UpdateContentLenght(UI_Element* new_item);
 

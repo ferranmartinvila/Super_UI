@@ -24,7 +24,6 @@
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
-	name.create("app");
 
 	PERF_START(ptimer);
 
@@ -154,7 +153,7 @@ bool j1App::Awake()
 			//Build CVar
 			Cvar* cv = App->console->LoadCvar(name.GetString(), description.GetString(), value.GetString(), cv_type, cv_module,only_read);
 
-			LOG("-- %s -- CVar added at module %s", cv->GetCvarName()->GetString(), cv->GetCvarModule()->name.GetString());
+			LOG("-- %s -- CVar added at %s", cv->GetCvarName()->GetString(), module.GetString());
 			
 			//Next cvar
 			cvar = cvar.next_sibling();
@@ -187,7 +186,7 @@ bool j1App::Start()
 	PERF_PEEK(ptimer);
 
 	//Add Console Commands
-	console->AddCommand("quit", this);
+	console->AddCommand("quit", nullptr);
 
 	return ret;
 }
@@ -274,7 +273,6 @@ void j1App::FinishUpdate()
 	{
 		j1PerfTimer t;
 		SDL_Delay(capped_ms - last_frame_ms);
-		LOG("We waited for %d milliseconds and got back in %f", capped_ms - last_frame_ms, t.ReadMs());
 	}
 }
 
@@ -532,7 +530,26 @@ void j1App::Console_Command_Input(Command * command, Cvar * cvar, p2SString * in
 
 void j1App::Console_Cvar_Input(Cvar * cvar, Command* command_type, p2SString * input)
 {
+	//Set command
+	if (*command_type->GetCommandStr() == "set")
+	{
+		//Maxfps cvar
+		if (*cvar->GetCvarName() == "maxfps")
+		{
+			if (cvar->GetValueAsNum() < 0)cvar->SetValue("-1");
+			else if (cvar->GetValueAsNum() > 120)cvar->SetValue("120");
+			capped_ms = 1000 / cvar->GetValueAsNum();
 
+		}
+
+		//Unknown cvar
+		else
+		{
+			App->console->GenerateConsoleLabel("Cvar id Error at module Render");
+			return;
+		}
+
+	}
 }
 
 void j1App::SetQuit()

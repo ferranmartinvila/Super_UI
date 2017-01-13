@@ -242,6 +242,10 @@ bool UI_Element::RectIsIn(const SDL_Rect* target, int x_vel, int y_vel, bool x_a
 		ret = (target->y <= box.y + y_vel && (target->y + target->h) >= (box.y + box.h + y_vel));
 
 	}
+	else
+	{
+		ret = (target->x <= box.x + x_vel && (target->x + target->w) >= (box.x + box.w + x_vel));
+	}
 	return ret;
 }
 

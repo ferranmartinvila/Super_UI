@@ -21,7 +21,7 @@ class j1Fonts;
 class j1Gui;
 class j1Console;
 
-class j1App : public j1Module
+class j1App
 {
 public:
 

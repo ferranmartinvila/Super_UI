@@ -187,7 +187,14 @@ void j1Console::GUI_Input(UI_Element * target, GUI_INPUT input)
 			}
 			else
 			{
-				command->GetModuleTarget()->Console_Command_Input(command, target_cvar, &input);
+				if (command->GetModuleTarget() != nullptr)
+				{
+					command->GetModuleTarget()->Console_Command_Input(command, target_cvar, &input);
+				}
+				else
+				{
+					App->Console_Command_Input(command, target_cvar, &input);
+				}
 			}
 			
 			//Clean console box
@@ -334,8 +341,8 @@ Cvar * j1Console::GetCvarfromInput(char * input) const
 	uint char_num = strlen(input) + 1;
 	for (uint k = 0; k < char_num; k++)
 	{
-		if (input[k] == '/')module_init = k + 1;
-		else if (input[k] == '.')name_init = k + 1;
+		if (input[k] == '/' && module_init == 0)module_init = k + 1;
+		else if (input[k] == '.' && name_init == 0)name_init = k + 1;
 		else if ((input[k] == '\0' || input[k] == '=') && name_end == 0)name_end = k;
 	}
 
@@ -367,7 +374,7 @@ Cvar * j1Console::GetCvarfromInput(char * input) const
 	uint cvar_num = console_variables.Count();
 	for (uint k = 0; k < cvar_num; k++)
 	{
-		if (*console_variables[k]->GetCvarName() == cvar_name && console_variables[k]->GetCvarModule()->name == module_name)return console_variables[k];
+		if (*console_variables[k]->GetCvarName() == cvar_name)return console_variables[k];
 	}
 	return nullptr;
 }
@@ -470,7 +477,6 @@ Cvar* j1Console::AddCvar(const char* name, const char* description,const char* v
 Cvar* j1Console::LoadCvar(const char* name, const char* description,const char* value, C_VAR_TYPE cvar_type, j1Module* module_target, bool only_read)
 {
 	//Create the new cvar
-	if (module_target == NULL)module_target = App;
 	uint cvars_num = console_variables.Count();
 	for (uint k = 0; k < cvars_num; k++)
 	{
@@ -509,12 +515,45 @@ Command * j1Console::AddCommand(const char * command_str, j1Module * module_targ
 //Handle Console Input ----------------------
 void j1Console::Console_Command_Input(Command * command, Cvar * cvar, p2SString * input)
 {
+	//Get command
 	if (*command->GetCommandStr() == "get")
 	{
+		//Check cvar
+		if (cvar == nullptr)
+		{
+			App->console->GenerateConsoleLabel("Error set command Cvar is NULL");
+			return;
+		}
+		//Show cvar value
 		GenerateConsoleLabel("%s: %s", cvar->GetCvarName()->GetString(), cvar->GetValueString()->GetString());
 	}
+
+	//Set command
 	else if (*command->GetCommandStr() == "set")
 	{
-		cvar->GetCvarModule()->Console_Cvar_Input(cvar, command, input);
+		//Check cvar
+		if (cvar == nullptr)
+		{
+			App->console->GenerateConsoleLabel("Error set command Cvar is NULL");
+			return;
+		}
+
+		//Set cvar value
+		cvar->SetValue(input->GetString());
+		
+		//Update cvar state
+		if (cvar->GetCvarModule() != nullptr)
+		{
+			cvar->GetCvarModule()->Console_Cvar_Input(cvar, command, input);
+		}
+		else
+		{
+			App->Console_Cvar_Input(cvar, command, input);
+		}
+
+		//Show cvar value
+		GenerateConsoleLabel("-- %s = %s", cvar->GetCvarName()->GetString(),cvar->GetValueString()->GetString());
 	}
+
+	//Help command
 }

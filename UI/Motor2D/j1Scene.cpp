@@ -44,7 +44,7 @@ bool j1Scene::Start()
 	scene_1_screen = new UI_Element({ 0,0,App->win->screen_surface->w, App->win->screen_surface->h }, UNDEFINED, true);
 
 
-	player1_item = new UI_Image({ 20,360 }, { 1485, 110, 72, 109 }, 0);
+	player1_item = new UI_Image({ 20,-160 }, { 1485, 110, 72, 109 }, 0);
 	player1_item->AdjustBox();
 
 	UI_Image on({ 0,0 }, { 5,116,220,59 });
@@ -59,12 +59,21 @@ bool j1Scene::Start()
 	scroll_back.AdjustBox();
 
 	UI_Image item({ 397,20,19,40 }, { 1000,880,19,20 });
-	scroll = new UI_Scroll({ 250,250,450,350 }, { 20,20,300,250 }, item, UI_Image({ 400,20 }, { 985,874,13,149 }), VERTICAL,500);
+	scroll = new UI_Scroll({ 250,250,450,350 }, { 20,20,300,250 }, item, UI_Image({ 400,20 }, { 985,874,13,149 }), VERTICAL_INV,500);
 	scroll->AddScrollItem(player1_item);
 	scroll->ScrollBack.AdjustBox();
 	scroll->ScrollItem.AdjustBox();
 	scroll->SetTabable();
 	scene_1_screen->AddChild(scroll);
+
+	UI_Image lateral_item({ 400,20,19,40 }, { 1000,880,19,20 });
+	UI_Image* pl = new UI_Image({ -40,60 }, { 1485, 110, 72, 109 }, 0);
+	pl->AdjustBox();
+	lateral_scroll = new UI_Scroll({ 250,250,850,350 }, { 20,20,300,250 }, lateral_item, UI_Image({ 400,20 }, { 0,9,307,15 }), LATERAL_INV, 500);
+	lateral_scroll->AddScrollItem(pl);
+	lateral_scroll->ScrollBack.AdjustBox();
+	lateral_scroll->ScrollItem.AdjustBox();
+	scene_1_screen->AddChild(lateral_scroll,10);
 
 	text_box = new UI_Text_Box({ 0,0,50,50 }, UI_String({ 0,0,0,0 }, "") , 2, 5);
 	scene_1_screen->AddChild(text_box);
@@ -126,19 +135,23 @@ void j1Scene::GUI_Input(UI_Element* target, GUI_INPUT input)
 	case MOUSE_LEFT_BUTTON_DOWN:
 		break;
 	case MOUSE_LEFT_BUTTON_REPEAT:
-		if (target == player1_item)
-		{
-			player1_item->MoveBox(x, y);
-		}
-		else if (target == scroll)
+		if (target == scroll)
 		{
 			if (scroll->MoveScroll(x,y) == false)scroll->MoveBox(x, y);
+		}
+		else if (target == lateral_scroll)
+		{
+			if (lateral_scroll->MoveScroll(x, y) == false)lateral_scroll->MoveBox(x, y);
 		}
 		break;
 	case MOUSE_LEFT_BUTTON_UP:
 		if (target == scroll)
 		{
 			scroll->UnselectScroll();
+		}
+		else if (target == lateral_scroll)
+		{
+			lateral_scroll->UnselectScroll();
 		}
 		break;
 	case MOUSE_RIGHT_BUTTON:

@@ -119,6 +119,7 @@ void UI_Text_Box::HandleInput()
 		{
 			Cursor_pos--;
 			Cursor_screen_pos = Text_entered.GetPixelLenght(Cursor_pos);
+			if (strlen(Text_entered.GetString()) == 0)Text_entered.SetString(nullptr);
 		}
 		input_target->GUI_Input(this, BACKSPACE);
 	}

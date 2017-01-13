@@ -63,8 +63,8 @@ void UI_String::PushString(char * new_text, uint position)
 bool UI_String::DeleteChar(uint position)
 {
 	bool ret = text.DeleteChar(position);
-	if(ret)text_texture = App->font->Print(text.GetString(), text_color, text_font);
-	else if(text.Length() == 0)text_texture = nullptr;
+	if (text.Length() == 0)text_texture = nullptr;
+	else if(ret)text_texture = App->font->Print(text.GetString(), text_color, text_font);
 	return ret;
 }
 

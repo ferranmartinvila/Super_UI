@@ -63,25 +63,23 @@ public:
 
 
 	//Cvar value functions --------------------------------
-	//Get cvar value with the cvar type
-	template<class cvar_data>
-	cvar_data&	GetValue()const
+	double	GetValueAsNum()const
 	{
-		switch (var_type)
-		{
-		case INT:		return atoi(value);								break;
-		case FLOAT:		return atof(value);								break;
-		case CHAR:		return value;									break;
-		case BOOL:		(value == "true") ? return true : return false;	break;
-		}
+		return atoi(value.GetString());
 	}
+	
+	bool GetValueAsBool()const
+	{
+		return (value == "true" || value == "t");
+	}
+
 	//Get cvar value string
 	const p2SString* GetValueString()const
 	{
 		return &value;
 	}
 	//Set cvar value
-	void	SetValue(char* new_value)
+	void SetValue(const char* new_value)
 	{
 		value = new_value;
 	}
