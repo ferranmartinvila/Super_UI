@@ -2,6 +2,7 @@
 #define __j1SCENE_H__
 
 #include "j1Module.h"
+#include "p2DynArray.h"
 
 struct SDL_Texture;
 struct UI_Button;
@@ -22,7 +23,7 @@ public:
 	virtual ~j1Scene();
 
 	// Called before render is available
-	bool Awake();
+	bool Awake(pugi::xml_node& config);
 
 	// Called before the first frame
 	bool Start();
@@ -54,6 +55,23 @@ private:
 	UI_Scroll*		lateral_scroll;
 	UI_Text_Box*	text_box;
 	UI_Button*		button;
+
+public:
+
+	//Map Folders
+	p2DynArray<p2SString> map_folder;
+
+	uint current_map;
+
+	//Change the current map
+	void Change_Map();
+
+	//Load the choosed Map
+	bool Load_Current_Map();
+
+	//Textures data
+	SDL_Texture* tex_goal;
+	SDL_Texture* tex_path;
 
 };
 

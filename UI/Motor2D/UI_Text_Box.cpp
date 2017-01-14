@@ -24,12 +24,12 @@ UI_Text_Box::~UI_Text_Box()
 void UI_Text_Box::Draw(bool debug) 
 {
 	//Draw the debug Quad
-	if (debug)App->render->DrawQuad({ box.x, box.y, box.w, box.h }, 25, 25, 25);
+	if (debug)App->render->DrawQuad({ box.x - App->render->camera.x, box.y - App->render->camera.y, box.w, box.h }, 25, 25, 25);
 	
 	//Draw the cursor
 	if (App->gui->ItemSelected == this)
 	{
-		App->render->DrawQuad({ box.x + (int)Cursor_screen_pos, box.y ,(int)Cursor_w,(int)Cursor_h }, Cursor_color.r, Cursor_color.g, Cursor_color.b, Cursor_color.a);
+		App->render->DrawQuad({ box.x + (int)Cursor_screen_pos - App->render->camera.x, box.y - App->render->camera.y,(int)Cursor_w,(int)Cursor_h }, Cursor_color.r, Cursor_color.g, Cursor_color.b, Cursor_color.a);
 	}
 
 	//Draw the Text

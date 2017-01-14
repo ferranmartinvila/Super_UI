@@ -27,7 +27,7 @@ void UI_Button::Draw(bool debug)
 	int x = this->box.x;
 	int y = this->box.y;
 
-	if(debug)App->render->DrawQuad({ x, y, box.w, box.h }, 150, 250, 0);
+	if(debug)App->render->DrawQuad({ x - App->render->camera.x, y - App->render->camera.y, box.w, box.h }, 150, 250, 0);
 
 	//This Draw
 	switch (button_state) {

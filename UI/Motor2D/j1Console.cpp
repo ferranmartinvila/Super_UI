@@ -112,7 +112,7 @@ bool j1Console::PostUpdate()
 	UpdateConsoleLabels();
 
 	//Draw Console Area
-	App->render->DrawQuad(console_area, console_color.r, console_color.g, console_color.b, console_color.a);
+	App->render->DrawQuad({ console_area.x - App->render->camera.x,console_area.y -App->render->camera.y,console_area.w,console_area.h }, console_color.r, console_color.g, console_color.b, console_color.a);
 
 	//Draw console labels
 	console_labels_scroll->Draw(false);
@@ -739,5 +739,4 @@ void j1Console::Console_Command_Input(Command * command, Cvar * cvar, p2SString 
 		}
 	}
 
-	//Help command
 }

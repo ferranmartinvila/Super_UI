@@ -16,7 +16,7 @@ class j1Audio;
 class j1FileSystem;
 class j1Scene;
 class j1Map;
-class j1PathFinding;
+class j1Pathfinding;
 class j1Fonts;
 class j1Gui;
 class j1Console;
@@ -89,7 +89,7 @@ public:
 	j1Scene*			scene = NULL;
 	j1FileSystem*		fs = NULL;
 	j1Map*				map = NULL;
-	j1PathFinding*		pathfinding = NULL;
+	j1Pathfinding*		pathfinding = NULL;
 	j1Fonts*			font = NULL;
 	j1Gui*				gui = NULL;
 	j1Console*			console = NULL;

@@ -3,7 +3,7 @@
 #include "j1Input.h"
 #include "p2Log.h"
 #include "UI_Scroll.h"
-
+#include "j1Render.h"
 
 //Constructors ============================================
 UI_Scroll::UI_Scroll(const SDL_Rect& box, const SDL_Rect& ContentWindow, const UI_Image& ScrollItem, const UI_Image& ScrollBack, SCROLL_TYPE Scroll_Type, int MaxValue) :UI_Element(box, SCROLL), ContentWindow(ContentWindow), ScrollItem(ScrollItem), ScrollBack(ScrollBack), Scroll_Type(Scroll_Type), MaxValue(MaxValue) {}
@@ -25,10 +25,10 @@ void UI_Scroll::Draw(bool debug)
 	//Draw Scroll & Content View Area Qwad -
 	if (debug)
 	{
-		App->render->DrawQuad({ box.x, box.y, box.w, box.h }, 150, 150, 0);
-		App->render->DrawQuad({ ContentWindow.x + box.x,ContentWindow.y + box.y,ContentWindow.w,ContentWindow.h }, 0, 50, 0);
-		App->render->DrawQuad({ box.x + ScrollBack.GetBox()->x,box.y + ScrollBack.GetBox()->y,ScrollBack.GetBox()->w, ScrollBack.GetBox()->h }, 90, 20, 0);
-		App->render->DrawQuad({ box.x + ScrollItem.GetBox()->x,box.y + ScrollItem.GetBox()->y,ScrollItem.GetBox()->w, ScrollItem.GetBox()->h }, 90, 80, 110);
+		App->render->DrawQuad({ box.x - App->render->camera.x, box.y - App->render->camera.y, box.w, box.h }, 150, 150, 0);
+		App->render->DrawQuad({ ContentWindow.x + box.x - App->render->camera.x,ContentWindow.y + box.y - App->render->camera.y,ContentWindow.w,ContentWindow.h }, 0, 50, 0);
+		App->render->DrawQuad({ box.x + ScrollBack.GetBox()->x - App->render->camera.x,box.y + ScrollBack.GetBox()->y - App->render->camera.y,ScrollBack.GetBox()->w, ScrollBack.GetBox()->h }, 90, 20, 0);
+		App->render->DrawQuad({ box.x + ScrollItem.GetBox()->x - App->render->camera.x,box.y + ScrollItem.GetBox()->y - App->render->camera.y,ScrollItem.GetBox()->w, ScrollItem.GetBox()->h }, 90, 80, 110);
 	}
 
 	//Draw the scroll img ------------------

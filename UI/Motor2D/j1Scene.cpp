@@ -8,7 +8,8 @@
 #include "j1Window.h"
 #include "j1Gui.h"
 #include "j1Scene.h"
-
+#include "j1Pathfinding.h"
+#include "j1Map.h"
 
 //UI Elements
 #include "UI_Text_Box.h"
@@ -27,17 +28,29 @@ j1Scene::~j1Scene()
 {}
 
 // Called before render is available
-bool j1Scene::Awake()
+bool j1Scene::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Scene");
-	bool ret = true;
+	for (pugi::xml_node map_tmx = config.child("map_folder"); map_tmx; map_tmx = map_tmx.next_sibling("map_folder")) {
 
+		map_folder.PushBack(map_tmx.child_value());
+
+	}
+
+	bool ret = true;
 	return ret;
 }
 
 // Called before the first frame
 bool j1Scene::Start()
 {
+	//Load textures
+	tex_goal = App->tex->Load("textures/goal_texture.png");
+	tex_path = App->tex->Load("textures/path_texture.png");
+
+	//Load the map
+	Load_Current_Map();
+
 	App->gui->SetDefaultInputTarget(this);
 
 	//UI Scene build --------------------------------------
@@ -114,6 +127,69 @@ bool j1Scene::Update(float dt)
 	// Gui Upper Element ---------------------------
 	App->gui->CalculateUpperElement(scene_1_screen);
 
+	//MAP MOVEMENT-----------------------------------------
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	{
+		App->render->camera.y += SDL_ceil(500 * dt);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	{
+		App->render->camera.y -= SDL_ceil(500 * dt);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		App->render->camera.x += SDL_ceil(500 * dt);
+
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		App->render->camera.x -= SDL_ceil(500 * dt);
+
+
+	App->map->Draw();
+	App->pathfinding->Draw();
+
+	//PATHFINDING------------------------------------------
+	if (App->gui->ItemSelected != nullptr && App->gui->ItemSelected->GetUItype() != UNDEFINED)return true;
+
+	if (App->input->GetMouseButtonDown(1) == KEY_DOWN) {
+		int x, y;
+		App->input->GetMousePosition(x, y);
+		App->pathfinding->SetPathStart(App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y));
+	}
+
+	if (App->input->GetMouseButtonDown(3) == KEY_DOWN) {
+		int x, y;
+		App->input->GetMousePosition(x, y);
+		App->pathfinding->SetPathGoal(App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y));
+	}
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+		App->pathfinding->ResetPath();
+
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)
+		App->pathfinding->PropagateBFS(App->pathfinding->start, App->pathfinding->goal, nullptr, nullptr);
+
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT)
+		App->pathfinding->PropagateDijkstra();
+
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+		App->pathfinding->CreatePath(App->pathfinding->start, App->pathfinding->goal, false);
+
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+		App->pathfinding->CreatePath(App->pathfinding->start, App->pathfinding->goal, true);
+
+	if (App->input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
+		App->pathfinding->CreatePath(App->pathfinding->start, App->pathfinding->goal, true, true);
+
+	if (App->input->GetKey(SDL_SCANCODE_7) == KEY_DOWN)
+		App->pathfinding->CanReach(App->pathfinding->start, App->pathfinding->goal);
+
+	if (App->input->GetKey(SDL_SCANCODE_8) == KEY_DOWN) {
+		Change_Map();
+		App->pathfinding->ResetPath();
+		App->map->UnLoadMap();
+		Load_Current_Map();
+	}
+
 	return true;
 }
 
@@ -185,4 +261,46 @@ void j1Scene::GUI_Input(UI_Element* target, GUI_INPUT input)
 	case ENTER:
 		break;
 	}
+}
+
+void j1Scene::Change_Map()
+{
+	if (current_map < map_folder.Count() - 1)current_map++;
+	else current_map = 0;
+}
+
+bool j1Scene::Load_Current_Map()
+{
+	bool ret = false;
+
+	if (App->map->Load(map_folder.At(current_map)->GetString())) {
+
+		ret = true;
+		int w, h;
+		uchar* data = NULL;
+
+		//Create Walkability Map
+		if (App->map->CreateWalkabilityMap(w, h, &data))
+			App->pathfinding->SetWalkabilityMap(w, h, data);
+
+		RELEASE_ARRAY(data);
+
+		//Create walk Cost Map
+		if (App->map->CreateWalkCostMap(w, h, &data)) {
+			App->pathfinding->SetWalkCostMap(w, h, data);
+		}
+
+		RELEASE_ARRAY(data);
+
+		//Create Way Size Map
+		if (App->pathfinding->CreateWaySizeMap(w, h, &data)) {
+
+			App->pathfinding->SetWaySizeMap(w, h, data);
+
+		}
+
+		RELEASE_ARRAY(data);
+
+	}
+	return ret;
 }

@@ -19,7 +19,7 @@ UI_Image::~UI_Image()
 void UI_Image::Draw(bool debug)
 {
 	//This Draw
-	if(debug)App->render->DrawQuad({ box.x, box.y, box.w, box.h }, 150, 50, 0);
+	if(debug)App->render->DrawQuad({ box.x - App->render->camera.x, box.y - App->render->camera.y, box.w, box.h }, 150, 50, 0);
 
 	//Draw from Atlas
 	if (texture_id == -1)App->render->Blit(((SDL_Texture*)App->gui->GetAtlas()), box.x - App->render->camera.x, box.y - App->render->camera.y, &texture_rect);

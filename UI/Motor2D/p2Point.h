@@ -105,6 +105,17 @@ public:
 		return(*this);
 	}
 
+	bool IsOut() {
+
+		return (x == -1 && y == -1);
+
+	}
+
+	p2Point& GetOut() {
+
+		x = y = App->map->data.width - 1;
+		return (*this);
+	}
 	// Distances ---------------------------------------------
 	TYPE DistanceTo(const p2Point& v) const
 	{

@@ -3,7 +3,9 @@
 
 #include "PugiXml/src/pugixml.hpp"
 #include "p2List.h"
+#include "p2Queue.h"
 #include "p2Point.h"
+#include "p2DynArray.h"
 #include "j1Module.h"
 
 // ----------------------------------------------------
@@ -12,7 +14,7 @@ struct Properties
 	struct Property
 	{
 		p2SString name;
-		int value;
+		bool value;
 	};
 
 	~Properties()
@@ -20,7 +22,7 @@ struct Properties
 		p2List_item<Property*>* item;
 		item = list.start;
 
-		while(item != NULL)
+		while (item != NULL)
 		{
 			RELEASE(item->data);
 			item = item->next;
@@ -29,7 +31,7 @@ struct Properties
 		list.clear();
 	}
 
-	int Get(const char* name, int default_value = 0) const;
+	int Get(const char* name, bool default_value = false) const;
 
 	p2List<Property*>	list;
 };
@@ -40,6 +42,7 @@ struct MapLayer
 	p2SString	name;
 	int			width;
 	int			height;
+	p2SString	encoding;
 	uint*		data;
 	Properties	properties;
 
@@ -84,6 +87,17 @@ enum MapTypes
 	MAPTYPE_ISOMETRIC,
 	MAPTYPE_STAGGERED
 };
+
+enum TERRAIN {
+
+	GRASS = 27,
+	WATER,
+	MUD,
+	DEEP_WATER,
+	PORTAL
+
+};
+
 // ----------------------------------------------------
 struct MapData
 {
@@ -95,6 +109,8 @@ struct MapData
 	MapTypes			type;
 	p2List<TileSet*>	tilesets;
 	p2List<MapLayer*>	layers;
+
+	bool UnLoadLayer();
 };
 
 // ----------------------------------------------------
@@ -119,29 +135,46 @@ public:
 	// Load new map
 	bool Load(const char* path);
 
-	iPoint MapToWorld(int x, int y) const;
-	iPoint WorldToMap(int x, int y) const;
-	bool CreateWalkabilityMap(int& width, int& height, uchar** buffer) const;
-
 private:
 
 	bool LoadMap();
-	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
-	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
-	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
-	bool LoadProperties(pugi::xml_node& node, Properties& properties);
 
-	TileSet* GetTilesetFromTileId(int id) const;
+	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
+
+	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
+
+	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
+
+	bool LoadProperties(pugi::xml_node& node, Properties& properties);
 
 public:
 
+	bool UnLoadMap();
+
 	MapData data;
+
+	bool CreateWalkabilityMap(int& width, int & height, uchar** buffer)const;
+
+	bool CreateWalkCostMap(int& width, int& height, uchar** buffer)const;
+
+	int MovementCost(int x, int y) const;
+
+	TileSet* GetTilesetFromTileId(int id) const;
+
+	iPoint MapToWorld(int x, int y) const;
+
+	iPoint WorldToMap(int x, int y) const;
+
+	void CollideLayer();
 
 private:
 
 	pugi::xml_document	map_file;
 	p2SString			folder;
 	bool				map_loaded;
+
+	bool collide_layer = false;
+
 };
 
 #endif // __j1MAP_H__

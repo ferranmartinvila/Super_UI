@@ -171,6 +171,9 @@
     <ClInclude Include="Command.h">
       <Filter>Develop  ========\UserInteraface\Console</Filter>
     </ClInclude>
+    <ClInclude Include="p2Queue.h">
+      <Filter>Prog 2 ===========</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Develop  ========">

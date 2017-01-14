@@ -50,6 +50,11 @@
     </c_vars>
   </map>
 
+  <scene>
+  	<map_folder>way_size_walk.tmx</map_folder>
+  </scene>
+
+
   <console>
 	  <area x = "0" y = "0" w = "1024" h = "300"/>
 	  <area_color r = "50" g = "50" b = "50" a = "150"/>
