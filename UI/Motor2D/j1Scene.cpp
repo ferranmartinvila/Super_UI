@@ -41,42 +41,60 @@ bool j1Scene::Start()
 	App->gui->SetDefaultInputTarget(this);
 
 	//UI Scene build --------------------------------------
-	scene_1_screen = new UI_Element({ 0,0,App->win->screen_surface->w, App->win->screen_surface->h }, UNDEFINED, true);
+	scene_1_screen = App->gui->GenerateUI_Element(UNDEFINED);
+	scene_1_screen->SetBox({ 0,0,App->win->screen_surface->w, App->win->screen_surface->h });
+	scene_1_screen->Activate();
+	scene_1_screen->SetInputTarget(this);
 
-
-	player1_item = new UI_Image({ 20,-160 }, { 1485, 110, 72, 109 }, 0);
+	//Players img build
+	player1_item = (UI_Image*)App->gui->GenerateUI_Element(IMG);
+	player1_item->ChangeTextureRect({ 1485, 110, 72, 109 });
 	player1_item->AdjustBox();
+	player1_item->SetBoxPosition(50, -100);
 
-	UI_Image on({ 0,0 }, { 5,116,220,59 });
-	UI_Image off({ 0,0 }, { 648,172,219,59 });
-	UI_Image over({ 0,0 }, { 416,170,220,62 });
-	button = new UI_Button({ 50,50,230,60 }, on, off, over);
+	player1_item_2 = (UI_Image*)App->gui->GenerateUI_Element(IMG);
+	player1_item_2->ChangeTextureRect({ 1485, 110, 72, 109 });
+	player1_item_2->AdjustBox();
+	player1_item_2->SetBoxPosition(-80, 70);
+	
+	//Button build
+	button = (UI_Button*)App->gui->GenerateUI_Element(BUTTON);
+	button->SetBox({ 50,50,230,60 });
+	button->SetTexOFF({ 648,172,219,59 });
+	button->SetTexON({ 5,116,220,59 });
+	button->SetTexOVER({ 416,170,220,62 });
 	scene_1_screen->AddChild(button);
 
-	UI_Image scroll_item({ 517,20 }, { 1000,880,19,20 });
-	scroll_item.AdjustBox();
-	UI_Image scroll_back({ 520,20 }, { 985,874,13,149 });
-	scroll_back.AdjustBox();
+	//TextBox build
+	text_box = (UI_Text_Box*)App->gui->GenerateUI_Element(TEXT_BOX);
+	text_box->SetBox({ 120,120,50,50 });
+	text_box->SetTextColor({50,220,0,0});
+	text_box->SetCursorSize(2, 5);
+	scene_1_screen->AddChild(text_box);
 
-	UI_Image item({ 397,20,19,40 }, { 1000,880,19,20 });
-	scroll = new UI_Scroll({ 250,250,450,350 }, { 20,20,300,250 }, item, UI_Image({ 400,20 }, { 985,874,13,149 }), VERTICAL_INV,500);
+	//Scroll build
+	scroll = (UI_Scroll*)App->gui->GenerateUI_Element(SCROLL);
+	scroll->SetScrollableItem({ 397,20 }, { 1000,880,19,20 });
+	scroll->SetScrollableBack({ 400,20 }, { 985,874,13,149 });
+	scroll->SetBox({ 250,250,450,350 });
+	scroll->SetContentWindow({ 20,20,300,250 });
+	scroll->SetScrollType(VERTICAL_INV);
+	scroll->SetScrollMaxValue(500);
 	scroll->AddScrollItem(player1_item);
-	scroll->ScrollBack.AdjustBox();
-	scroll->ScrollItem.AdjustBox();
-	scroll->SetTabable();
 	scene_1_screen->AddChild(scroll);
 
-	UI_Image lateral_item({ 400,20,19,40 }, { 1000,880,19,20 });
-	UI_Image* pl = new UI_Image({ -40,60 }, { 1485, 110, 72, 109 }, 0);
-	pl->AdjustBox();
-	lateral_scroll = new UI_Scroll({ 250,250,850,350 }, { 20,20,300,250 }, lateral_item, UI_Image({ 400,20 }, { 0,9,307,15 }), LATERAL_INV, 500);
-	lateral_scroll->AddScrollItem(pl);
-	lateral_scroll->ScrollBack.AdjustBox();
-	lateral_scroll->ScrollItem.AdjustBox();
-	scene_1_screen->AddChild(lateral_scroll,10);
 
-	text_box = new UI_Text_Box({ 0,0,50,50 }, UI_String({ 0,0,0,0 }, "") , 2, 5);
-	scene_1_screen->AddChild(text_box);
+	//	Lateral Scroll build
+	lateral_scroll = (UI_Scroll*)App->gui->GenerateUI_Element(SCROLL);
+	lateral_scroll->SetScrollableItem({ 400,20 }, { 1000,880,19,20 });
+	lateral_scroll->SetScrollableBack({ 400,20 }, { 0,9,307,15 });
+	lateral_scroll->SetBox({ 250,250,850,350 });
+	lateral_scroll->SetContentWindow({ 20,20,300,250 });
+	lateral_scroll->SetScrollType(LATERAL_INV);
+	lateral_scroll->SetScrollMaxValue(500);
+	lateral_scroll->AddScrollItem(player1_item_2);
+	scene_1_screen->AddChild(lateral_scroll);
+
 
 	App->gui->PushScreen(scene_1_screen);
 	// ----------------------------------------------------

@@ -37,6 +37,9 @@ public:
 	//Functionality
 	BUTTON_STATE	Change_State(BUTTON_STATE new_button_state);
 	BUTTON_STATE	Get_State()const;
+	void			SetTexON(SDL_Rect img_rect, int text_id = -1);
+	void			SetTexOFF(SDL_Rect img_rect, int text_id = -1);
+	void			SetTexOVER(SDL_Rect img_rect, int text_id = -1);
 
 };
 

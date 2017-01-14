@@ -42,19 +42,6 @@ void UI_Button::Draw(bool debug)
 	DrawChilds(debug);
 }
 
-//Functionality ===========================================
-BUTTON_STATE UI_Button::Change_State(BUTTON_STATE new_button_state)
-{
-	BUTTON_STATE last = button_state;
-	button_state = new_button_state;
-	return last;
-}
-
-BUTTON_STATE UI_Button::Get_State() const
-{
-	return button_state;
-}
-
 void UI_Button::HandleInput()
 {
 	//Mouse In/Out ------------------------------
@@ -129,4 +116,33 @@ void UI_Button::HandleInput()
 	{
 		input_target->GUI_Input(this, SUPR);
 	}
+}
+
+
+//Functionality ===========================================
+BUTTON_STATE UI_Button::Change_State(BUTTON_STATE new_button_state)
+{
+	BUTTON_STATE last = button_state;
+	button_state = new_button_state;
+	return last;
+}
+
+BUTTON_STATE UI_Button::Get_State() const
+{
+	return button_state;
+}
+
+void UI_Button::SetTexON(SDL_Rect img_rect, int text_id)
+{
+	tex_on = UI_Image({0,0,0,0}, img_rect, text_id);
+}
+
+void UI_Button::SetTexOFF(SDL_Rect img_rect, int text_id)
+{
+	tex_off = UI_Image({ 0,0,0,0 }, img_rect, text_id);
+}
+
+void UI_Button::SetTexOVER(SDL_Rect img_rect, int text_id)
+{
+	tex_over = UI_Image({ 0,0,0,0 }, img_rect, text_id);
 }

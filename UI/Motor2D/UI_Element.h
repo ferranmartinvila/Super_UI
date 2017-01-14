@@ -22,7 +22,7 @@ enum UI_TYPE {
 class UI_Element {
 public:
 
-	UI_Element(const SDL_Rect& box = {0,0,0,0}, UI_TYPE ui_type = UNDEFINED, bool IsActive = true);
+	UI_Element(const SDL_Rect& box, UI_TYPE ui_type = UNDEFINED, bool IsActive = true);
 	UI_Element(const UI_Element* copy);
 	UI_Element();
 
@@ -62,6 +62,7 @@ public:
 	void				SetBoxPosition(int new_pos_x, int new_pos_y);
 	virtual void		MoveBox(int x_vel, int y_vel);
 	void				ResizeBox(const iPoint& new_size);
+	void				SetBox(SDL_Rect new_box);
 	virtual SDL_Rect	AdjustBox();
 	SDL_Rect*			GetBox()const;
 	bool				RectIsIn(const SDL_Rect* target, int x_vel, int y_vel, bool x_axis = false)const;

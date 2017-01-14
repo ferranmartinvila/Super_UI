@@ -221,6 +221,11 @@ void UI_Element::ResizeBox(const iPoint & new_size)
 	box.h = new_size.y;
 }
 
+void UI_Element::SetBox(SDL_Rect new_box)
+{
+	box = new_box;
+}
+
 SDL_Rect UI_Element::AdjustBox()
 {
 	box = { 0,0,0,0 };

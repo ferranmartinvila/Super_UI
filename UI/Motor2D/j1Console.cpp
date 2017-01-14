@@ -62,17 +62,24 @@ bool j1Console::Awake(pugi::xml_node& config)
 	
 	
 	//Build Console Text
-	UI_String* console_text = new UI_String({ 0,0,0,0 }, "", { font_color.r,font_color.g,font_color.b,font_color.a }, font);
-	console_input_box = new UI_Text_Box(input_box, console_text, cursor_w, cursor_h);
-	
+	console_input_box = (UI_Text_Box*)App->gui->GenerateUI_Element(TEXT_BOX);
+	console_input_box->SetTextColor({ font_color.r,font_color.g,font_color.b,font_color.a });
+	console_input_box->SetTextFont(font);
+	console_input_box->SetCursorSize(cursor_w, cursor_h);
+	console_input_box->SetCursorColor({ 255,255,255,255 });
+	console_input_box->SetBox(input_box);
+
 	//Build Console Labels Scroll
-	UI_Image scroll_item({ console_area.w - 28,20 }, { 1000,880,19,20 });
-	scroll_item.AdjustBox();
-	UI_Image scroll_back({ console_area.w - 25,20 }, { 985,874,13,149 });
-	scroll_back.AdjustBox();
+	console_labels_scroll = (UI_Scroll*)App->gui->GenerateUI_Element(SCROLL);
+	iPoint item_location = { console_area.w - 28,20 };
+	iPoint back_location = { console_area.w - 25,20 };
 	SDL_Rect scroll_area = { console_area.x,console_area.y,console_area.w,console_area.y - (console_area.y - input_box.y) };
-	SDL_Rect viewport_area = { scroll_area.x,scroll_area.y,scroll_item.GetBox()->x,input_box.y };
-	console_labels_scroll = new UI_Scroll(scroll_area, viewport_area, scroll_item, scroll_back);
+	console_labels_scroll->SetScrollableItem({ item_location.x,item_location.y }, { 1000,880,19,20 });
+	console_labels_scroll->SetScrollableBack({ back_location.x,back_location.y }, { 985,874,13,149 });
+	console_labels_scroll->SetBox(scroll_area);
+	console_labels_scroll->SetContentWindow({ scroll_area.x, scroll_area.y, item_location.x, input_box.y });
+	console_labels_scroll->SetScrollType(VERTICAL);
+	console_labels_scroll->SetScrollMaxValue(500);
 
 	LOG("Console UI Build");
 
@@ -88,6 +95,7 @@ bool j1Console::Start()
 	//Add Console Commands
 	AddCommand("get", this);
 	AddCommand("set", this);
+	AddCommand("help", this);
 
 	LOG("Console Labels Generated");
 	return true;
@@ -95,6 +103,8 @@ bool j1Console::Start()
 
 bool j1Console::PostUpdate()
 {
+	if (console_input_box->GetActiveState() == false)return true;
+
 	//Update Console Input Box
 	console_input_box->HandleInput();
 	console_labels_scroll->HandleInput();
@@ -105,10 +115,10 @@ bool j1Console::PostUpdate()
 	App->render->DrawQuad(console_area, console_color.r, console_color.g, console_color.b, console_color.a);
 
 	//Draw console labels
-	if(console_labels_scroll->GetActiveState())console_labels_scroll->Draw(false);
+	console_labels_scroll->Draw(false);
 
 	//Draw Console Input Box
-	if(console_input_box->GetActiveState())console_input_box->Draw(true);
+	console_input_box->Draw(true);
 	
 	return true;
 }
@@ -704,6 +714,29 @@ void j1Console::Console_Command_Input(Command * command, Cvar * cvar, p2SString 
 
 		//Show cvar value
 		GenerateConsoleLabel("-- %s = %s", cvar->GetCvarName()->GetString(),cvar->GetValueString()->GetString());
+	}
+	//Help command
+	else if (*command->GetCommandStr() == "help")
+	{
+		p2SString module;
+		p2SString only_read;
+		uint c_var_num = console_variables.Count();
+		for (uint k = 0; k < c_var_num; k++)
+		{
+			//Build the cvar module name
+			if (console_variables[k]->GetCvarModule() == nullptr)module = "app";
+			else module = console_variables[k]->GetCvarModule()->name;
+			
+			//Build the cvar mutable name
+			if (console_variables[k]->GetOnlyReadState())only_read = "const";
+			else only_read = "mutable";
+
+			//Show cvar data on console scroll
+			//name | module | description | type | value | editstate 
+			GenerateConsoleLabel("-- %s -- | -- %s -- | -- %s -- | -- %s -- | -- %s -- | -- %s -- ",
+				console_variables[k]->GetCvarName()->GetString(), module.GetString(), console_variables[k]->GetCvarDescription()->GetString(),
+				CvarTypetoString(console_variables[k]->GetCvarType()), console_variables[k]->GetValueString()->GetString(),only_read.GetString());
+		}
 	}
 
 	//Help command

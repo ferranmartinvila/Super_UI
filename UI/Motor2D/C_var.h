@@ -84,5 +84,11 @@ public:
 		value = new_value;
 	}
 
+	//Get editable state
+	bool GetOnlyReadState()const
+	{
+		return only_read;
+	}
+
 };
 #endif

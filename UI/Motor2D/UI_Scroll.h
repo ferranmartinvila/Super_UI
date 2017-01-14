@@ -19,6 +19,7 @@ public:
 
 	UI_Scroll(const SDL_Rect& box, const SDL_Rect& ContentWindow, const UI_Image& ScrollItem, const UI_Image& ScrollBack, SCROLL_TYPE Scroll_Type = VERTICAL, int MaxValue = 0);
 	UI_Scroll(const UI_Scroll* copy);
+	UI_Scroll();
 	~UI_Scroll();
 
 private:
@@ -56,6 +57,14 @@ public:
 	
 
 	//Functionality
+	void		SetScrollableItem(const iPoint position, const SDL_Rect rect, int id = -1);
+	void		SetScrollableBack(const iPoint position, const SDL_Rect rect, int id = -1);
+	void		SetContentWindow(const SDL_Rect rect);
+
+	void		SetScrollMaxValue(int maxvalue);
+	void		SetScrollValue(float scrollvalue);
+
+	void		SetScrollType(SCROLL_TYPE type);
 	bool		MoveScroll(int mouse_y_motion, int mouse_x_motion);
 	void		GoBottom();
 
@@ -63,7 +72,6 @@ public:
 
 	void		AddScrollItem(UI_Element* new_item);
 	void		AddScrollItemAtBottom(UI_Element* new_item);
-
 	uint		GetScrollItemsNum()const;
 	UI_Element*	GetScrollItem(uint index);
 

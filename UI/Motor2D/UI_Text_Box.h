@@ -38,7 +38,16 @@ public:
 	
 	void	SetCursorPos(uint position);
 	void	SetCursorScreenPos(uint position);
+	void	AdjustCursorSize();
+	void	SetCursorSize(uint w,uint h);
 	uint	GetCursorPos()const;
+	void	SetCursorColor(SDL_Color color);
+
+	void	SetTextColor(SDL_Color color);
+	void	SetTextFont(_TTF_Font* font);
+
+	bool	GetPasswordState()const;
+	void	ChangePasswordState(bool state);
 };
 
 #endif

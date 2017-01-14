@@ -10,6 +10,8 @@ UI_Scroll::UI_Scroll(const SDL_Rect& box, const SDL_Rect& ContentWindow, const U
 
 UI_Scroll::UI_Scroll(const UI_Scroll* copy) : UI_Element(copy->box, SCROLL), ContentWindow(copy->ContentWindow), ScrollItem(copy->ScrollItem), ScrollBack(copy->ScrollBack), Scroll_Type(copy->Scroll_Type), MaxValue(copy->MaxValue) {}
 
+UI_Scroll::UI_Scroll() : UI_Element({ 0,0,0,0 }, SCROLL), ContentWindow({0,0,0,0}),ScrollItem(),ScrollBack() {}
+
 
 //Destructors =============================================
 UI_Scroll::~UI_Scroll()
@@ -48,6 +50,31 @@ void UI_Scroll::Draw(bool debug)
 	
 	//Draw Scroll Childs -------------------
 	DrawChilds(debug);
+}
+
+void UI_Scroll::SetScrollableItem(const iPoint position, const SDL_Rect rect, int id)
+{
+	ScrollItem = UI_Image({ position.x,position.y,rect.w,rect.h }, rect, id);
+}
+
+void UI_Scroll::SetScrollableBack(const iPoint position, const SDL_Rect rect, int id)
+{
+	ScrollBack = UI_Image({ position.x,position.y,rect.w,rect.h }, rect, id);
+}
+
+void UI_Scroll::SetContentWindow(const SDL_Rect rect)
+{
+	ContentWindow = rect;
+}
+
+void UI_Scroll::SetScrollMaxValue(int maxvalue)
+{
+	MaxValue = maxvalue;
+}
+
+void UI_Scroll::SetScrollValue(float scrollvalue)
+{
+	Value = scrollvalue;
 }
 
 // Functionality =========================================
@@ -137,6 +164,11 @@ uint UI_Scroll::UpdateContentLenght(UI_Element * new_item)
 
 	if (length > 0 && length > ContentLenght)ContentLenght = length;
 	return uint(length);
+}
+
+void UI_Scroll::SetScrollType(SCROLL_TYPE type)
+{
+	Scroll_Type = type;
 }
 
 bool UI_Scroll::MoveScroll(int mouse_x_motion, int mouse_y_motion)

@@ -96,6 +96,13 @@ uint UI_String::GetPixelLenght(uint end) const
 	return x;
 }
 
+uint UI_String::GetPixelHeightLenght() const
+{
+	int x, y;
+	App->font->CalcSize("T", x, y, text_font);
+	return y;
+}
+
 void UI_String::DrawAt(int x, int y) const
 {
 	if(text_texture != nullptr)App->render->Blit(text_texture, box.x + x - App->render->camera.x, box.y + y - App->render->camera.y);
@@ -145,7 +152,8 @@ bool UI_String::TokenizeString(uint margin)
 
 bool UI_String::GenerateTexture()
 {
-	text_texture = App->font->Print(this->text.GetString(), text_color, text_font);
+	if (text == nullptr)return false;
+	if(strlen(text.GetString()) > 0)text_texture = App->font->Print(this->text.GetString(), text_color, text_font);
 	if(text_texture != nullptr)return true;
 	return false;
 }
@@ -181,6 +189,6 @@ bool UI_String::SetFont(_TTF_Font * new_font)
 
 void UI_String::SetColor(SDL_Color new_color)
 {
-	this->text_color = new_color;
+	text_color = new_color;
 }
 

@@ -5,7 +5,7 @@
 
 struct UI_Element;
 struct SDL_Texture;
-
+enum UI_TYPE;
 enum GUI_INPUT {
 
 	UP_ARROW,
@@ -83,6 +83,8 @@ public:
 
 	//UI elements functions
 	uint				PushScreen(const UI_Element* new_screen);
+	UI_Element*			GenerateUI_Element(UI_TYPE element_type);
+
 	UI_Element*			GetActiveScreen()const;
 	uint				CalculateUpperElement(const UI_Element* parent, uint layer = 0)const;
 

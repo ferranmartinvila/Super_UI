@@ -6,8 +6,14 @@
 #include "j1Fonts.h"
 #include "j1Input.h"
 #include "j1Gui.h"
-#include "UI_Element.h"
 
+//UI_Elements
+#include "UI_Element.h"
+#include "UI_Button.h"
+#include "UI_Image.h"
+#include "UI_Scroll.h"
+#include "UI_String.h"
+#include "UI_Text_Box.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -163,6 +169,39 @@ uint j1Gui::PushScreen(const UI_Element* new_screen)
 {
 	screens.add((UI_Element*)new_screen);
 	return screens.count();
+}
+
+UI_Element* j1Gui::GenerateUI_Element(UI_TYPE element_type)
+{
+	UI_Element* new_element = nullptr;
+	switch (element_type)
+	{
+	case UNDEFINED:		
+		new_element = new UI_Element();		
+	break;
+
+	case BUTTON:	
+		new_element = new UI_Button();
+		break;
+
+	case TEXT_BOX:
+		new_element = new UI_Text_Box();
+		break;
+
+	case STRING:
+		new_element = new UI_String();
+		break;
+
+	case IMG:
+		new_element = new UI_Image();
+		break;
+
+	case SCROLL:
+		new_element = new UI_Scroll();
+		break;
+	}
+	
+	return new_element;
 }
 
 UI_Element * j1Gui::GetActiveScreen() const

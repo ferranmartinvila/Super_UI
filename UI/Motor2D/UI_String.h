@@ -38,6 +38,7 @@ public:
 	bool		DeleteSegment(uint start, uint end);
 
 	uint		GetPixelLenght(uint end)const;
+	uint		GetPixelHeightLenght()const;
 	uint		GetLenght()const;
 
 	void		DrawAt(int x, int y)const;

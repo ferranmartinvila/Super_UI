@@ -49,6 +49,7 @@ private:
 
 	//Scene UI Elements
 	UI_Image*		player1_item;
+	UI_Image*		player1_item_2;
 	UI_Scroll*		scroll;
 	UI_Scroll*		lateral_scroll;
 	UI_Text_Box*	text_box;

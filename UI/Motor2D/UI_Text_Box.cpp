@@ -10,7 +10,7 @@ UI_Text_Box::UI_Text_Box(const SDL_Rect& box, const UI_String& Text_entered, uin
 
 UI_Text_Box::UI_Text_Box(const UI_Text_Box* copy) : UI_Element(copy->box, copy->ui_type), Text_entered(copy->Text_entered) , IsPassword(copy->IsPassword) {}
 
-UI_Text_Box::UI_Text_Box() : UI_Element({0,0,0,0}, TEXT_BOX), IsPassword(false) {}
+UI_Text_Box::UI_Text_Box() : UI_Element({0,0,0,0}, TEXT_BOX), IsPassword(false),Text_entered() {}
 
 
 //Destructor ==============================================
@@ -186,7 +186,46 @@ void UI_Text_Box::SetCursorScreenPos(uint position)
 	Cursor_screen_pos = Text_entered.GetPixelLenght(position);
 }
 
+void UI_Text_Box::AdjustCursorSize()
+{
+	Cursor_h = this->Text_entered.GetPixelHeightLenght();
+	Cursor_w = ceil(Cursor_h / 4);
+}
+
+void UI_Text_Box::SetCursorSize(uint w, uint h)
+{
+	Cursor_w = w;
+	Cursor_h = h;
+}
+
 uint UI_Text_Box::GetCursorPos() const
 {
 	return Cursor_pos;
+}
+
+void UI_Text_Box::SetCursorColor(SDL_Color color)
+{
+	Cursor_color = color;
+}
+
+void UI_Text_Box::SetTextColor(SDL_Color color)
+{
+	Text_entered.SetColor(color);
+	Text_entered.GenerateTexture();
+}
+
+void UI_Text_Box::SetTextFont(_TTF_Font * font)
+{
+	Text_entered.SetFont(font);
+	Text_entered.GenerateTexture();
+}
+
+bool UI_Text_Box::GetPasswordState() const
+{
+	return IsPassword;
+}
+
+void UI_Text_Box::ChangePasswordState(bool state)
+{
+	IsPassword = state;
 }
