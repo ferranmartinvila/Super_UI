@@ -518,6 +518,16 @@ j1Module * j1App::GetModule(const p2SString* module_name) const
 	return nullptr;
 }
 
+uint j1App::GetModulesNum() const
+{
+	return modules.count();
+}
+
+j1Module * j1App::GetModuleAt(uint index) const
+{
+	return modules.At(index)->data;
+}
+
 pugi::xml_node j1App::GetConfigXML() const
 {
 	return config_node;

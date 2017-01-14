@@ -71,6 +71,8 @@ public:
 	char*					GetValuefromInput(char* input)const;
 	//Get input data
 	Command*				GetCommandfromInput(char* input)const;
+	//Get module from input(app = nullptr)
+	j1Module*				GetModulefromInput(char* input, bool& find);
 
 	//Transformations ---------------------------
 	//Cvar type transformations

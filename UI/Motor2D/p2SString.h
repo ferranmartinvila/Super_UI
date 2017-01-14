@@ -396,7 +396,7 @@ public:
 	}
 
 	//Push a stringSegment
-	char* InsertString(char* string_seg, uint location) {
+	char* InsertString(const char* string_seg, uint location) {
 
 		uint s_size = strlen(string_seg);
 		char* segment = new char[size + strlen(string_seg)];
@@ -425,6 +425,24 @@ public:
 		str = segment;
 
 		return segment;
+	}
+	
+
+	//Return the number of equal characters from start
+	uint CompareChars(const char* comp_str)const
+	{
+		//Equal chars counter
+		uint equal_chars = 0;
+
+		//Iterate str and count equal chars
+		uint chars_num = strlen(comp_str);
+		for (uint k = 0; k < chars_num; k++)
+		{
+			if (str[k] == comp_str[k])equal_chars++;
+		}
+
+		//Return equal chars
+		return equal_chars;
 	}
 
 private:

@@ -43,9 +43,6 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	// Add a new module to handle
-	void AddModule(j1Module* module);
-
 	// Exposing some properties for reading
 	int GetArgc() const;
 	const char* GetArgv(int index) const;
@@ -97,8 +94,17 @@ public:
 	j1Gui*				gui = NULL;
 	j1Console*			console = NULL;
 
+	
+	// Add a new module to handle
+	void		AddModule(j1Module* module);
 	//Get Module pointer by name
 	j1Module*	GetModule(const p2SString* module_name)const;
+	//Get number of modules
+	uint		GetModulesNum()const;
+	//Get module of position x in array
+	j1Module*	GetModuleAt(uint index)const;
+
+public:
 
 	//Get config xml file
 	pugi::xml_node GetConfigXML()const;

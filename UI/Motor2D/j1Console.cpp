@@ -240,43 +240,153 @@ bool j1Console::AutoCompleteInputBox(char* input)
 {
 	//Get imput str len
 	uint char_num = strlen(input);
-	uint input_step = 0;
+	uint input_step = 1;
+	uint init = 0;
 
 	//Get input current step
 	for (uint k = 0; k < char_num; k++)
 	{
 		if (input[k] == '/')
 		{
-			if (input_step < 1)input_step = 1;
+			if (input_step < 2)
+			{
+				input_step = 2;
+				init = k + 1;
+			}
 			else return false;
 		}
 		else if (input[k] == '.')
 		{
-			if (input_step < 1)input_step = 2;
+			if (input_step < 3)
+			{
+				input_step = 3;
+				init = k + 1;
+			}
 			else return false;
 		}
 		else if (input[k] == '=')
 		{
-			if (input_step < 1)input_step = 3;
+			if (input_step < 4)
+			{
+				input_step = 4;
+				init = k + 1;
+			}
 			else return false;
 		}
 	}
 
+	//Build the str of the step input
+	char* temp = new char[char_num - init];
+	uint h = 0;
+	for (uint j = init; j < char_num; j++)
+	{
+		temp[h] = input[j];
+		h++;
+	}
+	temp[h] = '\0';
+	p2SString str = temp;
+	delete temp;
+
 	//Try to autocomplete the step
+	uint elements_num = 0;
+	uint equal_chars = 0;
+	uint perf_index = 0;
+	bool ret = false;
+	uint eq = 0;
 	switch (input_step)
 	{
 	case 1:
 		//Check command autocomplete
+		elements_num = commands.Count();
+		for (uint k = 0; k < elements_num; k++)
+		{
+			eq = str.CompareChars(commands[k]->GetCommandStr()->GetString());
+			if (eq == commands[k]->GetCommandStr()->Length())
+			{
+				return false;
+			}
+			else if (equal_chars < eq)
+			{
+				equal_chars = eq;
+				perf_index = k;
+				ret = true;
+			}
+		}
+		if (!ret)return false;
+		console_input_box->DeleteTextSegment(init, char_num);
+		console_input_box->PushTextSegment(commands[perf_index]->GetCommandStr()->GetString(), init);
 		break;
+
 	case 2:
+		
 		//Check module autocomplete
+		elements_num = App->GetModulesNum();
+		for (uint k = 0; k < elements_num; k++)
+		{
+			eq = str.CompareChars(App->GetModuleAt(k)->name.GetString());
+			if (eq == App->GetModuleAt(k)->name.Length())
+			{
+				return false;
+			}
+			else if (equal_chars < eq)
+			{
+				equal_chars = eq;
+				perf_index = k;
+				ret = true;
+			}
+		}
+		
+		if (str.CompareChars("app") > equal_chars)
+		{
+			console_input_box->DeleteTextSegment(init, char_num);
+			console_input_box->PushTextSegment("app", init);
+			return true;
+		}
+
+		else {
+			if (!ret)return false;
+				console_input_box->DeleteTextSegment(init, char_num);
+				console_input_box->PushTextSegment(App->GetModuleAt(perf_index)->name.GetString(), init);
+		}
+		
 		break;
+
 	case 3:
 		//Check cvar autocomplete
+		bool find;
+		j1Module* cvar_module;
+		cvar_module = GetModulefromInput(input, find);
+		if (!find)return false;
+		elements_num = console_variables.Count();
+		for (uint k = 0; k < elements_num; k++)
+		{
+			eq = str.CompareChars(console_variables[k]->GetCvarName()->GetString());
+			if (eq == console_variables[k]->GetCvarName()->Length())
+			{
+				return false;
+			}
+			if (equal_chars < eq && console_variables[k]->GetCvarModule() == cvar_module)
+			{
+				equal_chars = eq;
+				perf_index = k;
+				ret = true;
+			}
+		}
+		
+		if (!ret)return false;
+		console_input_box->DeleteTextSegment(init, char_num);
+		console_input_box->PushTextSegment(console_variables[perf_index]->GetCvarName()->GetString(), init);
 		break;
-	}
 
-	return true;
+	case 4:
+		//Check input type autocomplete
+		break;
+
+	}
+	//Place the cursor at the end of the new str
+	console_input_box->SetCursorPos(console_input_box->GetTextLength());
+
+	return ret;
 }
 
 //Console Output ----------------------------
@@ -335,18 +445,16 @@ Cvar * j1Console::GetCvarfromInput(char * input) const
 	//String position of input elements
 	uint name_init = 0;
 	uint name_end = 0;
-	uint module_init = 0;
 
 	//Get the var name start and end position
 	uint char_num = strlen(input) + 1;
 	for (uint k = 0; k < char_num; k++)
 	{
-		if (input[k] == '/' && module_init == 0)module_init = k + 1;
-		else if (input[k] == '.' && name_init == 0)name_init = k + 1;
+		if (input[k] == '.' && name_init == 0)name_init = k + 1;
 		else if ((input[k] == '\0' || input[k] == '=') && name_end == 0)name_end = k;
 	}
 
-	if (module_init == 0 || name_init == 0)return nullptr;
+	if (name_init == 0)return nullptr;
 
 	//Build the module & cvar name
 	char* cvar_name = new char[10];
@@ -360,21 +468,14 @@ Cvar * j1Console::GetCvarfromInput(char * input) const
 		j++;
 	}
 	cvar_name[j] = '\0';
-
-	//Copy the cvar module name in a new string
-	j = 0;
-	for (uint k = module_init; k < name_init - 1; k++)
-	{
-		module_name[j] = input[k];
-		j++;
-	}
-	module_name[j] = '\0';
+	p2SString name_str = cvar_name;
+	delete cvar_name;
 
 	//Search the Cvar with the name build
 	uint cvar_num = console_variables.Count();
 	for (uint k = 0; k < cvar_num; k++)
 	{
-		if (*console_variables[k]->GetCvarName() == cvar_name)return console_variables[k];
+		if (*console_variables[k]->GetCvarName() == name_str.GetString())return console_variables[k];
 	}
 	return nullptr;
 }
@@ -425,11 +526,61 @@ Command* j1Console::GetCommandfromInput(char* input)const
 		{
 			delete command_type;
 			return commands[k];
-			
 		}
 	}
 
 	delete command_type;
+	return nullptr;
+}
+
+j1Module * j1Console::GetModulefromInput(char * input, bool& find)
+{
+	//String position of input elements
+	uint module_init = 0;
+	uint module_end = 0;
+
+	//Get module name start and end position
+	uint char_num = strlen(input) + 1;
+	for (uint k = 0; k < char_num; k++)
+	{
+		if (input[k] == '/' && module_init == 0)module_init = k + 1;
+		else if (input[k] == '.' && module_end == 0)module_end = k;
+	}
+
+	if (module_end < module_init || module_end == 0 || module_init == 0)
+	{
+		find = false;
+		return nullptr;
+	}
+
+
+	//Build module name string
+	char* module_str = new char[module_end - module_init];
+	uint j = 0;
+	for (uint k = module_init; k < module_end; k++)
+	{
+		module_str[j] = input[k];
+		j++;
+	}
+	module_str[j] = '\0';
+	p2SString module_name = module_str;
+	delete module_str;
+
+	//Find the module with the name build
+	if (module_name == "app")
+	{
+		find = true;
+		return nullptr;
+	}
+	uint num_modules = App->GetModulesNum();
+	for (uint k = 0; k < num_modules; k++)
+	{
+		if (module_name == App->GetModuleAt(k)->name.GetString())
+		{
+			find = true;
+			return App->GetModuleAt(k);
+		}
+	}
 	return nullptr;
 }
 

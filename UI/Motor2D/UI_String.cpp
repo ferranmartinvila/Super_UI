@@ -53,7 +53,7 @@ void UI_String::SetString(char * new_text)
 	if(new_text != nullptr)text_texture = App->font->Print(text.GetString(), text_color, text_font);
 }
 
-void UI_String::PushString(char * new_text, uint position)
+void UI_String::PushString(const char * new_text, uint position)
 {
 	char* test = text.InsertString(new_text, position);
 	text.create(test);
@@ -65,6 +65,26 @@ bool UI_String::DeleteChar(uint position)
 	bool ret = text.DeleteChar(position);
 	if (text.Length() == 0)text_texture = nullptr;
 	else if(ret)text_texture = App->font->Print(text.GetString(), text_color, text_font);
+	return ret;
+}
+
+bool UI_String::DeleteSegment(uint start, uint end)
+{
+	//Check for bad input
+	if (start > text.Length() || end > text.Length() || end < start)return false;
+	
+	//Delete str chars
+	bool ret = true;
+	for (uint k = start; k < end; k++)
+	{
+		ret = text.DeleteChar(start);
+		if (!ret)break;
+	}
+
+	//Generate str texture if it contain alive chars
+	if (text.Length() == 0)text_texture = nullptr;
+	else if (ret)text_texture = App->font->Print(text.GetString(), text_color, text_font);
+
 	return ret;
 }
 

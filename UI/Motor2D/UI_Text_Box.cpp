@@ -134,6 +134,12 @@ void UI_Text_Box::HandleInput()
 	{
 		input_target->GUI_Input(this, ENTER);
 	}
+
+	//Tabulator ---------------------------------
+	if (App->input->GetKey(SDL_SCANCODE_TAB) == KEY_DOWN)
+	{
+		input_target->GUI_Input(this, TAB);
+	}
 }
 
 
@@ -154,7 +160,7 @@ void UI_Text_Box::SetText(char * new_text)
 	Cursor_pos = Cursor_screen_pos = 0;
 }
 
-void UI_Text_Box::PushTextSegment(char * textsegment, uint position)
+void UI_Text_Box::PushTextSegment(const char * textsegment, uint position)
 {
 	Text_entered.PushString(textsegment, position);
 }
@@ -162,6 +168,11 @@ void UI_Text_Box::PushTextSegment(char * textsegment, uint position)
 void UI_Text_Box::DeleteTextChar(uint position)
 {
 	Text_entered.DeleteChar(position);
+}
+
+bool UI_Text_Box::DeleteTextSegment(uint start, uint end)
+{
+	return Text_entered.DeleteSegment(start, end);;
 }
 
 void UI_Text_Box::SetCursorPos(uint position)

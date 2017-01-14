@@ -32,8 +32,9 @@ public:
 	char*	GetText()const;
 	uint	GetTextLength()const;
 	void	SetText(char* new_text);
-	void	PushTextSegment(char* textsegment, uint position);
+	void	PushTextSegment(const char* textsegment, uint position);
 	void	DeleteTextChar(uint position);
+	bool	DeleteTextSegment(uint start, uint end);
 	
 	void	SetCursorPos(uint position);
 	void	SetCursorScreenPos(uint position);
