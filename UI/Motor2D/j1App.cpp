@@ -171,6 +171,7 @@ bool j1App::Awake()
 // Called before the first frame
 bool j1App::Start()
 {
+
 	PERF_START(ptimer);
 	bool ret = true;
 	p2List_item<j1Module*>* item;
@@ -187,6 +188,12 @@ bool j1App::Start()
 
 	//Add Console Commands
 	console->AddCommand("quit", nullptr);
+	console->AddCommand("save", nullptr);
+	console->AddCommand("load", nullptr);
+
+	//Add Console Cvars
+	save_dir = App->console->AddCvar("save_dir", "Directory where game data is saved", "game_save.xml", C_VAR_TYPE::CHAR_VAR, nullptr, false);
+	load_dir = App->console->AddCvar("load_dir", "Directory from app load data", "game_save.xml", C_VAR_TYPE::CHAR_VAR, nullptr, false);
 
 	return ret;
 }
@@ -399,8 +406,23 @@ void j1App::LoadGame(const char* file)
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list
-	want_to_load = true;
-	load_game.create("%s%s", fs->GetSaveDirectory(), file);
+	bool ret = false;
+	p2List_item<p2SString*>* saved_game = saved_games.start;
+	while (saved_game != NULL)
+	{
+		if (*saved_game->data == file)
+		{
+			ret = true;
+			break;
+		}
+		saved_game = saved_game->next;
+	}
+	if (ret)
+	{
+		want_to_load = true;
+		load_game.create("%s%s", fs->GetSaveDirectory(), file);
+	}
+	else LOG("Load Directory is no available!");
 }
 
 // ---------------------------------------
@@ -408,15 +430,53 @@ void j1App::SaveGame(const char* file) const
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list ... should we overwrite ?
+	p2List_item<p2SString*>* saved_game = saved_games.start;
+	bool exist = false;
+	while (saved_game != NULL)
+	{
+		if (*saved_game->data == file)exist = true;
+		saved_game = saved_game->next;
+	}
+	if (!exist)
+	{
+		p2SString* new_file_str = new p2SString(file);
+		saved_games.add(new_file_str);
+
+	}
 
 	want_to_save = true;
 	save_game.create(file);
 }
 
 // ---------------------------------------
-void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
+void j1App::GetSaveGames(p2List<p2SString*>& list_to_fill) const
 {
-	// need to add functionality to file_system module for this to work
+	list_to_fill = saved_games;
+}
+
+bool j1App::IsXMLdir(const char * dir) const
+{
+	uint len = strlen(dir);
+	if (len < 4)return false;
+	bool format_zone = false;
+	char* temp = new char[strlen(dir)];
+	uint j = 0;
+	for (uint k = 0; k < len; k++)
+	{
+		if (dir[k] == '.')format_zone = true;
+		else if (format_zone)
+		{
+			temp[j] = dir[k];
+			j++;
+		}
+
+	}
+	temp[j] = '\0';
+	p2SString str = temp;
+	delete temp;
+	if (str == "xml")return true;
+
+	return false;
 }
 
 bool j1App::LoadGameNow()
@@ -535,7 +595,19 @@ pugi::xml_node j1App::GetConfigXML() const
 
 void j1App::Console_Command_Input(Command * command, Cvar * cvar, p2SString * input)
 {
-	if (*command->GetCommandStr() == "quit")SetQuit();
+	if (*command->GetCommandStr() == "quit")
+	{
+		SetQuit();
+	}
+	else if (*command->GetCommandStr() == "save")
+	{
+		SaveGame(save_dir->GetValueString()->GetString());
+		
+	}
+	else if (*command->GetCommandStr() == "load")
+	{
+		LoadGame(load_dir->GetValueString()->GetString());
+	}
 }
 
 void j1App::Console_Cvar_Input(Cvar * cvar, Command* command_type, p2SString * input)
@@ -546,12 +618,44 @@ void j1App::Console_Cvar_Input(Cvar * cvar, Command* command_type, p2SString * i
 		//Maxfps cvar
 		if (*cvar->GetCvarName() == "maxfps")
 		{
-			if (cvar->GetValueAsNum() < 0)cvar->SetValue("-1");
+			if (cvar->GetValueAsNum() < 1)cvar->SetValue("-1");
 			else if (cvar->GetValueAsNum() > 120)cvar->SetValue("120");
+
+			//Set cvar value
+			cvar->SetValue(input->GetString());
+
+			//Set new ms delay
 			capped_ms = 1000 / cvar->GetValueAsNum();
 
 		}
+		//Save_dir cvar
+		else if (*cvar->GetCvarName() == "save_dir")
+		{
+			if (strlen(input->GetString()) > 5 && IsXMLdir(input->GetString()))
+			{
+				//Set new save directory
+				App->save_game.create(input->GetString());
+				
+				//Set cvar value
+				cvar->SetValue(input->GetString());
+			}
+			else App->console->GenerateConsoleLabel("Invalid Save Directory: %s", input->GetString(),cvar->GetCvarName()->GetString());
 
+		}
+
+		else if (*cvar->GetCvarName() == "load_dir")
+		{
+			if (strlen(input->GetString()) > 5 && IsXMLdir(input->GetString()))
+			{
+				//Set new save directory
+				App->load_game.create(input->GetString());
+
+				//Set cvar value
+				cvar->SetValue(input->GetString());
+			}
+			else App->console->GenerateConsoleLabel("Invalid Load Directory: %s", input->GetString(), cvar->GetCvarName()->GetString());
+
+		}
 		//Unknown cvar
 		else
 		{

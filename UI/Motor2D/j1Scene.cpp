@@ -166,13 +166,13 @@ bool j1Scene::Update(float dt)
 		App->pathfinding->ResetPath();
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)
-		App->pathfinding->PropagateBFS(App->pathfinding->start, App->pathfinding->goal, nullptr, nullptr);
+		App->pathfinding->PropagateBFS(App->pathfinding->start, App->pathfinding->goal);
 
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT)
 		App->pathfinding->PropagateDijkstra();
 
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
-		App->pathfinding->CreatePath(App->pathfinding->start, App->pathfinding->goal, false);
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
+		App->pathfinding->PropageteA();
 
 	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
 		App->pathfinding->CreatePath(App->pathfinding->start, App->pathfinding->goal, true);
@@ -184,10 +184,16 @@ bool j1Scene::Update(float dt)
 		App->pathfinding->CanReach(App->pathfinding->start, App->pathfinding->goal);
 
 	if (App->input->GetKey(SDL_SCANCODE_8) == KEY_DOWN) {
+		int last_map = current_map;
 		Change_Map();
-		App->pathfinding->ResetPath();
-		App->map->UnLoadMap();
-		Load_Current_Map();
+		if (last_map != current_map) {
+			LOG("New map loading...");
+			App->pathfinding->ResetPath();
+			App->map->UnLoadMap();
+			Load_Current_Map();
+			LOG("New map loaded!");
+		}
+		else LOG("Theres only one map data");
 	}
 
 	return true;

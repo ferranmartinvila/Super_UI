@@ -52,11 +52,13 @@ public:
 	bool CheckBoundaries(const iPoint& pos) const;
 
 	//BFS functions
-	bool PropagateBFS(const iPoint& origin, const iPoint& goal, p2List<iPoint>* close_list, p2Queue<iPoint>* open_list);
+	bool PropagateBFS(const iPoint& origin,const iPoint& goal, p2List<iPoint>* close_list = nullptr, p2Queue<iPoint>* open_list = nullptr);
 
 	//Dijkstra functions
 	void PropagateDijkstra();
 
+	//A* functions
+	void PropageteA();
 
 	bool ResetPath();
 

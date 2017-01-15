@@ -52,7 +52,9 @@ public:
 
 	void LoadGame(const char* file);
 	void SaveGame(const char* file) const;
-	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
+	void GetSaveGames(p2List<p2SString*>& list_to_fill) const;
+
+	bool IsXMLdir(const char* dir)const;
 
 private:
 
@@ -140,6 +142,11 @@ private:
 	int					capped_ms = -1;
 
 	bool				want_to_quit = false;
+
+	Cvar*				save_dir;
+	Cvar*				load_dir;
+
+	mutable p2List<p2SString*>	saved_games;
 
 public:
 

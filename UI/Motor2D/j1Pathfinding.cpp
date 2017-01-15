@@ -291,6 +291,8 @@ uchar j1Pathfinding::GetTileWalkability(const iPoint& pos) const
 	return INVALID_WALK_CODE;
 }
 
+
+
 bool j1Pathfinding::ResetPath()
 {
 	if (last_path.Count() > 0)
@@ -317,7 +319,7 @@ iPoint j1Pathfinding::GetPathCell(uint cell) const
 }
 
 
-bool j1Pathfinding::PropagateBFS(const iPoint& origin, const iPoint& goal, p2List<iPoint>* close_list = nullptr, p2Queue<iPoint>* open_list = nullptr)
+bool j1Pathfinding::PropagateBFS(const iPoint& origin, const iPoint& goal, p2List<iPoint>* close_list, p2Queue<iPoint>* open_list)
 {
 	p2List<iPoint>* close_l;
 	if (close_list == nullptr)close_l = &close;
@@ -398,6 +400,35 @@ void j1Pathfinding::PropagateDijkstra() {
 
 }
 
+void j1Pathfinding::PropageteA()
+{
+	if (close.find(goal) != -1) return;
+	if (open.start == NULL)return;
+
+	iPoint point;
+
+	open.Pop(point);
+
+	if (open.find(point) == -1)close.add(point);
+
+	iPoint neighbor[4];
+
+	neighbor[0] = { point.x - 1, point.y };
+	neighbor[1] = { point.x + 1, point.y };
+	neighbor[2] = { point.x, point.y - 1 };
+	neighbor[3] = { point.x, point.y + 1 };
+
+	for (uint k = 0; k < 4; k++) {
+
+		if (close.find(neighbor[k]) == -1 && IsWalkable(neighbor[k])) {
+
+			close.add(neighbor[k]);
+			open.Push(neighbor[k], GetTileWalkability(neighbor[k]) + neighbor[k].DistanceManhattan(goal));
+
+		}
+	}
+
+}
 
 
 void j1Pathfinding::Draw()

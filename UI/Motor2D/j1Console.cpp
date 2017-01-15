@@ -250,6 +250,7 @@ bool j1Console::AutoCompleteInputBox(char* input)
 {
 	//Get imput str len
 	uint char_num = strlen(input);
+	if (char_num > 17)return false;
 	uint input_step = 1;
 	uint init = 0;
 
@@ -286,7 +287,8 @@ bool j1Console::AutoCompleteInputBox(char* input)
 	}
 
 	//Build the str of the step input
-	char* temp = new char[char_num - init];
+	if (char_num == init)return false;
+	char* temp = new char[char_num + 1 - init];
 	uint h = 0;
 	for (uint j = init; j < char_num; j++)
 	{
@@ -296,7 +298,7 @@ bool j1Console::AutoCompleteInputBox(char* input)
 	temp[h] = '\0';
 	p2SString str = temp;
 	delete temp;
-
+	if (strlen(str.GetString()) > 7)return false;
 	//Try to autocomplete the step
 	uint elements_num = 0;
 	uint equal_chars = 0;
@@ -334,11 +336,7 @@ bool j1Console::AutoCompleteInputBox(char* input)
 		for (uint k = 0; k < elements_num; k++)
 		{
 			eq = str.CompareChars(App->GetModuleAt(k)->name.GetString());
-			if (eq == App->GetModuleAt(k)->name.Length())
-			{
-				return false;
-			}
-			else if (equal_chars < eq)
+			if (equal_chars < eq)
 			{
 				equal_chars = eq;
 				perf_index = k;
@@ -350,6 +348,7 @@ bool j1Console::AutoCompleteInputBox(char* input)
 		{
 			console_input_box->DeleteTextSegment(init, char_num);
 			console_input_box->PushTextSegment("app", init);
+			console_input_box->SetCursorPos(strlen(console_input_box->GetText()));
 			return true;
 		}
 
@@ -357,6 +356,10 @@ bool j1Console::AutoCompleteInputBox(char* input)
 			if (!ret)return false;
 				console_input_box->DeleteTextSegment(init, char_num);
 				console_input_box->PushTextSegment(App->GetModuleAt(perf_index)->name.GetString(), init);
+				input = console_input_box->GetText();
+				uint k = 0;
+				k++;
+				k += 9;
 		}
 		
 		break;
@@ -698,9 +701,6 @@ void j1Console::Console_Command_Input(Command * command, Cvar * cvar, p2SString 
 			App->console->GenerateConsoleLabel("Error set command Cvar is NULL");
 			return;
 		}
-
-		//Set cvar value
-		cvar->SetValue(input->GetString());
 		
 		//Update cvar state
 		if (cvar->GetCvarModule() != nullptr)

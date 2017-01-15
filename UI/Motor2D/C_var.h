@@ -81,7 +81,8 @@ public:
 	//Set cvar value
 	void SetValue(const char* new_value)
 	{
-		value = new_value;
+		if (strlen(new_value) > 0)value.create(new_value);
+
 	}
 
 	//Get editable state

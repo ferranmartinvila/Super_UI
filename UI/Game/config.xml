@@ -12,7 +12,7 @@
   <renderer>
     <vsync value="false"/>
     <c_vars>
-      <c_var name = "vsync"	description = "Active/Desactive vsync"	value = "0"	type = "boolean"	only_read="false"/>
+      <c_var name = "vsync"	description = "Active/Desactive vsync"	value = "0"	type = "boolean"	only_read="true"/>
     </c_vars>
   </renderer>
 
