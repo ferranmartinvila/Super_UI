@@ -364,6 +364,22 @@ bool j1App::CleanUp()
 		item = item->prev;
 	}
 
+	p2List_item<p2SString*>* str_item = saved_games.end;
+	p2List_item<p2SString*>* item_prev = nullptr;
+
+	if (str_item != nullptr)item_prev = str_item->prev;
+	while (str_item) {
+
+		//CleanUp the item childs
+		ret = item->data->CleanUp();
+		//Delete all item data
+		saved_games.del(str_item);
+
+		str_item = item_prev;
+		if (item_prev != nullptr)item_prev = item_prev->prev;
+
+	}
+
 	PERF_PEEK(ptimer);
 	return ret;
 }
@@ -404,8 +420,6 @@ const char* j1App::GetOrganization() const
 // Load / Save
 void j1App::LoadGame(const char* file)
 {
-	// we should be checking if that file actually exist
-	// from the "GetSaveGames" list
 	bool ret = false;
 	p2List_item<p2SString*>* saved_game = saved_games.start;
 	while (saved_game != NULL)
@@ -428,8 +442,6 @@ void j1App::LoadGame(const char* file)
 // ---------------------------------------
 void j1App::SaveGame(const char* file) const
 {
-	// we should be checking if that file actually exist
-	// from the "GetSaveGames" list ... should we overwrite ?
 	p2List_item<p2SString*>* saved_game = saved_games.start;
 	bool exist = false;
 	while (saved_game != NULL)

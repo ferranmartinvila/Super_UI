@@ -54,6 +54,7 @@ public:
 
 	//Game Loop
 	void		Draw(bool debug);
+	bool		CleanUp();
 	
 
 	//Functionality

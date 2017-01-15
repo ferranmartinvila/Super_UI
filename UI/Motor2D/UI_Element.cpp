@@ -54,7 +54,7 @@ bool UI_Element::CleanUp()
 	/*
 			This CleanUp
 	*/
-
+	input_target = nullptr;
 	//Childs CleanUp
 	CleanUpChilds();
 	return true;

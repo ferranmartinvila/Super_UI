@@ -52,6 +52,27 @@ void UI_Scroll::Draw(bool debug)
 	DrawChilds(debug);
 }
 
+bool UI_Scroll::CleanUp()
+{
+	bool ret = true;
+	p2List_item<UI_Element*>* item = Items.end;
+	p2List_item<UI_Element*>* item_prev = nullptr;
+
+	if (item != nullptr)item_prev = item->prev;
+	while (item) {
+
+		//CleanUp the item childs
+		ret = item->data->CleanUp();
+		//Delete all item data
+		Items.del(item);
+
+		item = item_prev;
+		if (item_prev != nullptr)item_prev = item_prev->prev;
+
+	}
+	return ret;
+}
+
 void UI_Scroll::SetScrollableItem(const iPoint position, const SDL_Rect rect, int id)
 {
 	ScrollItem = UI_Image({ position.x,position.y,rect.w,rect.h }, rect, id);
